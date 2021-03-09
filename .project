@@ -1,33 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+<<<<<<< HEAD
 	<name>RISK</name>
+=======
+	<name>ece651-group4-project1</name>
+>>>>>>> 7986c357dbe6dbbf58a0c00b2b4db4b91ec48a7b
 	<comment>Project ece651-group4-project1 created by Buildship.</comment>
 	<projects>
 	</projects>
 	<buildSpec>
 		<buildCommand>
+<<<<<<< HEAD
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
 		<buildCommand>
+=======
+>>>>>>> 7986c357dbe6dbbf58a0c00b2b4db4b91ec48a7b
 			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
 			<arguments>
 			</arguments>
 		</buildCommand>
 	</buildSpec>
 	<natures>
+<<<<<<< HEAD
 		<nature>org.eclipse.jdt.core.javanature</nature>
+=======
+>>>>>>> 7986c357dbe6dbbf58a0c00b2b4db4b91ec48a7b
 		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
 	</natures>
 	<filteredResources>
 		<filter>
+<<<<<<< HEAD
 			<id>1615306107700</id>
+=======
+			<id>1615302050114</id>
+>>>>>>> 7986c357dbe6dbbf58a0c00b2b4db4b91ec48a7b
 			<name></name>
 			<type>30</type>
 			<matcher>
 				<id>org.eclipse.core.resources.regexFilterMatcher</id>
+<<<<<<< HEAD
 				<arguments>node_modules|.git|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>
+=======
+				<arguments>node_modules|.metadata|archetype-resources|META-INF/maven|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>
+>>>>>>> 7986c357dbe6dbbf58a0c00b2b4db4b91ec48a7b
 			</matcher>
 		</filter>
 	</filteredResources>
