@@ -10,7 +10,7 @@ stages:
    - test
    - coverage
    - deploy
-   
+   - test-deployment 
 build:
   tags:
      - testing,deployment
@@ -31,6 +31,14 @@ deploy:
      - testing,deployment
   stage: deploy
   script: ./scripts/redeploy.sh
+  
+test-deployment:
+  tags:
+    - testing,deployment
+  stage: test-deployment
+  dependencies:
+    - deploy
+  script: ./scripts/test-deployment.sh
 
 pages:
  stage: coverage
