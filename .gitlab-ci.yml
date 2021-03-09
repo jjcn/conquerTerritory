@@ -1,0 +1,47 @@
+before_script:
+  - hostname
+  - whoami
+  - pwd
+  - ls -la
+  - docker --version
+
+stages:
+   - build
+   - test
+   - coverage
+   - deploy
+
+build:
+  tags:
+     - testing,deployment
+  stage: build
+  script: docker build --build-arg LOCAL_USER_ID=`id -u`  --tag citest .
+
+test:
+  tags:
+     - testing,deployment
+  stage: test
+  script: scripts/run-tests-in-docker.sh
+  artifacts:
+    paths:
+      - coverage
+
+deploy:
+  tags:
+     - testing,deployment
+  stage: deploy
+  script: ./scripts/redeploy.sh
+  
+
+pages:
+ stage: coverage
+ tags:
+     - testing,deployment
+ dependencies:
+   - test
+ script:
+   - mv coverage public/
+ artifacts:
+   paths:
+     - public
+
