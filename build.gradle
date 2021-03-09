@@ -22,6 +22,8 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
 }
+// Define the main class for the application
+mainClassName = 'RISK.TrialToyExample'
 
 dependencies {
     // This dependency is used by the application.

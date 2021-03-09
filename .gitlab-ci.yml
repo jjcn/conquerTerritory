@@ -13,13 +13,13 @@ stages:
    
 build:
   tags:
-     - testing, deployment
+     - test,deployment
   stage: build
   script: docker build --build-arg LOCAL_USER_ID=`id -u`  --tag citest .
 
 test:
   tags:
-     - testing, deployment
+     - test,deployment
   stage: test
   script: scripts/run-tests-in-docker.sh
   artifacts:
@@ -29,7 +29,7 @@ test:
 pages:
  stage: coverage
  tags:
-     - testing, deployment
+     - test,deployment
  dependencies:
    - test
  script:
@@ -37,3 +37,4 @@ pages:
  artifacts:
    paths:
      - public
+
