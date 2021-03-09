@@ -13,13 +13,13 @@ stages:
    
 build:
   tags:
-     - ece651-group4-project1
+     - ECE 651 group4 CI
   stage: build
   script: docker build --build-arg LOCAL_USER_ID=`id -u`  --tag citest .
 
 test:
   tags:
-     - ece651-group4-project1
+     - ECE 651 group4 CI
   stage: test
   script: scripts/run-tests-in-docker.sh
   artifacts:
@@ -29,7 +29,7 @@ test:
 pages:
  stage: coverage
  tags:
-     - ece651-group4-project1
+     - ECE 651 group4 CI
  dependencies:
    - test
  script:
