@@ -9,7 +9,7 @@ stages:
    - build
    - test
    - coverage
-
+   - deploy
    
 build:
   tags:
@@ -25,7 +25,13 @@ test:
   artifacts:
     paths:
       - coverage
-      
+
+deploy:
+  tags:
+     - testing,deployment
+  stage: deploy
+  script: ./scripts/redeploy.sh
+
 pages:
  stage: coverage
  tags:
