@@ -1,7 +1,0 @@
-package edu.duke.group4.RISK;
-
-public class Trial_toyexample {
-  String getHelloWorld(){
-    return "hello wolrd";
-  }
-}
