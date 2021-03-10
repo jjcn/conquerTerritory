@@ -21,9 +21,18 @@ public class Graph<T> {
     }
 
     public Map<Vertex, List<Vertex>> adjVertices;
+    int size;
 
     public Graph() {
         this.adjVertices = new HashMap<>();
+    }
+
+    /**
+     * Get all vertices in the graph. 
+     * @return a set of vertices
+     */
+    public Set<Vertex> getVertices() {
+        return adjVertices.keySet();
     }
 
     /**
@@ -52,4 +61,5 @@ public class Graph<T> {
 
     }
     
+    // TODO: iterator
 }
