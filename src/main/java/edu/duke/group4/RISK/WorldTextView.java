@@ -24,7 +24,7 @@ Red player:
 public class WorldTextView implements WorldView<T> {
   private final Graph<Territory> toDisplay;
   /**
-
+constructer.
    **/
   public WorldTextView(World toDisplay){
     this.toDisplay = toDisplay.getTerritories();
