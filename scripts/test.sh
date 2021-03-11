@@ -1,14 +1,8 @@
 #!/bin/bash
 
 ./gradlew build || exit 1
-./gradlew cloverAggregateReport || exit 1
-
-emacs --batch -u `whoami` --script scripts/docov.el
-
-cv=`egrep "\| *Totals *\|" coverage.txt | cut -f 3 -d"|" | tr -d " "`
-
-echo "TOTAL COVERAGE: ${cv}%"
-
+./gradlew cloverAggregateReports || exit 1
+scripts/coverage_summary.sh
 ls -l /
 ls -l /coverage-out/
 cp -r build/reports/clover/html/* /coverage-out/ || exit 1
