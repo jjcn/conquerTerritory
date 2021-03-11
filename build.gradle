@@ -84,6 +84,7 @@ tasks.register("run-client") {
 tasks.withType(JavaCompile) {
  options.debug = true
 }
+
 task resolveDependencies {
    doLast {
        project.rootProject.allprojects.each { subProject ->
