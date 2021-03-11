@@ -1,4 +1,6 @@
-package edu.duke.group4.RISK;
+package edu.duke.ece651.group4.RISK;
+
+import java.io.IOException;
 
 public interface Player {
   /**

@@ -1,4 +1,5 @@
-package edu.duke.group4.RISK;
+package edu.duke.ece651.group4.RISK;
+
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,25 +9,25 @@ public class Troop {
 
     private final ArrayList<Unit> population;
 
-//    private Player owner;
+    private Player owner;
 
-    public Troop(int number, Random rand) {
-        //this.owner=owner;
+    public Troop(int number, Player owner,Random rand) {
+        this.owner=owner;
         this.population = new ArrayList<>();
         for(int i=0;i<number;i++) {
             population.add(new Soldier(rand));
         }
     }
 
-    public Troop(int number) {
-        this(number,new Random());
+    public Troop(int number,Player owner) {
+        this(number,owner,new Random());
 
     }
 
-    public Troop(ArrayList<Unit> subTroop){
+    public Troop(ArrayList<Unit> subTroop,Player owner){
 
         this.population=subTroop;
-        //this.owner=owner;
+        this.owner=owner;
     }
 
     public Troop combat(Troop enemy){
@@ -51,8 +52,12 @@ public class Troop {
         this.population.remove(loss);
     }
 
-    private Unit dispatchUnit() {
+    public Unit dispatchUnit() {
         return this.population.get(0);
+    }
+
+    public void receiveUnit(Unit target) {
+        this.population.add(target);
     }
 
     public Troop sendTroop(int number){
@@ -62,16 +67,22 @@ public class Troop {
             sub.add(movedUnit);
             this.loseUnit(movedUnit);
         }
-        return new Troop(sub);
+        return new Troop(sub,getOwner());
     }
 
     public boolean checkWin(){
         return this.checkTroopSize()>0;
     }
-//    public Player getOwner(){
-//
-//        return this.owner;
-//    }
+
+    public void receiveTroop(Troop subTroop){
+        while(subTroop.checkTroopSize()!=0){
+            this.receiveUnit(subTroop.dispatchUnit());
+        }
+    }
+    public Player getOwner(){
+
+        return this.owner;
+    }
 
 }
 
