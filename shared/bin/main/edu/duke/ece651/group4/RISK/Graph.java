@@ -26,7 +26,10 @@ public class Graph<T> {
         }
     }
 
-    public Map<Vertex, List<Vertex>> adjVertices;
+    /**
+     * A map that has mapping: vertex -> all adjacent vertices
+     */
+    private Map<Vertex, List<Vertex>> adjVertices;
 
     public Graph() {
         this.adjVertices = new HashMap<>();
@@ -53,7 +56,7 @@ public class Graph<T> {
     }
 
     /**
-     * Get all the vertices that are adjacent to a certain vertex.
+     * Get all the vertices adjacent to a certain vertex.
      * @param data is the data in the vertex to find adjacents of.
      * @return a list of all adjacent vertices.
      */
@@ -81,21 +84,26 @@ public class Graph<T> {
     }
 
     /**
-     * add edge between two vertices.
-     * @param v1 is one end of the edge.
-     * @param v2 is the other end the edge.
+     * Add edge between two vertices.
+     * Duplicated edge will not be added.
+     * @param data1 is the data in one end of the edge.
+     * @param data2 is the data in other end the edge.
      */
-    public void addEdge(Vertex v1, Vertex v2) {
+    public void addEdge(T data1,T data2) {
+        Vertex v1 = new Vertex(data1);
+        Vertex v2 = new Vertex(data2);
         adjVertices.get(v1).add(v2);
         adjVertices.get(v2).add(v1);
     }
     
     /**
-     * remove edge between two vertices.
-     * @param v1 is one end of the edge.
-     * @param v2 is the other end the edge.
+     * Remove edge between two vertices.
+     * @param data1 is the data in one end of the edge.
+     * @param data2 is the data in other end the edge.
      */
-    public void removeEdge(Vertex v1, Vertex v2) {
+    public void removeEdge(T data1,T data2) {
+        Vertex v1 = new Vertex(data1);
+        Vertex v2 = new Vertex(data2);
         List<Vertex> adjs1 = adjVertices.get(v1);
         List<Vertex> adjs2 = adjVertices.get(v2);
         if (adjs1 != null)
