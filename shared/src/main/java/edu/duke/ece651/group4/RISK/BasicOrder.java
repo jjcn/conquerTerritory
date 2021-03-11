@@ -1,4 +1,4 @@
-package edu.duke.group4.RISK;
+package edu.duke.ece651.group4.RISK;
 
 public class BasicOrder implements Order {
   private String src;
@@ -6,19 +6,17 @@ public class BasicOrder implements Order {
   private Troop troop;
   private Character actionName;
 
-  public MoveOrder(String src, String des, Troop troop, Character name){
+  public BasicOrder(String src, String des, Troop troop, Character name){
     this.src = src;
     this.des = des;
-    this.population = population;
+//    this.population = population;
     this.actionName = name;
   }
 
   public String getSrcName(){
     return src;
   }
-  public String getDesName(){
-    return des
-  }
+  public String getDesName(){ return des;}
   public Troop getActTroop(){
     return troop;
   }

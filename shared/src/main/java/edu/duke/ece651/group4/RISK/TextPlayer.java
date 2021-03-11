@@ -1,9 +1,11 @@
-package edu.duke.group4.RISK;
+package edu.duke.ece651.group4.RISK;
+
+import java.io.IOException;
 
 public class TextPlayer implements Player {
   private String playername;
   final PrintStream out;
-  final BufferedReader inputReader;
+  final Reader inputReader;
 
   public TextPlayer(Reader inputSource, PrintStream out)throws IOException{
     this.playername = getName();

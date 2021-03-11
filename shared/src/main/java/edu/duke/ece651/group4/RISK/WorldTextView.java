@@ -1,4 +1,4 @@
-package edu.duke.group4.RISK;
+package edu.duke.ece651.group4.RISK;
 
 /*
 This class hadles the textual display of a World by output a string.
