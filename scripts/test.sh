@@ -1,7 +1,7 @@
 #!/bin/bash
 
-gradle build || exit 1
-gradle cloverAggregateReports || exit 1
+./gradlew build || exit 1
+./gradlew cloverAggregateReports || exit 1
 scripts/coverage_summary.sh
 ls -l /
 ls -l /coverage-out/
