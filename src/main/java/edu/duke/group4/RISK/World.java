@@ -100,7 +100,7 @@ public class World {
      * @param terrName is the territory name to search.
      * @return the specified territory.
      */
-    public Territory findTerritory (String terrName) {
+    public Territory findTerritory(String terrName) {
         for (Territory terr : territories.getVertices()) {
             if (terr.getName().equals(terrName)) {
                 return terr;
@@ -114,7 +114,7 @@ public class World {
      * @param terrName is the territory name.
      * @param ownerName is the player name.
      */
-    public void setTerritoryOwner (String terrName, String ownerName) {
+    public void setTerritoryOwner(String terrName, String ownerName) {
         Territory terr = findTerritory(terrName);
         terr.setOwner(ownerName);
     }

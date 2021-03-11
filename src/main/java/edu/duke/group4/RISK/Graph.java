@@ -20,6 +20,10 @@ public class Graph<T> {
         public Vertex (T data) {
             this.data = data;
         }
+
+        public T getData() {
+            return data;
+        }
     }
 
     public Map<Vertex, List<Vertex>> adjVertices;
@@ -50,26 +54,28 @@ public class Graph<T> {
 
     /**
      * Get all the vertices that are adjacent to a certain vertex.
-     * @param v is the vertex to find adjacents of.
+     * @param data is the data in the vertex to find adjacents of.
      * @return a list of all adjacent vertices.
      */
-    public List<Vertex> getAdjacentVertices(Vertex v) {
+    public List<Vertex> getAdjacentVertices(T data) {
+        Vertex v = new Vertex(data);
         return adjVertices.get(v);
     }
 
     /**
      * Add a vertex to graph.
-     * @param v is the vertex to add.
+     * @param data is the data in the new vertex.
      */
-    public void addVertex(Vertex v) {
-        adjVertices.putIfAbsent(v, new ArrayList<>());
+    public void addVertex(T data) {
+        adjVertices.putIfAbsent(new Vertex(data), new ArrayList<>());
     }
 
     /**
      * Remove a vertex from graph.
-     * @param v is the vertex to remove.
+     * @param data is the data in the vertex to move.
      */
-    public void removeVertex(Vertex v) {
+    public void removeVertex(T data) {
+        Vertex v = new Vertex(data);
         adjVertices.values().stream().forEach(vertex -> vertex.remove(v)); // remove all connected edges
         adjVertices.remove(v); // remove vertex
     }
@@ -98,5 +104,5 @@ public class Graph<T> {
             adjs2.remove(v1);
     }
     
-    // TODO: iterator
+    // TODO: add iterator
 }
