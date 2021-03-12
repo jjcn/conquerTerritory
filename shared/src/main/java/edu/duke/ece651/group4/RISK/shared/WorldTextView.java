@@ -21,33 +21,31 @@ Red player:
 14 units in Mordor (next to: Hogwarts, Gondor, Oz, Scadrial) 
 3 units in Hogwarts (next to: Mordor, Scadrial, Roshar)
  */
-public class WorldTextView implements WorldView<T> {
-  private final Graph<Territory> toDisplay;
-  /**
-constructer.
-   **/
-  public WorldTextView(World toDisplay){
-    this.toDisplay = toDisplay.getTerritories();
-  }
-  
-  /**
-   * The text view of world has two situations: 1. the player can immediately see
-   * the moves he did; 2. the player cannot see the results of other players'
-   * action.
-   * 
-   * @param toDisplay: the World to be displayed.
-   **/
-  @Override
-  public String displayWorld(World toDisplay) {
-    StringBuilder display = new StringBuilder();
+public class WorldTextView implements WorldView<Character> {
+    private final Graph<Territory> toDisplay;
 
-    return display.toString();
-  }
+    /**
+     * constructer.
+     **/
+    public WorldTextView(World toDisplay) {
+        this.toDisplay = toDisplay.territories;
+    }
 
-  private String displayOnePlayerTerritories(){
-    StringBuilder display = new StringBuilder();
-    
-    return display.toString();
-  }
+    /**
+     * The text view of world has two situations: 1. the player can immediately see
+     * the moves he did; 2. the player cannot see the results of other players'
+     * action.
+     *
+     * @param toDisplay: the World to be displayed.
+     **/
+    @Override
+    public void displayWorld(World toDisplay) {
+        StringBuilder display = new StringBuilder();
+    }
 
+    private String displayOnePlayerTerritories() {
+        StringBuilder display = new StringBuilder();
+
+        return display.toString();
+    }
 }

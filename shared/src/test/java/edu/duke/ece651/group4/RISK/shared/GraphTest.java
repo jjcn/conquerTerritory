@@ -1,16 +1,18 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
-import edu.duke.group4.RISK.Graph.*;
 
 
-
+/**
+ * FIXIT: Cannot create instance of Vertex.
+ */
 public class GraphTest {
     String[] names = 
         "Narnia, Midkemia, Oz, Gondor, Mordor, Roshar, Scadrial, Elantris, Roshar".split(", ");
@@ -66,19 +68,19 @@ public class GraphTest {
     @Test
     public void testGetSize() {
         Graph<Integer> graph = new Graph<>();
-        assertEquals(0, graph.getSize);
+        assertEquals(0, graph.getSize());
         graph.addVertex(1);
-        assertEquals(1, graph.getSize);
+        assertEquals(1, graph.getSize());
         graph.addVertex(2);
-        assertEquals(2, graph.getSize);
+        assertEquals(2, graph.getSize());
         graph.addVertex(3);
-        assertEquals(3, graph.getSize);
+        assertEquals(3, graph.getSize());
         graph.removeVertex(3);
-        assertEquals(2, graph.getSize);
+        assertEquals(2, graph.getSize());
         graph.removeVertex(2);
-        assertEquals(1, graph.getSize);
+        assertEquals(1, graph.getSize());
         graph.removeVertex(0);
-        assertEquals(1, graph.getSize);
+        assertEquals(1, graph.getSize());
     }
 
     @Test
@@ -144,21 +146,21 @@ public class GraphTest {
         assertEqualAdjacents(graph, 1, emptyList);
         graph.addEdge(1, 2);
         graph.addEdge(1, 3);
-        assertEqualAdjacents(graph, 1, new ArrayList<Integer>(2, 3));
-        assertEqualAdjacents(graph, 2, new ArrayList<Integer>(1));
-        assertEqualAdjacents(graph, 3, new ArrayList<Integer>(1));
+        assertEqualAdjacents(graph, 1, new ArrayList<Integer>(Arrays.asList(2, 3)));
+        assertEqualAdjacents(graph, 2, new ArrayList<Integer>(Arrays.asList(1)));
+        assertEqualAdjacents(graph, 3, new ArrayList<Integer>(Arrays.asList(1)));
         assertEqualAdjacents(graph, 4, emptyList);
 
         graph.addEdge(2, 3);
-        assertEqualAdjacents(graph, 1, new ArrayList<Integer>(2, 3));
-        assertEqualAdjacents(graph, 2, new ArrayList<Integer>(1, 3));
-        assertEqualAdjacents(graph, 3, new ArrayList<Integer>(1, 2));
+        assertEqualAdjacents(graph, 1, new ArrayList<Integer>(Arrays.asList(2, 3)));
+        assertEqualAdjacents(graph, 2, new ArrayList<Integer>(Arrays.asList(1, 3)));
+        assertEqualAdjacents(graph, 3, new ArrayList<Integer>(Arrays.asList(1, 2)));
         assertEqualAdjacents(graph, 4, emptyList);
 
         graph.addEdge(3, 4);
-        assertEqualAdjacents(graph, 1, new ArrayList<Integer>(2, 3));
-        assertEqualAdjacents(graph, 2, new ArrayList<Integer>(1, 3));
-        assertEqualAdjacents(graph, 3, new ArrayList<Integer>(1, 2));
+        assertEqualAdjacents(graph, 1, new ArrayList<Integer>(Arrays.asList(2, 3)));
+        assertEqualAdjacents(graph, 2, new ArrayList<Integer>(Arrays.asList(1, 3)));
+        assertEqualAdjacents(graph, 3, new ArrayList<Integer>(Arrays.asList(1, 2)));
         assertEqualAdjacents(graph, 4, new ArrayList<Integer>(3));
     }
 

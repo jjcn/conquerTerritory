@@ -1,8 +1,10 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 
 /**
  * This class implements a generic graph data structure.
@@ -15,7 +17,7 @@ public class Graph<T> {
      * This class implements vertex in a graph.
      */
     public class Vertex {
-        T data;
+        private T data;
 
         public Vertex (T data) {
             this.data = data;
@@ -55,6 +57,18 @@ public class Graph<T> {
         return adjVertices.keySet().stream().collect(Collectors.toList());
     }
 
+
+    /**
+     * Get all the data in the graph as a list.
+     */
+    public List<T> getAllData() {
+        List<T> ans = new ArrayList<>();
+        for (Vertex v :getVertices()) {
+            ans.add(v.getData());
+        }
+        return ans;
+    }
+
     /**
      * Get all the vertices adjacent to a certain vertex.
      * @param data is the data in the vertex to find adjacents of.
@@ -89,7 +103,7 @@ public class Graph<T> {
      * @param data1 is the data in one end of the edge.
      * @param data2 is the data in other end the edge.
      */
-    public void addEdge(T data1,T data2) {
+    public void addEdge(T data1, T data2) {
         Vertex v1 = new Vertex(data1);
         Vertex v2 = new Vertex(data2);
         adjVertices.get(v1).add(v2);
@@ -112,6 +126,22 @@ public class Graph<T> {
             adjs2.remove(v1);
     }
     
+    
+    /**
+     * Extract the data in a collection of vertices.
+     * @param vertices is the vertex to extract data from.
+     * @return a list of data.
+     */
+    /*
+    public List<T> toData(List<Vertex> vertices) {
+        List<T> ans = new ArrayList<>();
+        for (Vertex v : vertices) {
+            ans.add(v.getData());
+        }
+        return ans;
+    }
+    */
+
     // TODO: add iterator
 }
 
