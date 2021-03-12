@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -143,21 +144,21 @@ public class GraphTest {
         assertEqualAdjacents(graph, 1, emptyList);
         graph.addEdge(1, 2);
         graph.addEdge(1, 3);
-        assertEqualAdjacents(graph, 1, new ArrayList<Integer>(2, 3));
-        assertEqualAdjacents(graph, 2, new ArrayList<Integer>(1));
-        assertEqualAdjacents(graph, 3, new ArrayList<Integer>(1));
+        assertEqualAdjacents(graph, 1, new ArrayList<Integer>(Arrays.asList(2, 3)));
+        assertEqualAdjacents(graph, 2, new ArrayList<Integer>(Arrays.asList(1)));
+        assertEqualAdjacents(graph, 3, new ArrayList<Integer>(Arrays.asList(1)));
         assertEqualAdjacents(graph, 4, emptyList);
 
         graph.addEdge(2, 3);
-        assertEqualAdjacents(graph, 1, new ArrayList<Integer>(2, 3));
-        assertEqualAdjacents(graph, 2, new ArrayList<Integer>(1, 3));
-        assertEqualAdjacents(graph, 3, new ArrayList<Integer>(1, 2));
+        assertEqualAdjacents(graph, 1, new ArrayList<Integer>(Arrays.asList(2, 3)));
+        assertEqualAdjacents(graph, 2, new ArrayList<Integer>(Arrays.asList(1, 3)));
+        assertEqualAdjacents(graph, 3, new ArrayList<Integer>(Arrays.asList(1, 2)));
         assertEqualAdjacents(graph, 4, emptyList);
 
         graph.addEdge(3, 4);
-        assertEqualAdjacents(graph, 1, new ArrayList<Integer>(2, 3));
-        assertEqualAdjacents(graph, 2, new ArrayList<Integer>(1, 3));
-        assertEqualAdjacents(graph, 3, new ArrayList<Integer>(1, 2));
+        assertEqualAdjacents(graph, 1, new ArrayList<Integer>(Arrays.asList(2, 3)));
+        assertEqualAdjacents(graph, 2, new ArrayList<Integer>(Arrays.asList(1, 3)));
+        assertEqualAdjacents(graph, 3, new ArrayList<Integer>(Arrays.asList(1, 2)));
         assertEqualAdjacents(graph, 4, new ArrayList<Integer>(3));
     }
 
