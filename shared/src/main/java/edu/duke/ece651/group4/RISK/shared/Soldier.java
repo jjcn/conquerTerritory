@@ -19,22 +19,20 @@ public class Soldier implements Unit {
 
   @Override
   public boolean fight(Unit enemy) {
-
     int myRoll = 0, enemyRoll = 0;
 
     while (myRoll == enemyRoll) {
-
       myRoll = randInt(1, 20);
       enemyRoll = randInt(1, 20);
-
     }
 
     return myRoll > enemyRoll;
   }
 
   private int randInt(int min, int max) {
-
-        int randomNum = dice.nextInt((max - min) + 1) + min;
-
-        return randomNum;
-    }}
+    int randomNum = dice.nextInt((max - min) + 1) + min;
+    
+    return randomNum;
+  }
+  
+}

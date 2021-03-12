@@ -15,7 +15,7 @@ public class Graph<T> {
      * This class implements vertex in a graph.
      */
     public class Vertex {
-        T data;
+        private T data;
 
         public Vertex (T data) {
             this.data = data;
@@ -112,6 +112,22 @@ public class Graph<T> {
             adjs2.remove(v1);
     }
     
+    
+    /**
+     * Extract the data in a collection of vertices.
+     * @param vertices is the vertex to extract data from.
+     * @return a list of data.
+     */
+    /*
+    public List<T> toData(List<Vertex> vertices) {
+        List<T> ans = new ArrayList<>();
+        for (Vertex v : vertices) {
+            ans.add(v.getData());
+        }
+        return ans;
+    }
+    */
+
     // TODO: add iterator
 }
 

@@ -2,8 +2,10 @@ package edu.duke.ece651.group4.RISK.shared;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.NoSuchElementException;
+
 import java.util.Random;
+
+import java.util.NoSuchElementException;
 
 /**
  * This class models the world which constitutes a certain number of territories.
@@ -43,7 +45,9 @@ public class World {
      * Iterate over all territories around the world, and do battles on them.
      */
     public void doAllBattles() {
-        territories.getVertices().forEach(terr -> terr.doBattles());
+        for (Vertex v : territories.getVertices()) {
+            v.getData().doOneBattle();
+        }
     }
 
     /**
@@ -65,13 +69,14 @@ public class World {
         // shuffle indices to create random groups
         shuffle(randomInds);
         // divide
+        List<Vertex> vertices = territories.getVertices();
         Map<Integer, Territory[]> groups = new HashMap<>(); 
         int nInGroup = nTerritories / nGroup;
         for (int group = 0; group < nGroup; group++) {
             List<Territory> terrs = new ArrayList<>();
             for (int i = 0; i < nInGroup; i++) {
                 int ind = group * nInGroup + i;
-                terrs.add(territories[i]);
+                terrs.add(vertices.get(i).getData());
             }
             groups.put(group, terrs);
         }
@@ -101,8 +106,8 @@ public class World {
      * @return the specified territory.
      */
     public Territory findTerritory(String terrName) {
-        for (Territory terr : territories.getVertices()) {
-            if (terr.getName().equals(terrName)) {
+        for (Vertex v : territories.getVertices()) {
+            if (v.getData().getName().equals(terrName)) {
                 return terr;
             }
         }

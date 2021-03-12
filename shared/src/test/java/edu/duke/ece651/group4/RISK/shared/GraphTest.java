@@ -1,6 +1,5 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-
 import static org.junit.Assert.*;
 import org.junit.Test;
 
@@ -8,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.duke.group4.RISK.Graph.*;
-
-
 
 public class GraphTest {
     String[] names = 
