@@ -10,13 +10,13 @@ public class TextPlayer implements Player {
     private String playerName;
     final private PrintStream out;
     final private BufferedReader inputReader;
-    private HashSet<Character> actionTypes;
+    final private HashSet<Character> actionTypes;
 
-    public TextPlayer(PrintStream out, Reader inputReader, String playerName) throws IOException {
+    public TextPlayer(PrintStream out, Reader inputReader, String playerName) {
         this.playerName = playerName;
         this.inputReader = (BufferedReader) inputReader;
         this.out = out;
-        this.actionTypes = new HashSet<Character>();
+        this.actionTypes = new HashSet<>();
         actionTypes.add('D');
         actionTypes.add('M');
         actionTypes.add('A');
@@ -25,8 +25,8 @@ public class TextPlayer implements Player {
     /**
      * This asks the user to input their name for this game.
      *
-     * @param out
-     * @param inputReader
+     * @param out         the output stream.
+     * @param inputReader to read from user.
      * @throws IOException
      */
     public TextPlayer(PrintStream out, Reader inputReader) throws IOException {
@@ -77,7 +77,7 @@ public class TextPlayer implements Player {
      */
     private Character readActionName() throws IOException {
         String instr = "Please choose the action type you would like to take:";
-        Character action = ' ';
+        char action = ' ';
         while (!actionTypes.contains(action)) {
             String actionName = readInput(instr);
             action = actionName.trim().charAt(0);
@@ -94,21 +94,20 @@ public class TextPlayer implements Player {
      * @throws IOException
      */
     public int chooseTerritory(HashMap<Integer, List<Territory>> map) throws IOException {
-        String info = "The world has following groups of integers:\n";
+        StringBuilder info = new StringBuilder("The world has following groups of integers:\n");
         for (Map.Entry<Integer, List<Territory>> entry : map.entrySet()) {
-            String oneGroup = entry.getKey() + ":";
+            info.append(entry.getKey()).append(":");
             String sep = " ";
             for (Territory terr : entry.getValue()) {
-                oneGroup.concat(sep + terr.getName());
+                info.append(sep).append(terr.getName());
                 sep = ", ";
             }
-            info.concat(oneGroup + "\n");
+            info.append("\n");
         }
-        info.concat("Please input the group number you would like to choose:");
+        info.append("Please input the group number you would like to choose:");
         out.println(info);
         String instr = "Please input the number of one territory you would like to choose:";
-        int num = readInteger(instr);
-        return num;
+        return readInteger(instr);
     }
 
     private int readInteger(String instr) throws IOException {
@@ -116,8 +115,7 @@ public class TextPlayer implements Player {
         while (!isNumeric(inputInt)) {
             inputInt = readInput(instr);
         }
-        int num = Integer.parseInt(inputInt);
-        return num;
+        return Integer.parseInt(inputInt);
     }
 
     /**
