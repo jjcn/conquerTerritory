@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * FIXIT: Cannot create instance of Vertex.
+ */
 public class GraphTest {
     String[] names = 
         "Narnia, Midkemia, Oz, Gondor, Mordor, Roshar, Scadrial, Elantris, Roshar".split(", ");
@@ -62,19 +65,19 @@ public class GraphTest {
     @Test
     public void testGetSize() {
         Graph<Integer> graph = new Graph<>();
-        assertEquals(0, graph.getSize);
+        assertEquals(0, graph.getSize());
         graph.addVertex(1);
-        assertEquals(1, graph.getSize);
+        assertEquals(1, graph.getSize());
         graph.addVertex(2);
-        assertEquals(2, graph.getSize);
+        assertEquals(2, graph.getSize());
         graph.addVertex(3);
-        assertEquals(3, graph.getSize);
+        assertEquals(3, graph.getSize());
         graph.removeVertex(3);
-        assertEquals(2, graph.getSize);
+        assertEquals(2, graph.getSize());
         graph.removeVertex(2);
-        assertEquals(1, graph.getSize);
+        assertEquals(1, graph.getSize());
         graph.removeVertex(0);
-        assertEquals(1, graph.getSize);
+        assertEquals(1, graph.getSize());
     }
 
     @Test
