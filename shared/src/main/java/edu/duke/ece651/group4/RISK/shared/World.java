@@ -59,11 +59,13 @@ public class World {
     /**
      * Iterate over all territories around the world, and do battles on them.
      */
+    /*
     public void doAllBattles() {
         for (Territory terr : territories.getAllData()) {
             terr.doOneBattle(); // FIXIT: doOneBattle requires a Troop argument
         }
     }
+    */
 
     /**
      * Divide territories into n equal groups.
@@ -133,9 +135,11 @@ public class World {
      * @param terrName is the territory name.
      * @param ownerName is the player name.
      */
+    /*
     public void setTerritoryOwner(String terrName, String ownerName) {
         Territory terr = findTerritory(terrName);
         terr.setOwner(ownerName); // FIXIT: no setOwner() function in Territory.java
     }
+    */
 }
 
