@@ -1,12 +1,14 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
+
 
 /**
  * FIXIT: Cannot create instance of Vertex.
