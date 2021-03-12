@@ -57,6 +57,17 @@ public class World {
     }
 
     /**
+     * Send a troop to a territory with different owner, in order to engage in battle. 
+     * @param start is the territory the troop starts from.
+     * @param troop is the troop to send.
+     * @param end is the territory the troop ends in.
+     */
+    public void attackATerritory(Territory start, Troop troop, Territory end) {
+        start.sendOutTroop(troop);
+        end.sendInEnemyTroop(troop);
+    }
+
+    /**
      * Iterate over all territories around the world, and do battles on them.
      */
     /*
@@ -74,11 +85,11 @@ public class World {
      */
     public Map<Integer, List<Territory>> divideTerritories(int nGroup) {
         // check if size / n is an integer
-        if (territories.getSize() % nGroup != 0) {
+        if (territories.size() % nGroup != 0) {
             throw new IllegalArgumentException(INDIVISIBLE_MSG);
         }
         // create a array of indices
-        int nTerritories = territories.getSize();
+        int nTerritories = territories.size();
         int randomInds[] = new int[nTerritories]; 
         for (int i = 0; i < nTerritories; i++) {
             randomInds[i] = i;
@@ -86,7 +97,7 @@ public class World {
         // shuffle indices to create random groups
         shuffle(randomInds);
         // divide
-        List<Territory> terrList = territories.getData(territories.getVertices());
+        List<Territory> terrList = territories.getVertices();
         Map<Integer, List<Territory>> groups = new HashMap<>(); 
         int nInGroup = nTerritories / nGroup;
         for (int group = 0; group < nGroup; group++) {
@@ -122,7 +133,7 @@ public class World {
      * @return the specified territory.
      */
     public Territory findTerritory(String terrName) {
-        for (Territory terr : territories.getData(territories.getVertices())) {
+        for (Territory terr : territories.getVertices()) {
             if (terr.getName().equals(terrName)) {
                 return terr;
             }
