@@ -89,7 +89,7 @@ public class Graph<T> {
      * @param data1 is the data in one end of the edge.
      * @param data2 is the data in other end the edge.
      */
-    public void addEdge(T data1,T data2) {
+    public void addEdge(T data1, T data2) {
         Vertex v1 = new Vertex(data1);
         Vertex v2 = new Vertex(data2);
         adjVertices.get(v1).add(v2);

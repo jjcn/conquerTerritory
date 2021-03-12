@@ -12,22 +12,35 @@ import java.util.NoSuchElementException;
  */
 public class World {
     /**
-     * Territories in a graph structure
-     */
-    public Graph<Territory> territories;
-
-    /**
      * Error messages
      */
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
 
+    /**
+     * All territories in the world. Implemented with a graph structure.
+     */
+    public Graph<Territory> territories;
+
     public World() {
         this.territories = new Graph<Territory>();
     }
 
-    public addTerritory(Territory terr) {
+    /**
+     * Add a territory to the world.
+     * @param terr is the territory to add.
+     */
+    public void addTerritory(Territory terr) {
         territories.addVertex(new Vertex(terr));
+    }
+
+    /**
+     * Add connection between two adjacent territories.
+     * @param terr1 is a one of the two adjacent territories.
+     * @param terr2 is the other territory.
+     */
+    public void addConnection(Territory terr1, Territory terr2) {
+        territories.addEdge(terr1, terr2);
     }
 
     /**
