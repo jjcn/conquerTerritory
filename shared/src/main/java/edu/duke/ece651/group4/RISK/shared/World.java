@@ -1,6 +1,8 @@
 package edu.duke.ece651.group4.RISK.shared;
 
+import java.util.List;
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.HashMap;
 
 import java.util.Random;
@@ -31,7 +33,7 @@ public class World {
      * @param terr is the territory to add.
      */
     public void addTerritory(Territory terr) {
-        territories.addVertex(new Vertex(terr));
+        territories.addVertex(terr);
     }
 
     /**
@@ -58,8 +60,8 @@ public class World {
      * Iterate over all territories around the world, and do battles on them.
      */
     public void doAllBattles() {
-        for (Vertex v : territories.getVertices()) {
-            v.getData().doOneBattle();
+        for (Territory terr : territories.getAllData()) {
+            terr.doOneBattle(); // FIXIT: doOneBattle requires a Troop argument
         }
     }
 
@@ -68,28 +70,27 @@ public class World {
      * @return a HashMap. The mapping being: group number -> grouped territories.
      * NOTE: group number starts from 0.
      */
-    public HashMap<Integer, List<Territory>> divideTerritories(int nGroup) {
+    public Map<Integer, List<Territory>> divideTerritories(int nGroup) {
         // check if size / n is an integer
-        if (size % nGroup != 0) {
+        if (territories.getSize() % nGroup != 0) {
             throw new IllegalArgumentException(INDIVISIBLE_MSG);
         }
         // create a array of indices
         int nTerritories = territories.getSize();
         int randomInds[] = new int[nTerritories]; 
         for (int i = 0; i < nTerritories; i++) {
-            random[i] = i;
+            randomInds[i] = i;
         }
         // shuffle indices to create random groups
         shuffle(randomInds);
         // divide
-        List<Vertex> vertices = territories.getVertices();
-        Map<Integer, Territory[]> groups = new HashMap<>(); 
+        List<Territory> terrList = territories.getAllData();
+        Map<Integer, List<Territory>> groups = new HashMap<>(); 
         int nInGroup = nTerritories / nGroup;
         for (int group = 0; group < nGroup; group++) {
             List<Territory> terrs = new ArrayList<>();
             for (int i = 0; i < nInGroup; i++) {
-                int ind = group * nInGroup + i;
-                terrs.add(vertices.get(i).getData());
+                terrs.add(terrList.get(group * nInGroup + i));
             }
             groups.put(group, terrs);
         }
@@ -103,7 +104,7 @@ public class World {
      */
     private void shuffle(int[] arr) {
         Random rand = new Random(); 
-        for (int i = randomInd.length - 1; i >= 0; i--) {
+        for (int i = arr.length - 1; i >= 0; i--) {
             int randomNum = rand.nextInt(i + 1);
             int swap = arr[randomNum]; 
             arr[randomNum] = arr[i];
@@ -119,8 +120,8 @@ public class World {
      * @return the specified territory.
      */
     public Territory findTerritory(String terrName) {
-        for (Vertex v : territories.getVertices()) {
-            if (v.getData().getName().equals(terrName)) {
+        for (Territory terr : territories.getAllData()) {
+            if (terr.getName().equals(terrName)) {
                 return terr;
             }
         }
@@ -134,7 +135,7 @@ public class World {
      */
     public void setTerritoryOwner(String terrName, String ownerName) {
         Territory terr = findTerritory(terrName);
-        terr.setOwner(ownerName);
+        terr.setOwner(ownerName); // FIXIT: no setOwner() function in Territory.java
     }
 }
 

@@ -1,6 +1,7 @@
 package edu.duke.ece651.group4.RISK.shared;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public interface Player {
   /**
@@ -13,7 +14,7 @@ At the start of a game. Reads in an int repersenting the territory the player ch
 @param a HashMap containing the info of created territories.
 @return an int if valid.
    **/
-  public int chooseTerritory(HashMap<int,Territory> map)throws IOException;
+  public int chooseTerritory(HashMap<Integer,Territory> map) throws IOException;
   /**
 @return name of a player.
    **/

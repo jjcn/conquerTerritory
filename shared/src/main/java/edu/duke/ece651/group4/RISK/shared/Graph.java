@@ -1,8 +1,10 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.stream.Collectors;
 
 /**
  * This class implements a generic graph data structure.
@@ -53,6 +55,18 @@ public class Graph<T> {
      */
     public List<Vertex> getVertices() {
         return adjVertices.keySet().stream().collect(Collectors.toList());
+    }
+
+
+    /**
+     * Get all the data in the graph as a list.
+     */
+    public List<T> getAllData() {
+        List<T> ans = new ArrayList<>();
+        for (Vertex v :getVertices()) {
+            ans.add(v.getData());
+        }
+        return ans;
     }
 
     /**
