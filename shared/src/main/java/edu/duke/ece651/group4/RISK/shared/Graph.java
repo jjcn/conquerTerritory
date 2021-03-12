@@ -57,13 +57,14 @@ public class Graph<T> {
         return adjVertices.keySet().stream().collect(Collectors.toList());
     }
 
-
     /**
-     * Get all the data in the graph as a list.
+     * Get the data in vertices as a list.
+     * @param vertices is a list of vertices.
+     * @return all the data as a List in these vertices.
      */
-    public List<T> getAllData() {
+    public List<T> getData(List<Vertex> vertices) {
         List<T> ans = new ArrayList<>();
-        for (Vertex v :getVertices()) {
+        for (Vertex v : vertices) {
             ans.add(v.getData());
         }
         return ans;

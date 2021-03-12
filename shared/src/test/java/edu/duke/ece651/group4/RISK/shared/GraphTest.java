@@ -8,8 +8,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-
-
 /**
  * FIXIT: Cannot create instance of Vertex.
  */
@@ -50,12 +48,8 @@ public class GraphTest {
      * @param data is the vertex to find adjacents
      * @param expectedAdjs is the expected adjacents
      */
-    public void assertEqualAdjacents(Graph<T> graph, T data, List<T> expectedAdjs) {
-        List<Vertex> expected = new ArrayList<>();
-        for (T adj: expectedAdjs) {
-            expected.append(new Vertex(adj));
-        }
-        assertTrue(graph.getAdjacentVertices(1).containsAll(expected));
+    public void assertEqualAdjacents(Graph<String> graph, String data, List<String> expectedAdjs) {
+        assertTrue(graph.getAdjacentVertices(data).containsAll(expectedAdjs));
     }
 
     @Test
@@ -75,6 +69,7 @@ public class GraphTest {
         assertEquals(2, graph.getSize());
         graph.addVertex(3);
         assertEquals(3, graph.getSize());
+
         graph.removeVertex(3);
         assertEquals(2, graph.getSize());
         graph.removeVertex(2);

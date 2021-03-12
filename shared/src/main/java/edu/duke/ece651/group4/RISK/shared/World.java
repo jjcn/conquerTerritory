@@ -86,7 +86,7 @@ public class World {
         // shuffle indices to create random groups
         shuffle(randomInds);
         // divide
-        List<Territory> terrList = territories.getAllData();
+        List<Territory> terrList = territories.getData(territories.getVertices());
         Map<Integer, List<Territory>> groups = new HashMap<>(); 
         int nInGroup = nTerritories / nGroup;
         for (int group = 0; group < nGroup; group++) {
@@ -122,7 +122,7 @@ public class World {
      * @return the specified territory.
      */
     public Territory findTerritory(String terrName) {
-        for (Territory terr : territories.getAllData()) {
+        for (Territory terr : territories.getData(territories.getVertices())) {
             if (terr.getName().equals(terrName)) {
                 return terr;
             }
