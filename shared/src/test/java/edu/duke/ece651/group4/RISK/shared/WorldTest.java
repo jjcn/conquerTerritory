@@ -5,8 +5,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 
@@ -120,11 +122,30 @@ public class WorldTest {
         assertDoesNotThrow(() -> world.divideTerritories(3));
         assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(18), INDIVISIBLE_MSG);
     
-        // test if the number of groups and numbers in each group are correct
-        Map<Integer, List<Territory>> groups = world.divideTerritories(3);
-        assertEquals(groups.size(), 3);
         
-        System.out.println(groups.toString());
+        Map<Integer, List<Territory>> groups = world.divideTerritories(3);
+        // test number of groups
+        assertEquals(groups.size(), 3);
+        // test keys
+        assertEquals(groups.keySet(), new HashSet<Integer>(Arrays.asList(0, 1, 2)));
+        // test number in each list, print names 
+        for (int i = 0; i < groups.size(); i++) {
+            assertEquals(groups.get(i).size(), 3);
+            System.out.println(String.format("Group %d:", i));
+            groups.get(i).forEach(e -> System.out.println(e.getName()));
+            System.out.println();
+        }
+    }
+
+    @Test
+    public void testShuffle() {
+        int arr[] = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+        World.shuffle(arr);
+        String delim = "";
+        for (int i : arr) {
+            System.out.print(delim + i);
+            delim = ", ";
+        }
     }
 
     @Test

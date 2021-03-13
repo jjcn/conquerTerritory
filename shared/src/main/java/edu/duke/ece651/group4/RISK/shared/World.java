@@ -122,7 +122,7 @@ public class World {
         for (int group = 0; group < nGroup; group++) {
             List<Territory> terrs = new ArrayList<>();
             for (int i = 0; i < nInGroup; i++) {
-                terrs.add(terrList.get(group * nInGroup + i));
+                terrs.add(terrList.get(randomInds[group * nInGroup + i]));
             }
             groups.put(group, terrs);
         }
@@ -130,11 +130,12 @@ public class World {
         return groups;
     }
 
+    //TODO: move this method to a class "Shuffler"
     /**
-     * Shuffle an array by Fisher-Yates shuffle algorithm.
+     * Shuffle an array. Uses Fisher-Yates shuffle algorithm.
      * @param arr is the array to shuffle.
      */
-    private void shuffle(int[] arr) {
+    public static void shuffle(int[] arr) {
         Random rand = new Random(); 
         for (int i = arr.length - 1; i >= 0; i--) {
             int randomNum = rand.nextInt(i + 1);
@@ -215,7 +216,7 @@ public class World {
 
     @Override
     public String toString() {
-        // TODO
+        // TODO: change placeholder
         return "World.toString() placeholder";
     }
 
