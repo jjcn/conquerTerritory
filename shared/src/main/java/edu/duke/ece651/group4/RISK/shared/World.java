@@ -94,6 +94,7 @@ public class World {
 
     /**
      * Divide territories into n equal groups.
+     * @param nGroup is the number of groups the world is divided into.
      * @return a HashMap. The mapping being: group number -> grouped territories.
      * NOTE: group number starts from 0.
      */
@@ -200,5 +201,27 @@ public class World {
         terr.setOwner(ownerName); // FIXIT: no setOwner() function in Territory.java
     }
     */
+
+    @Override
+    public boolean equals(Object other) {
+        if (other != null && other.getClass().equals(getClass())) {
+            World otherWorld = (World)other;
+            return otherWorld.territories.equals(territories);
+        }
+        else {
+            return false;
+        }
+    }
+
+    @Override
+    public String toString() {
+        // TODO
+        return "World.toString() placeholder";
+    }
+
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
+    }
 }
 

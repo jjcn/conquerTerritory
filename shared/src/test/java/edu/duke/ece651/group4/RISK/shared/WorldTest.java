@@ -4,10 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import jdk.internal.jshell.tool.resources.version;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class WorldTest {
@@ -111,7 +111,8 @@ public class WorldTest {
 
     @Test
     public void testDivideTerritories() {
-        World world = createWorld2(); // the evol1 world, has 9 territories
+        // test if exceptions are thrown correctly
+        World world = createWorld2(); // evolution 1 example world, has 9 territories
         assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(-1), NON_POSITIVE_MSG);
         assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(0), NON_POSITIVE_MSG);
         assertDoesNotThrow(() -> world.divideTerritories(1));
@@ -119,7 +120,11 @@ public class WorldTest {
         assertDoesNotThrow(() -> world.divideTerritories(3));
         assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(18), INDIVISIBLE_MSG);
     
+        // test if the number of groups and numbers in each group are correct
+        Map<Integer, List<Territory>> groups = world.divideTerritories(3);
+        assertEquals(groups.size(), 3);
         
+        System.out.println(groups.toString());
     }
 
     @Test
@@ -127,7 +132,7 @@ public class WorldTest {
         World world = createWorld1();
         Territory t1 = new Territory("1");
         Territory t2 = new Territory("2");
-        assertTrue(world.checkAdjacent(t1, t2));
+        assertTrue(world.checkIfAdjacent(t1, t2));
     }
 
     @Test
