@@ -16,18 +16,18 @@ public class Territory {
 
     private final Random rnd;
 
-    public Territory(String name,Player owner, int population, Random rnd){
+    public Territory(String name, Player owner, int population, Random rnd){
         this.name = name;
         this.enemyOnTerritory = new HashMap<>();
-        this.ownerTroop = new Troop(population,owner,rnd);
-        this.rnd=rnd;
+        this.ownerTroop = new Troop(population, owner, rnd);
+        this.rnd = rnd;
     }
 
     public Territory(String name){
         this.name = name;
         this.enemyOnTerritory = new HashMap<>();
         this.ownerTroop = new Troop(0, null, new Random());
-        this.rnd=new Random();
+        this.rnd = new Random();
     }
 
     public Troop sendOutTroop(Troop subTroop) {

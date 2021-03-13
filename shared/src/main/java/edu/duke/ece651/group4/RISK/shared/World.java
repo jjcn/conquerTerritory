@@ -28,6 +28,10 @@ public class World {
         this.territories = new Graph<Territory>();
     }
 
+    public World(Graph<Territory> territories) {
+        this.territories = territories;
+    }
+
     /**
      * Add a territory to the world.
      * @param terr is the territory to add.
@@ -57,6 +61,17 @@ public class World {
     }
 
     /**
+     * Send a troop to a territory with different owner, in order to engage in battle. 
+     * @param start is the territory the troop starts from.
+     * @param troop is the troop to send.
+     * @param end is the territory the troop ends in.
+     */
+    public void attackATerritory(Territory start, Troop troop, Territory end) {
+        start.sendOutTroop(troop);
+        end.sendInEnemyTroop(troop);
+    }
+
+    /**
      * Iterate over all territories around the world, and do battles on them.
      */
     /*
@@ -74,11 +89,11 @@ public class World {
      */
     public Map<Integer, List<Territory>> divideTerritories(int nGroup) {
         // check if size / n is an integer
-        if (territories.getSize() % nGroup != 0) {
+        if (territories.size() % nGroup != 0) {
             throw new IllegalArgumentException(INDIVISIBLE_MSG);
         }
         // create a array of indices
-        int nTerritories = territories.getSize();
+        int nTerritories = territories.size();
         int randomInds[] = new int[nTerritories]; 
         for (int i = 0; i < nTerritories; i++) {
             randomInds[i] = i;
@@ -86,7 +101,7 @@ public class World {
         // shuffle indices to create random groups
         shuffle(randomInds);
         // divide
-        List<Territory> terrList = territories.getAllData();
+        List<Territory> terrList = territories.getVertices();
         Map<Integer, List<Territory>> groups = new HashMap<>(); 
         int nInGroup = nTerritories / nGroup;
         for (int group = 0; group < nGroup; group++) {
@@ -122,12 +137,31 @@ public class World {
      * @return the specified territory.
      */
     public Territory findTerritory(String terrName) {
-        for (Territory terr : territories.getAllData()) {
+        for (Territory terr : territories.getVertices()) {
             if (terr.getName().equals(terrName)) {
                 return terr;
             }
         }
         throw new NoSuchElementException(String.format(TERRITORY_NOT_FOUND_MSG, terrName));
+    }
+
+    /**
+     * Get all the territories in the world.
+     * @return A list of all territories in the world.
+     */
+    public List<Territory> getAllTerritories() {
+        return territories.getVertices();
+    }
+
+    /**
+     * Check if two territories are adjacent to each other. 
+     * @param v1 is a territory
+     * @param v2 is the other territory
+     * @return true, if two territories are adjacent;
+     *         false, if not.
+     */
+    public boolean isAdjacent(Territory terr1, Territory terr2) {
+        return territories.isAdjacent(terr1, terr2);
     }
 
     /**
