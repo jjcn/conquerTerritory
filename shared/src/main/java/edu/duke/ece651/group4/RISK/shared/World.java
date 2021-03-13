@@ -15,7 +15,7 @@ public class World{
      */
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
-    final String NON_POSITIVE_MSG = "Number of groups should be positive.";
+    final String NOT_POSITIVE_MSG = "Number of groups should be positive.";
 
     /**
      * All territories in the world. Implemented with a graph structure.
@@ -28,6 +28,14 @@ public class World{
 
     public World(Graph<Territory> territories) {
         this.territories = territories;
+    }
+    
+    /**
+     * Get all the territories in the world.
+     * @return A list of all territories in the world.
+     */
+    public List<Territory> getAllTerritories() {
+        return territories.getVertices();
     }
 
     /**
@@ -54,14 +62,6 @@ public class World{
      */
     public void addConnection(String name1, String name2) {
         addConnection(findTerritory(name1), findTerritory(name2));
-    }
-
-    /**
-     * Get all the territories in the world.
-     * @return A list of all territories in the world.
-     */
-    public List<Territory> getAllTerritories() {
-        return territories.getVertices();
     }
 
     /**
@@ -142,7 +142,7 @@ public class World{
     public Map<Integer, List<Territory>> divideTerritories(int nGroup) {
         // check if it is an integer > 0
         if (nGroup <= 0) {
-            throw new IllegalArgumentException(NON_POSITIVE_MSG);
+            throw new IllegalArgumentException(NOT_POSITIVE_MSG);
         } 
         // check if size / n is an integer
         else if (territories.size() % nGroup != 0) {

@@ -2,8 +2,6 @@ package edu.duke.ece651.group4.RISK.shared;
 
 import java.util.List;
 
-import javax.swing.text.Position;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -13,7 +11,7 @@ import java.util.Iterator;
  * - edge is not weighted.
  * - only one edge is allowed between 2 vertices.
  */
-public class Graph<T> {
+public class Graph<T> implements Iterable<T> {
     /**
      * All vertices.
      */
@@ -145,7 +143,13 @@ public class Graph<T> {
         return adjMatrix[i][j];
     }
 
-    public class GraphIterator<E> implements Iterator<T> {
+    /*
+    @Override
+    public Iterator<T> iterator() {
+        return new GraphIterator();
+    }
+
+    public class GraphIterator implements Iterator<T> {
         private int position = 0;
         @Override
         public boolean hasNext() {
@@ -164,7 +168,8 @@ public class Graph<T> {
         }
     
     }
-    
-    // TODO: function that checks if two vertices have a path between them
+    */
+
+    // TODO: function that checks if two vertices have a path between them (must be of same owner)
 }
 
