@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 public class WorldTest {
@@ -133,6 +134,15 @@ public class WorldTest {
 
         assertTrue(world.checkIfAdjacent("Scadrial", "Roshar"));
         assertFalse(world.checkIfAdjacent("Scadrial", "Gondor"));
+    }
+
+    @Test
+    public void testFindTerritory() {
+        World world = createWorld2();
+
+        assertEquals(world.findTerritory("Narnia"), new Territory("Narnia"));
+        assertThrows(NoSuchElementException.class, () -> world.findTerritory("Remnants"));
+        assertThrows(NoSuchElementException.class, () -> world.findTerritory(""));
     }
 
     @Test
