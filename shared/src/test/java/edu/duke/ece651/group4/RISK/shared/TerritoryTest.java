@@ -50,8 +50,8 @@ class TerritoryTest {
         test.doBattles();
 
 
-        assertEquals(test.getOwner().getName(),"p3");
-        assertEquals(test.checkPopulation(),1);
+        assertEquals(test.getOwner().getName(),"p1");
+        assertEquals(test.checkPopulation(),2);
 
     }
 
@@ -64,6 +64,7 @@ class TerritoryTest {
 
         assertEquals(test.equals(test2),true);
         assertEquals(test.equals(test3),false);
+        assertEquals(test,test2);
     }
 
 }
