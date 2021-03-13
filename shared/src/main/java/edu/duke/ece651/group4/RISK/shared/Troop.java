@@ -82,5 +82,16 @@ public class Troop {
         return this.owner;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other != null && other.getClass().equals(getClass())) {
+            Troop otherTroop = (Troop)other;
+            return population.equals(otherTroop.population);
+                   //&& owner.equals(otherTroop.owner);
+        }
+        else {
+            return false;
+        }
+    }
 }
 

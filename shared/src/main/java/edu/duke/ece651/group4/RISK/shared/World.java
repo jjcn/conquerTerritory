@@ -18,6 +18,7 @@ public class World {
      */
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
+    final String NON_POSITIVE_MSG = "Number of groups should be positive.";
 
     /**
      * All territories in the world. Implemented with a graph structure.
@@ -41,12 +42,21 @@ public class World {
     }
 
     /**
-     * Add connection between two adjacent territories.
-     * @param terr1 is a one of the two adjacent territories.
+     * Add connection between two adjacent territories so that they become adjacent.
+     * @param terr1 is a territory.
      * @param terr2 is the other territory.
      */
     public void addConnection(Territory terr1, Territory terr2) {
         territories.addEdge(terr1, terr2);
+    }
+
+    /**
+     * Add connection between two adjacent territories by the name of these territories.
+     * @param name1 is the name of a territory.
+     * @param name2 is the name of the other territory.
+     */
+    public void addConnection(String name1, String name2) {
+        addConnection(findTerritory(name1), findTerritory(name2));
     }
 
     /**
@@ -88,8 +98,12 @@ public class World {
      * NOTE: group number starts from 0.
      */
     public Map<Integer, List<Territory>> divideTerritories(int nGroup) {
+        // check if it is an integer > 0
+        if (nGroup <= 0) {
+            throw new IllegalArgumentException(NON_POSITIVE_MSG);
+        } 
         // check if size / n is an integer
-        if (territories.size() % nGroup != 0) {
+        else if (territories.size() % nGroup != 0) {
             throw new IllegalArgumentException(INDIVISIBLE_MSG);
         }
         // create a array of indices
@@ -130,7 +144,7 @@ public class World {
     }
 
     /**
-     * Searchs a territory by name. 
+     * Finds a territory by its name. 
      * If the territory exists, returns that territory specified by that name.
      * If not, an exception will be thrown.
      * @param terrName is the territory name to search.
@@ -154,14 +168,25 @@ public class World {
     }
 
     /**
-     * Check if two territories are adjacent to each other. 
-     * @param v1 is a territory
-     * @param v2 is the other territory
+     * Check if two territories are adjacent to each other
+     * @param terr1 is a territory.
+     * @param terr2 is the other territory.
      * @return true, if two territories are adjacent;
      *         false, if not.
      */
-    public boolean isAdjacent(Territory terr1, Territory terr2) {
+    public boolean checkIfAdjacent(Territory terr1, Territory terr2) {
         return territories.isAdjacent(terr1, terr2);
+    }
+
+    /**
+     * Check if two territories are adjacent to each other by their names. 
+     * @param name1 is the name of one territory to check.
+     * @param name2 is the name of thr other territory.
+     * @return true, if two territories are adjacent;
+     *         false, if not.
+     */
+    public boolean checkIfAdjacent(String name1, String name2) {
+        return checkIfAdjacent(findTerritory(name1), findTerritory(name2));
     }
 
     /**
