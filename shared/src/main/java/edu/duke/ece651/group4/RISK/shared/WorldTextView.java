@@ -43,9 +43,14 @@ public class WorldTextView implements WorldView<Character> {
         StringBuilder display = new StringBuilder();
     }
 
-    private String displayOnePlayerTerritories() {
+    private String displayOneTerritory(Territory terr) {
+        String ownerName = terr.getOwner().getName();
         StringBuilder display = new StringBuilder();
-
+        String title = ownerName + " Player:\n" + "-----------\n";
+        for (Territory adjacentTerr : toDisplay.getAdjacentVertices(terr)) {
+            display.append(""); //e.g. 13 units in Gondor (next to: Oz, Mordor)
+        }
         return display.toString();
     }
+
 }
