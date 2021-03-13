@@ -8,7 +8,7 @@ import java.util.Random;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TerritoryTest {
-
+/*
     @Test
     void Test_sendTroop() {
         Territory test= new Territory("test");
@@ -35,7 +35,7 @@ class TerritoryTest {
         test.initializeTerritory(5,null);
         assertEquals(test.checkPopulation(),5);
     }
-
+*/
 //    @Test
 //    void Test_doBattles() throws IOException {
 //        Player p1=new TextPlayer(null,"p1",null,null);
