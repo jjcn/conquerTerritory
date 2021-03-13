@@ -1,30 +1,40 @@
 package edu.duke.ece651.group4.RISK.shared;
 
 import java.io.IOException;
+import java.io.PrintStream;
+import java.io.Reader;
+import java.util.HashMap;
+import java.util.List;
 
 public class TextPlayer implements Player {
-  private String playername;
-  final PrintStream out;
-  final Reader inputReader;
+    private String playerName;
+    final PrintStream out;
+    final Reader inputReader;
 
-  public TextPlayer(Reader inputSource, PrintStream out)throws IOException{
-    this.playername = getName();
-    this.out = out;
-    this.inputReader = inputSource;
-  }
+    public TextPlayer(Reader inputSource, String playerName, PrintStream out, Reader inputReader) throws IOException {
+        this.playerName = playerName;
+        this.inputReader = inputReader;
+        this.playerName = readName();
+        this.out = out;
+    }
 
-  public Order doOneAction()throws IOException{
-    return null;
-  }
+    private String readName() {
+        return "";
+    }
 
-  public int chooseTerritory(HashMap<int,Territory> map) throws IOException {
-    return 0;
-  }
-  /**
-@return name of a player.
-   **/
-  public String getName(){
-    return playername;
-  }
+    public Order doOneAction() throws IOException {
+        return null;
+    }
+
+    public int chooseTerritory(HashMap<Integer, List<Territory>> map) throws IOException {
+        return 0;
+    }
+
+    /**
+     * @return name of a player.
+     **/
+    public String getName() {
+        return playerName;
+    }
 
 }

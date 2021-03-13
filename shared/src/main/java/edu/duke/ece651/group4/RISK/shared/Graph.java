@@ -1,8 +1,7 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * This class implements a generic graph data structure.
@@ -12,47 +11,39 @@ import java.util.List;
  */
 public class Graph<T> {
     /**
-     * This class implements vertex in a graph.
+     * All vertices.
      */
-    public class Vertex {
-        T data;
-
-        public Vertex (T data) {
-            this.data = data;
-        }
-
-        public T getData() {
-            return data;
-        }
-    }
-
+    protected List<T> vertices;
     /**
-     * A map that has mapping: vertex -> all adjacent vertices
+     * boolean matrix that stores adjacency relationship between vertices.
+     * true: two vertices are adjacent. 
      */
-    private Map<Vertex, List<Vertex>> adjVertices;
+    protected boolean[][] adjMatrix;
 
     public Graph() {
-        this.adjVertices = new HashMap<>();
+        this.vertices = new ArrayList<>();
+        this.adjMatrix = new boolean[0][0];
     }
 
-    public Graph(Map<Vertex, List<Vertex>> adjVertices) {
-        this.adjVertices = adjVertices;
+    public Graph(List<T> vertices, boolean[][] adjMatrix) {
+        this.vertices = vertices;
+        this.adjMatrix = adjMatrix;
     }
 
     /**
-     * Get the number of vertices in the graph. 
-     * @return number of vertices in the graph;
+     * Get the number of vertices in graph. 
+     * @return number of vertices in graph;
      */
-    public int getSize() {
-        return adjVertices.size();
+    public int size() {
+        return vertices.size();
     }
 
     /**
      * Get all vertices in the graph. 
      * @return a list of all vertices in the graph.
      */
-    public List<Vertex> getVertices() {
-        return adjVertices.keySet().stream().collect(Collectors.toList());
+    public List<T> getVertices() {
+        return vertices;
     }
 
     /**
@@ -60,40 +51,55 @@ public class Graph<T> {
      * @param data is the data in the vertex to find adjacents of.
      * @return a list of all adjacent vertices.
      */
-    public List<Vertex> getAdjacentVertices(T data) {
-        Vertex v = new Vertex(data);
-        return adjVertices.get(v);
+    public List<T> getAdjacentVertices(T key) {
+        List<T> ans = new ArrayList<>();
+        int i = vertices.indexOf(key);
+        for (int j = 0; j < adjMatrix[i].length; j++) {
+            if (adjMatrix[i][j] == true) {
+                ans.add(vertices.get(j));
+            }
+        }
+        return ans;
     }
 
     /**
      * Add a vertex to graph.
-     * @param data is the data in the new vertex.
+     * @param vertex is the vertex to add.
      */
-    public void addVertex(T data) {
-        adjVertices.putIfAbsent(new Vertex(data), new ArrayList<>());
+    public void addVertex(T vertex) {
+        // enlarge the adjacency matrix
+        int n = vertices.size();
+        boolean[][] newAdjMatrix = new boolean[n + 1][n + 1];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                newAdjMatrix[i][j] = this.adjMatrix[i][j];
+            }
+        }
+        adjMatrix = newAdjMatrix;
+        // add to vertices
+        vertices.add(vertex);
     }
 
     /**
-     * Remove a vertex from graph.
+     * Remove a vertex from graph. 
      * @param data is the data in the vertex to move.
      */
-    public void removeVertex(T data) {
-        Vertex v = new Vertex(data);
-        adjVertices.values().stream().forEach(vertex -> vertex.remove(v)); // remove all connected edges
-        adjVertices.remove(v); // remove vertex
+    
+    public void removeVertex(T key) {
+        // TODO: Not required in evol1
     }
-
+    
     /**
      * Add edge between two vertices.
      * Duplicated edge will not be added.
-     * @param data1 is the data in one end of the edge.
-     * @param data2 is the data in other end the edge.
+     * @param v1 is one end of the edge.
+     * @param v2 is the other end the edge.
      */
-    public void addEdge(T data1,T data2) {
-        Vertex v1 = new Vertex(data1);
-        Vertex v2 = new Vertex(data2);
-        adjVertices.get(v1).add(v2);
-        adjVertices.get(v2).add(v1);
+    public void addEdge(T v1, T v2) {
+        int i = vertices.indexOf(v1);
+        int j = vertices.indexOf(v2);
+        adjMatrix[i][j] = true;
+        adjMatrix[j][i] = true;
     }
     
     /**
@@ -101,17 +107,42 @@ public class Graph<T> {
      * @param data1 is the data in one end of the edge.
      * @param data2 is the data in other end the edge.
      */
-    public void removeEdge(T data1,T data2) {
-        Vertex v1 = new Vertex(data1);
-        Vertex v2 = new Vertex(data2);
-        List<Vertex> adjs1 = adjVertices.get(v1);
-        List<Vertex> adjs2 = adjVertices.get(v2);
-        if (adjs1 != null)
-            adjs1.remove(v2);
-        if (adjs2 != null)
-            adjs2.remove(v1);
+    
+    public void removeEdge(T key1,T key2) {
+       // TODO: Not required in evol1
     }
     
+    
+    /**
+     * Extract the data in a collection of vertices.
+     * @param vertices is the vertex to extract data from.
+     * @return a list of data.
+     */
+    /*
+    public List<T> toData(List<Vertex> vertices) {
+        List<T> ans = new ArrayList<>();
+        for (Vertex v : vertices) {
+            ans.add(v.getData());
+        }
+        return ans;
+    }
+    */
+
+    /**
+     * Check if two vertices in the graph is adjacent to each other. 
+     * @param v1 is a vertex
+     * @param v2 is the other vertex
+     * @return true, if two vertices are adjacent;
+     *         false, if not.
+     */
+    public boolean isAdjacent(T v1, T v2) {
+        int i = vertices.indexOf(v1);
+        int j = vertices.indexOf(v2);
+        return adjMatrix[i][j];
+    }
+
+    // TODO: function that checks if two vertices have a path between them
+
     // TODO: add iterator
 }
 
