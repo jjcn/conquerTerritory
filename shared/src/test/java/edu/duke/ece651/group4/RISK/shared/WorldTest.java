@@ -112,6 +112,30 @@ public class WorldTest {
     }
 
     @Test
+    public void testGetAllTerritories() {
+        World world = createWorld2();
+
+        List<Territory> expected = new ArrayList<>();
+        for (String name : names) {
+            expected.add(new Territory(name));
+        }
+
+        assertTrue(world.getAllTerritories().containsAll(expected));
+    }
+
+    @Test
+    public void testCheckIfAdjacent() {
+        World world = createWorld2();
+
+        assertTrue(world.checkIfAdjacent("Narnia", "Midkemia"));
+        assertTrue(world.checkIfAdjacent("Narnia", "Elantris"));
+        assertFalse(world.checkIfAdjacent("Narnia", "Oz"));
+
+        assertTrue(world.checkIfAdjacent("Scadrial", "Roshar"));
+        assertFalse(world.checkIfAdjacent("Scadrial", "Gondor"));
+    }
+
+    @Test
     public void testDivideTerritories() {
         // test if exceptions are thrown correctly
         World world = createWorld2(); // evolution 1 example world, has 9 territories
@@ -145,6 +169,8 @@ public class WorldTest {
         assertTrue(world.checkIfAdjacent(t1, t2));
     }
 
+
+    // below are the testcases for equals() in dependent classes
     @Test
     public void testEqualsTerritory() {
         Territory t0 = new Territory("1");
@@ -169,7 +195,7 @@ public class WorldTest {
     }
 
     @Test
-    public void testEqualsRandom() {
+    public void testEqualsRandom() { // can Random objects be equal?
         Random r1 = new Random();
         Random r2 = new Random();
         assertEquals(r1, r2);

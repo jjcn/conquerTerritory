@@ -57,6 +57,53 @@ public class World {
         addConnection(findTerritory(name1), findTerritory(name2));
     }
 
+    
+    /**
+     * Get all the territories in the world.
+     * @return A list of all territories in the world.
+     */
+    public List<Territory> getAllTerritories() {
+        return territories.getVertices();
+    }
+
+    /**
+     * Check if two territories are adjacent to each other
+     * @param terr1 is a territory.
+     * @param terr2 is the other territory.
+     * @return true, if two territories are adjacent;
+     *         false, if not.
+     */
+    public boolean checkIfAdjacent(Territory terr1, Territory terr2) {
+        return territories.isAdjacent(terr1, terr2);
+    }
+
+    /**
+     * Check if two territories are adjacent to each other by their names. 
+     * @param name1 is the name of one territory to check.
+     * @param name2 is the name of thr other territory.
+     * @return true, if two territories are adjacent;
+     *         false, if not.
+     */
+    public boolean checkIfAdjacent(String name1, String name2) {
+        return checkIfAdjacent(findTerritory(name1), findTerritory(name2));
+    }
+
+    /**
+     * Finds a territory by its name. 
+     * If the territory exists, returns that territory specified by that name.
+     * If not, an exception will be thrown.
+     * @param terrName is the territory name to search.
+     * @return the specified territory.
+     */
+    public Territory findTerritory(String terrName) {
+        for (Territory terr : territories.getVertices()) {
+            if (terr.getName().equals(terrName)) {
+                return terr;
+            }
+        }
+        throw new NoSuchElementException(String.format(TERRITORY_NOT_FOUND_MSG, terrName));
+    }
+
     /**
      * Move a troop to a different a territory. Owner of the troop is not checked.
      * @param start is the territory the troop starts from.
@@ -82,13 +129,11 @@ public class World {
     /**
      * Iterate over all territories around the world, and do battles on them.
      */
-    /*
     public void doAllBattles() {
-        for (Territory terr : territories.getAllData()) {
-            terr.doOneBattle(); // FIXIT: doOneBattle requires a Troop argument
+        for (Territory terr : territories.getVertices()) {
+            terr.doBattles(); // FIXIT: doOneBattle requires a Troop argument
         }
     }
-    */
 
     /**
      * Divide territories into n equal groups.
@@ -127,52 +172,6 @@ public class World {
         }
 
         return groups;
-    }
-
-    /**
-     * Finds a territory by its name. 
-     * If the territory exists, returns that territory specified by that name.
-     * If not, an exception will be thrown.
-     * @param terrName is the territory name to search.
-     * @return the specified territory.
-     */
-    public Territory findTerritory(String terrName) {
-        for (Territory terr : territories.getVertices()) {
-            if (terr.getName().equals(terrName)) {
-                return terr;
-            }
-        }
-        throw new NoSuchElementException(String.format(TERRITORY_NOT_FOUND_MSG, terrName));
-    }
-
-    /**
-     * Get all the territories in the world.
-     * @return A list of all territories in the world.
-     */
-    public List<Territory> getAllTerritories() {
-        return territories.getVertices();
-    }
-
-    /**
-     * Check if two territories are adjacent to each other
-     * @param terr1 is a territory.
-     * @param terr2 is the other territory.
-     * @return true, if two territories are adjacent;
-     *         false, if not.
-     */
-    public boolean checkIfAdjacent(Territory terr1, Territory terr2) {
-        return territories.isAdjacent(terr1, terr2);
-    }
-
-    /**
-     * Check if two territories are adjacent to each other by their names. 
-     * @param name1 is the name of one territory to check.
-     * @param name2 is the name of thr other territory.
-     * @return true, if two territories are adjacent;
-     *         false, if not.
-     */
-    public boolean checkIfAdjacent(String name1, String name2) {
-        return checkIfAdjacent(findTerritory(name1), findTerritory(name2));
     }
 
     /**
