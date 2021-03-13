@@ -7,14 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 
 public class TextPlayer implements Player {
-    private String playerName;
+    private final String playerName;
     final PrintStream out;
     final Reader inputReader;
 
     public TextPlayer(Reader inputSource, String playerName, PrintStream out, Reader inputReader) throws IOException {
         this.playerName = playerName;
         this.inputReader = inputReader;
-        this.playerName = readName();
         this.out = out;
     }
 

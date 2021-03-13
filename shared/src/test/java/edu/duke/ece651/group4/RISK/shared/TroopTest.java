@@ -21,6 +21,16 @@ public class TroopTest {
         assertEquals(sub.checkTroopSize(),3);
     }
 
+
+    @Test
+    void Test_receiveTroop(){
+        Troop test=new Troop(5,null);
+        Troop receive=new Troop(5,null);
+        test.receiveTroop(receive);
+        assertEquals(test.checkTroopSize(),10);
+
+    }
+
     @Test
     void Test_combat() {
         Random rnd = new Random(0);

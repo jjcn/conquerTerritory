@@ -23,6 +23,6 @@ public interface Player {
     /**
      * @return name of a player.
      **/
-    String getName();
+    public String getName();
 }
 

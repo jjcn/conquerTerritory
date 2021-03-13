@@ -24,6 +24,7 @@ public class Soldier implements Unit {
     while (myRoll == enemyRoll) {
       myRoll = randInt(1, 20);
       enemyRoll = randInt(1, 20);
+
     }
 
     return myRoll > enemyRoll;
