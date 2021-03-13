@@ -2,7 +2,6 @@ package edu.duke.ece651.group4.RISK.shared;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -10,20 +9,22 @@ public class TextPlayer implements Player {
     private String playerName;
     final private PrintStream out;
     final private BufferedReader inputReader;
-    final private HashSet<Character> actionTypes;
+    final private HashMap<Character, String> actionTypes;
 
     public TextPlayer(PrintStream out, Reader inputReader, String playerName) {
         this.playerName = playerName;
         this.inputReader = (BufferedReader) inputReader;
         this.out = out;
-        this.actionTypes = new HashSet<>();
-        actionTypes.add('D');
-        actionTypes.add('M');
-        actionTypes.add('A');
+        this.actionTypes = new HashMap<>();
+        actionTypes.put('D', "(D)one");
+        actionTypes.put('M', "(M)ove");
+        actionTypes.put('A', "(A)ttack");
     }
 
     /**
-     * This asks the user to input their name for this game.
+     * This asks the user to input their name for this game and then constructs the Player. Output:
+     * <p>
+     * "Please enter your name in this game:
      *
      * @param out         the output stream.
      * @param inputReader to read from user.
@@ -41,7 +42,7 @@ public class TextPlayer implements Player {
      * @throws IOException
      */
     private String readInput(String instr) throws IOException {
-        out.println(instr);
+        out.print(instr + "\n");
         String input = inputReader.readLine();
         if (playerName == null) {
             throw new EOFException("Can't read name of the player.\n");
@@ -50,20 +51,39 @@ public class TextPlayer implements Player {
     }
 
     /**
-     * Order information for move and attack includes source, destination and action name.
-     * The action type is checked here. The validity of source and destination are not checked here.
+     * Output sample:
+     * <p>
+     * what would you like to do?\n
+     * (M)ove\n
+     * (A)ttack\n
+     * (D)one\n
+     * <\p>
+     * The action type is checked here. The validity of action is not checked here.
+     * After choose a valid 'M' or 'A' action, ask user to input following:
+     * <p>
+     * Please input the territory name you would like to send out troop from:\n
+     * Please input the territory name you would like to send troop to:\n
+     * Please input the number of soldiers you would like to send:\n
+     * <\p>
+     * Territory name is not checked here. Number for troop only requires input an integer here.
      *
      * @return an Order containing the information of the action; null if the user has done their actions in this turn.
+     * Order information for move and attack includes source, destination and action name.
      * @throws IOException
      */
-    public Order doOneAction() throws IOException {
-        Character actionName = readActionName();
+    @Override
+    public BasicOrder doOneAction() throws IOException {
+        StringBuilder instr = new StringBuilder("what would you like to do?\n");
+        for (String act : actionTypes.values()) {
+            instr.append(act + "\n");
+        }
+        Character actionName = readActionName(instr.toString());
         if (actionName == 'D') {
             return null;
         } else {
             String src = readInput("Please input the territory name you would like to send out troop from:");
             String des = readInput("Please input the territory name you would like to send troop to:");
-            int pop = readInteger("Please input the number of soldiers you would like to send.");
+            int pop = readInteger("Please input the number of soldiers you would like to send:");
             Troop troop = new Troop(pop, this);
             return new BasicOrder(src, des, troop, actionName);
         }
@@ -71,14 +91,18 @@ public class TextPlayer implements Player {
 
     /**
      * Here checks if the input action name is in the action types.
+     * If not belong to any action type, output:
+     * <p>
+     * Please choose a valid action type:\n
+     * <\p>
+     * until a valid action type is received.
      *
      * @return a character representing the action name.
      * @throws IOException
      */
-    private Character readActionName() throws IOException {
-        String instr = "Please choose the action type you would like to take:";
+    private Character readActionName(String instr) throws IOException {
         char action = ' ';
-        while (!actionTypes.contains(action)) {
+        while (!actionTypes.keySet().contains(action)) {
             String actionName = readInput(instr);
             action = actionName.trim().charAt(0);
             instr = "Please choose a valid action type:";
@@ -93,6 +117,7 @@ public class TextPlayer implements Player {
      * @return an int the user input representing the territory they choose.
      * @throws IOException
      */
+    @Override
     public int chooseTerritory(HashMap<Integer, List<Territory>> map) throws IOException {
         StringBuilder info = new StringBuilder("The world has following groups of integers:\n");
         for (Map.Entry<Integer, List<Territory>> entry : map.entrySet()) {
@@ -114,6 +139,7 @@ public class TextPlayer implements Player {
         String inputInt = "";
         while (!isNumeric(inputInt)) {
             inputInt = readInput(instr);
+            instr = "The input is not one int, please input again:";
         }
         return Integer.parseInt(inputInt);
     }
@@ -126,17 +152,21 @@ public class TextPlayer implements Player {
      */
     private boolean isNumeric(String str) {
         str = str.trim();
-        for (int i = 0; i < str.length(); i++) {
-            if (!Character.isDigit(str.charAt(i))) {
-                return false;
+        if (!str.equals("")) {
+            for (int i = 0; i < str.length(); i++) {
+                if (!Character.isDigit(str.charAt(i))) {
+                    return false;
+                }
             }
+            return true;
         }
-        return true;
+        return false;
     }
 
     /**
      * @return name of a player.
      **/
+    @Override
     public String getName() {
         return playerName;
     }
