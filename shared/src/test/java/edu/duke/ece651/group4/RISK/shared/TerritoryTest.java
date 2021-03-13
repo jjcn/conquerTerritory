@@ -10,14 +10,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class TerritoryTest {
 
     @Test
-    void Test_sendTroop() {
+    void Test_sendTroop() throws IOException {
         Territory test= new Territory("test");
         test.initializeTerritory(5,null);
         test.sendInTroop(new Troop(5,null));
         assertEquals(test.checkPopulation(),10);
         test.sendOutTroop(new Troop(4,null));
         assertEquals(test.checkPopulation(),6);
-        test.sendInEnemyTroop(new Troop(4,null));
+        Player p1=new TextPlayer(null,"p1",null,null);
+        test.sendInEnemyTroop(new Troop(4,p1));
         assertEquals(test.checkPopulation(),6);
     }
 
