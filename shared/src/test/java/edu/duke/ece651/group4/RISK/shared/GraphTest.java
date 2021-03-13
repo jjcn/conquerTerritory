@@ -1,28 +1,26 @@
 package edu.duke.ece651.group4.RISK.shared;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-
-
 
 /**
  * FIXIT: Cannot create instance of Vertex.
  */
 public class GraphTest {
-    String[] names = 
-        "Narnia, Midkemia, Oz, Gondor, Mordor, Roshar, Scadrial, Elantris, Roshar".split(", ");
+    String[] names1 = 
+        "Narnia, Midkemia, Oz, Gondor, Mordor, Hogwarts, Scadrial, Elantris, Roshar".split(", ");
 
     /**
      * Creates a test graph. Same as the one on Evolution 1 requirements.
      */
     public Graph<String> createTestGraph1() {
         Graph<String> graph = new Graph<>();
-        for (String name: names) {
+        for (String name: names1) {
             graph.addVertex(name);
         }
         graph.addEdge("Narnia", "Midkemia");
@@ -44,20 +42,6 @@ public class GraphTest {
         return graph;
     }
 
-    /**
-     * Helper function that tests if adjacents of a vertex is as expected. 
-     * @param graph is the graph
-     * @param data is the vertex to find adjacents
-     * @param expectedAdjs is the expected adjacents
-     */
-    public void assertEqualAdjacents(Graph<T> graph, T data, List<T> expectedAdjs) {
-        List<Vertex> expected = new ArrayList<>();
-        for (T adj: expectedAdjs) {
-            expected.append(new Vertex(adj));
-        }
-        assertTrue(graph.getAdjacentVertices(1).containsAll(expected));
-    }
-
     @Test
     public void testCreation() {
         Graph<Integer> intGraph = new Graph<>();
@@ -68,50 +52,53 @@ public class GraphTest {
     @Test
     public void testGetSize() {
         Graph<Integer> graph = new Graph<>();
-        assertEquals(0, graph.getSize());
+        assertEquals(0, graph.size());
         graph.addVertex(1);
-        assertEquals(1, graph.getSize());
+        assertEquals(1, graph.size());
         graph.addVertex(2);
-        assertEquals(2, graph.getSize());
+        assertEquals(2, graph.size());
         graph.addVertex(3);
-        assertEquals(3, graph.getSize());
+        assertEquals(3, graph.size());
+        /*
         graph.removeVertex(3);
-        assertEquals(2, graph.getSize());
+        assertEquals(2, graph.size());
         graph.removeVertex(2);
-        assertEquals(1, graph.getSize());
+        assertEquals(1, graph.size());
         graph.removeVertex(0);
-        assertEquals(1, graph.getSize());
+        assertEquals(1, graph.size());
+        */
     }
 
     @Test
     public void testGetVertices() {
         Graph<String> graph = createTestGraph1();
-        List<Vertex> vertices = graph.getVertices();
-        List<Vertex> expected = new ArrayList<>();
-        for (String name: names) {
-            expected.add(new Vertex(name));
+        
+        List<String> expected = new ArrayList<>();
+        for (String name: names1) {
+            expected.add(name);
         }
-        assertTrue(vertices.containsAll(expected));
+        
+        assertTrue(graph.getVertices().containsAll(expected));
     }
 
     @Test
     public void testGetAdjacentVertices() {
         Graph<String> graph = createTestGraph1();
 
-        List<Vertex> adjsScadrial = graph.getAdjacentVertices("Scadrial");
-        List<Vertex> expectedScadrial = new ArrayList<>();
+        List<String> adjsScadrial = graph.getAdjacentVertices("Scadrial");
+        List<String> expectedScadrial = new ArrayList<>();
         String[] adjNamesScadrial =
-            "Midkemia, Oz, Mordor, Roshar, Scadrial, Elantris, Roshar".split(", ");
+            "Midkemia, Oz, Mordor, Hogwarts, Elantris, Roshar".split(", ");
         for (String name: adjNamesScadrial) {
-            expectedScadrial.add(new Vertex(name));
+            expectedScadrial.add(name);
         }
         assertTrue(adjsScadrial.containsAll(expectedScadrial));
 
-        List<Vertex> adjsGondor = graph.getAdjacentVertices("Gondor");
-        List<Vertex> expectedGondor = new ArrayList<>();
+        List<String> adjsGondor = graph.getAdjacentVertices("Gondor");
+        List<String> expectedGondor = new ArrayList<>();
         String[] adjNamesGondor = "Oz, Mordor".split(", ");
         for (String name: adjNamesGondor) {
-            expectedGondor.add(new Vertex(name));
+            expectedGondor.add(name);
         }
         assertTrue(adjsGondor.containsAll(expectedGondor));
     }
@@ -119,14 +106,15 @@ public class GraphTest {
     @Test
     public void testAddVertex() {
         Graph<Integer> graph = new Graph<>();
-        Map<Vertex, List<Vertex>> adjs;
+        List<Integer> expected = new ArrayList<>();
+        
         graph.addVertex(1);
-        adjs.putIfAbsent(new Vertex(1), new ArrayList<>());
-        assertEquals(graph, adjs);
+        expected.add(1);
+        assertTrue(graph.getVertices().containsAll(expected));
 
         graph.addVertex(-1);
-        adjs.putIfAbsent(new Vertex(-1), new ArrayList<>());
-        assertEquals(graph, adjs);
+        expected.add(-1);
+        assertTrue(graph.getVertices().containsAll(expected));
     }
     
     @Test
@@ -134,15 +122,24 @@ public class GraphTest {
         // TODO
     }
 
+    /**
+     * Helper function that tests if adjacents of a vertex is as expected. 
+     * @param graph is the graph
+     * @param data is the vertex to find adjacents
+     * @param expectedAdjs is the expected adjacents
+     */
+    public void assertEqualAdjacents(Graph<Integer> graph, int key, List<Integer> expectedAdjs) {
+        assertTrue(graph.getAdjacentVertices(key).containsAll(expectedAdjs));
+    }
+
     @Test
     public void testAddEdge() {
         Graph<Integer> graph = new Graph<>();
-        ArrayList<Integer> emptyList = new ArrayList<>();
-        Vertex[] vertices = new Vertex[4];
-        for (int i = 0; i < 4; i++) {
-            vertices[i] = new Vertex(i + 1);
-            graph.addVertex(i + 1);
+        for (int i = 1; i <= 4; i++) {
+            graph.addVertex(i);
         }
+        ArrayList<Integer> emptyList = new ArrayList<>();
+        
         assertEqualAdjacents(graph, 1, emptyList);
         graph.addEdge(1, 2);
         graph.addEdge(1, 3);
