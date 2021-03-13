@@ -13,17 +13,17 @@ public class Territory {
 
     private final Random rnd;
 
-    public Territory(String name, Player owner, int population, Random rnd){
+    public Territory(String name, Player owner, int population, Random rnd) {
         this.name = name;
         this.enemyOnTerritory = new HashMap<>();
         this.ownerTroop = new Troop(population, owner, rnd);
         this.rnd = rnd;
     }
 
-    public Territory(String name){
+    public Territory(String name) {
         this.name = name;
         this.enemyOnTerritory = new HashMap<>();
-        this.ownerTroop = new Troop(0, null, new Random());
+        this.ownerTroop = new Troop(0, null, new Random()); // default Troop.owner == null, cannot call equals()
         this.rnd = new Random();
     }
 
@@ -91,14 +91,17 @@ public class Territory {
     }
 
     @Override
-    public boolean equals(Object o){
-        if (o.getClass().equals(getClass())) {
-            Territory t = (Territory) o;
-            return t.getName() == name;
+    public boolean equals(Object other) {
+        if (other != null && other.getClass().equals(getClass())) {
+            Territory otherTerritory = (Territory)other;
+            return name.equals(otherTerritory.name);
         }
-        return false;
-
+        else {
+            return false;
+        }
     }
+    
+}
 
 
 }

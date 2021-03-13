@@ -83,6 +83,6 @@ public class Troop {
 
         return this.owner;
     }
-
+    
 }
 
