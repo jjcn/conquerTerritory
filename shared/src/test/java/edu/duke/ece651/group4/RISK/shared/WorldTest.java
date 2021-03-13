@@ -204,10 +204,12 @@ public class WorldTest {
         assertEquals(s1, s2);
     }
 
+    /*
     @Test
     public void testEqualsRandom() { // can Random objects be equal?
         Random r1 = new Random();
         Random r2 = new Random();
         assertEquals(r1, r2);
     }
+    */
 }
