@@ -4,13 +4,12 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
-
 import java.util.NoSuchElementException;
 
 /**
  * This class models the world which constitutes a certain number of territories.
  */
-public class World {
+public class World{
     /**
      * Error messages
      */
@@ -57,7 +56,6 @@ public class World {
         addConnection(findTerritory(name1), findTerritory(name2));
     }
 
-    
     /**
      * Get all the territories in the world.
      * @return A list of all territories in the world.
@@ -207,5 +205,6 @@ public class World {
     public int hashCode() {
         return toString().hashCode();
     }
+
 }
 

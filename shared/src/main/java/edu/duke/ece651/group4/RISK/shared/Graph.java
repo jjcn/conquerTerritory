@@ -1,7 +1,11 @@
 package edu.duke.ece651.group4.RISK.shared;
 
 import java.util.List;
+
+import javax.swing.text.Position;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * This class implements a generic graph data structure.
@@ -141,8 +145,26 @@ public class Graph<T> {
         return adjMatrix[i][j];
     }
 
+    public class GraphIterator<E> implements Iterator<T> {
+        private int position = 0;
+        @Override
+        public boolean hasNext() {
+            if (position < getVertices().size()) {
+                return true;
+            } 
+            return false;
+        }
+    
+        @Override
+        public T next() {
+            if(hasNext()) {
+                return getVertices().get(position++);
+            }
+            return null;
+        }
+    
+    }
+    
     // TODO: function that checks if two vertices have a path between them
-
-    // TODO: add iterator
 }
 
