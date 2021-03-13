@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-import java.util.Random;
-
 import java.util.NoSuchElementException;
 
 /**
@@ -114,7 +112,8 @@ public class World {
             randomInds[i] = i;
         }
         // shuffle indices to create random groups
-        shuffle(randomInds);
+        Shuffler shuffler = new Shuffler();
+        shuffler.shuffle(randomInds);
         // divide
         List<Territory> terrList = territories.getVertices();
         Map<Integer, List<Territory>> groups = new HashMap<>(); 
@@ -128,21 +127,6 @@ public class World {
         }
 
         return groups;
-    }
-
-    //TODO: move this method to a class "Shuffler"
-    /**
-     * Shuffle an array. Uses Fisher-Yates shuffle algorithm.
-     * @param arr is the array to shuffle.
-     */
-    public static void shuffle(int[] arr) {
-        Random rand = new Random(); 
-        for (int i = arr.length - 1; i >= 0; i--) {
-            int randomNum = rand.nextInt(i + 1);
-            int swap = arr[randomNum]; 
-            arr[randomNum] = arr[i];
-            arr[i] = swap;
-        }
     }
 
     /**
