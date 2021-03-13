@@ -43,7 +43,8 @@ public class Territory {
     }
 
     public void doOneBattle(Troop enemy){
-        this.ownerTroop = this.ownerTroop.combat(enemy);
+        Troop enemyRemain=this.ownerTroop.combat(enemy);
+        this.ownerTroop = this.ownerTroop.checkWin()?this.ownerTroop:enemyRemain;
     }
 
     public Player getOwner() {
@@ -90,7 +91,18 @@ public class Territory {
         return randomNum;
     }
 
+    @Override
+    public boolean equals(Object o){
+        if (o.getClass().equals(getClass())) {
+            Territory t = (Territory) o;
+            return t.getName() == name;
+        }
+        return false;
+
     }
+
+
+}
 
 
 
