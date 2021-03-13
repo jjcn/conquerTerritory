@@ -7,11 +7,9 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Random;
 
 public class WorldTest {
     /**
@@ -87,7 +85,7 @@ public class WorldTest {
     @Test
     public void testAddConnection() {
         World world = new World();
-        List<Territory> expected = new ArrayList<>();
+        
         for (int i = 1; i <= 4; i++) {
             Territory t = new Territory(String.format("%s", i));
             world.addTerritory(t);
@@ -177,31 +175,6 @@ public class WorldTest {
         Territory t1 = new Territory("1");
         Territory t2 = new Territory("2");
         assertTrue(world.checkIfAdjacent(t1, t2));
-    }
-
-
-    // below are the testcases for equals() in dependent classes
-    @Test
-    public void testEqualsTerritory() {
-        Territory t0 = new Territory("1");
-        Territory t1 = new Territory("1"); 
-        Territory t2 = new Territory("2");
-        assertEquals(t0, t1);
-        assertNotEquals(t0, t2);
-    }
-
-    @Test
-    public void testEqualsTroop() {
-        Troop t1 = new Troop(0, null, new Random());
-        Troop t2 = new Troop(0, null, new Random());
-        assertEquals(t1, t2);
-    }
-
-    @Test
-    public void testEqualsSoldier() {
-        Soldier s1 = new Soldier();
-        Soldier s2 = new Soldier();
-        assertEquals(s1, s2);
     }
 
     /*

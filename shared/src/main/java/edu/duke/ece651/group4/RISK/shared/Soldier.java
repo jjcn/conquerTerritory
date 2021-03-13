@@ -35,16 +35,4 @@ public class Soldier implements Unit {
     return randomNum;
   }
   
-  @Override
-  public boolean equals(Object other) {
-    if (other != null && other.getClass().equals(getClass())) {
-      Soldier otherSoldier = (Soldier)other;
-      return jobName.equals(otherSoldier.jobName);
-             // && dice.equals(otherSoldier.dice);
-    } 
-    else {
-      return false;
-    }
-  }
-
 }
