@@ -28,6 +28,10 @@ public class World {
         this.territories = new Graph<Territory>();
     }
 
+    public World(Graph<Territory> territories) {
+        this.territories = territories;
+    }
+
     /**
      * Add a territory to the world.
      * @param terr is the territory to add.
@@ -139,6 +143,25 @@ public class World {
             }
         }
         throw new NoSuchElementException(String.format(TERRITORY_NOT_FOUND_MSG, terrName));
+    }
+
+    /**
+     * Get all the territories in the world.
+     * @return A list of all territories in the world.
+     */
+    public List<Territory> getAllTerritories() {
+        return territories.getVertices();
+    }
+
+    /**
+     * Check if two territories are adjacent to each other. 
+     * @param v1 is a territory
+     * @param v2 is the other territory
+     * @return true, if two territories are adjacent;
+     *         false, if not.
+     */
+    public boolean isAdjacent(Territory terr1, Territory terr2) {
+        return territories.isAdjacent(terr1, terr2);
     }
 
     /**

@@ -13,7 +13,7 @@ public class Graph<T> {
     /**
      * All vertices.
      */
-    private List<T> vertices;
+    protected List<T> vertices;
     /**
      * boolean matrix that stores adjacency relationship between vertices.
      * true: two vertices are adjacent. 
@@ -85,7 +85,7 @@ public class Graph<T> {
      * @param data is the data in the vertex to move.
      */
     
-    public void removeVertex(T data) {
+    public void removeVertex(T key) {
         // TODO: Not required in evol1
     }
     
@@ -108,7 +108,7 @@ public class Graph<T> {
      * @param data2 is the data in other end the edge.
      */
     
-    public void removeEdge(T data1,T data2) {
+    public void removeEdge(T key1,T key2) {
        // TODO: Not required in evol1
     }
     
@@ -127,6 +127,21 @@ public class Graph<T> {
         return ans;
     }
     */
+
+    /**
+     * Check if two vertices in the graph is adjacent to each other. 
+     * @param v1 is a vertex
+     * @param v2 is the other vertex
+     * @return true, if two vertices are adjacent;
+     *         false, if not.
+     */
+    public boolean isAdjacent(T v1, T v2) {
+        int i = vertices.indexOf(v1);
+        int j = vertices.indexOf(v2);
+        return adjMatrix[i][j];
+    }
+
+    // TODO: function that checks if two vertices have a path between them
 
     // TODO: add iterator
 }

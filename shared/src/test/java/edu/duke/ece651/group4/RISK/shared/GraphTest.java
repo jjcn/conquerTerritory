@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -45,14 +44,14 @@ public class GraphTest {
 
     @Test
     public void testCreation() {
-        GraphV2<Integer> intGraph = new GraphV2<>();
-        GraphV2<String> stringGraph = new GraphV2<>();
-        GraphV2<Territory> terrGraph = new GraphV2<>();
+        Graph<Integer> intGraph = new Graph<>();
+        Graph<String> stringGraph = new Graph<>();
+        Graph<Territory> terrGraph = new Graph<>();
     }
 
     @Test
     public void testGetSize() {
-        GraphV2<Integer> graph = new GraphV2<>();
+        Graph<Integer> graph = new Graph<>();
         assertEquals(0, graph.size());
         graph.addVertex(1);
         assertEquals(1, graph.size());
@@ -72,7 +71,7 @@ public class GraphTest {
 
     @Test
     public void testGetVertices() {
-        GraphV2<String> graph = createTestGraph1();
+        Graph<String> graph = createTestGraph1();
         
         List<String> expected = new ArrayList<>();
         for (String name: names1) {
@@ -84,7 +83,7 @@ public class GraphTest {
 
     @Test
     public void testGetAdjacentVertices() {
-        GraphV2<String> graph = createTestGraph1();
+        Graph<String> graph = createTestGraph1();
 
         List<String> adjsScadrial = graph.getAdjacentVertices("Scadrial");
         List<String> expectedScadrial = new ArrayList<>();
@@ -106,7 +105,7 @@ public class GraphTest {
 
     @Test
     public void testAddVertex() {
-        GraphV2<Integer> graph = new GraphV2<>();
+        Graph<Integer> graph = new Graph<>();
         List<Integer> expected = new ArrayList<>();
         
         graph.addVertex(1);
@@ -129,13 +128,13 @@ public class GraphTest {
      * @param data is the vertex to find adjacents
      * @param expectedAdjs is the expected adjacents
      */
-    public void assertEqualAdjacents(GraphV2<Integer> graph, int key, List<Integer> expectedAdjs) {
+    public void assertEqualAdjacents(Graph<Integer> graph, int key, List<Integer> expectedAdjs) {
         assertTrue(graph.getAdjacentVertices(key).containsAll(expectedAdjs));
     }
 
     @Test
     public void testAddEdge() {
-        GraphV2<Integer> graph = new GraphV2<>();
+        Graph<Integer> graph = new Graph<>();
         for (int i = 1; i <= 4; i++) {
             graph.addVertex(i);
         }
