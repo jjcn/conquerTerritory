@@ -1,10 +1,7 @@
 package edu.duke.ece651.group4.RISK.shared;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Random;
+import java.util.*;
 
 public class Territory {
 
@@ -12,21 +9,21 @@ public class Territory {
 
     private Troop ownerTroop;
 
-    private final HashMap<Player,Troop> enemyOnTerritory;
+    private final HashMap<String,Troop> enemyOnTerritory;
 
     private final Random rnd;
 
-    public Territory(String name, Player owner, int population, Random rnd){
+    public Territory(String name, Player owner, int population, Random rnd) {
         this.name = name;
         this.enemyOnTerritory = new HashMap<>();
         this.ownerTroop = new Troop(population, owner, rnd);
         this.rnd = rnd;
     }
 
-    public Territory(String name){
+    public Territory(String name) {
         this.name = name;
         this.enemyOnTerritory = new HashMap<>();
-        this.ownerTroop = new Troop(0, null, new Random());
+        this.ownerTroop = new Troop(0, null, new Random()); // default Troop.owner == null, cannot call equals()
         this.rnd = new Random();
     }
 
@@ -39,11 +36,12 @@ public class Territory {
     }
 
     public void sendInEnemyTroop(Troop enemy) {
-        this.enemyOnTerritory.put(enemy.getOwner(),enemy);
+        this.enemyOnTerritory.put(enemy.getOwner().getName(),enemy);
     }
 
     public void doOneBattle(Troop enemy){
-        this.ownerTroop = this.ownerTroop.combat(enemy);
+        Troop enemyRemain=this.ownerTroop.combat(enemy);
+        this.ownerTroop = this.ownerTroop.checkWin()?this.ownerTroop:enemyRemain;
     }
 
     public Player getOwner() {
@@ -70,12 +68,14 @@ public class Territory {
     public void doBattles(){
         if(this.enemyOnTerritory.size()==0) return;
 
-        ArrayList<Player> enemyPlayers = new ArrayList<Player>(this.enemyOnTerritory.keySet());
-
+        ArrayList<String> enemyPlayers = new ArrayList<String>(this.enemyOnTerritory.keySet());
+        Collections.sort(enemyPlayers);
         while(enemyPlayers.size()>0){
 
             int diceResult=randInt(0,enemyPlayers.size()-1);
-            Player enemy=enemyPlayers.get(diceResult);
+
+            String enemy=enemyPlayers.get(diceResult);
+
             Troop enemyTroop=this.enemyOnTerritory.get(enemy);
             doOneBattle(enemyTroop);
             enemyPlayers.remove(diceResult);
@@ -90,7 +90,21 @@ public class Territory {
         return randomNum;
     }
 
+    @Override
+    public boolean equals(Object other) {
+        if (other != null && other.getClass().equals(getClass())) {
+            Territory otherTerritory = (Territory)other;
+            return name.equals(otherTerritory.name);
+        }
+        else {
+            return false;
+        }
     }
+    
+}
+
+
+
 
 
 

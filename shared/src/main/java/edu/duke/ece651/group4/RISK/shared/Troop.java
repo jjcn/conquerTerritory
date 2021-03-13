@@ -39,7 +39,7 @@ public class Troop {
                 this.loseUnit(myUnit);
             }
         }
-        return this.checkTroopSize() == 0 ? this : enemy;
+        return enemy;
     }
 
     public int checkTroopSize() {
@@ -74,13 +74,15 @@ public class Troop {
 
     public void receiveTroop(Troop subTroop){
         while(subTroop.checkTroopSize() != 0){
-            this.receiveUnit(subTroop.dispatchUnit());
+            Unit newMember=subTroop.dispatchUnit();
+            this.receiveUnit(newMember);
+            subTroop.loseUnit(newMember);
         }
     }
     public Player getOwner(){
 
         return this.owner;
     }
-
+    
 }
 
