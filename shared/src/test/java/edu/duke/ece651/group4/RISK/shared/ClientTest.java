@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class ClientTest {
     private final static int TIME = 1000;
@@ -53,5 +54,11 @@ class ClientTest {
         assertEquals(strFromServer, "Copy that, this is server");
         String strNULL = (String) clientSocket.recvObject();
         assertEquals(strFromServer, null);
+    }
+
+    public void testIsClose() throws IOException {
+        clientSocket = new Client("localhost", String.valueOf(PORT));
+        clientSocket.close();
+        assertThrows(IllegalArgumentException.class, () -> clientSocket.sendObject("Hi, this is client"));
     }
 }
