@@ -1,8 +1,9 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
+
+import java.io.Serializable;
 
 /**
  * This class implements a generic graph data structure.
@@ -142,8 +143,32 @@ public class Graph<T> implements Serializable {
         return adjMatrix[i][j];
     }
 
-    // TODO: function that checks if two vertices have a path between them
+    /*
+    @Override
+    public Iterator<T> iterator() {
+        return new GraphIterator();
+    }
 
-    // TODO: add iterator
+    public class GraphIterator implements Iterator<T> {
+        private int position = 0;
+        @Override
+        public boolean hasNext() {
+            if (position < getVertices().size()) {
+                return true;
+            } 
+            return false;
+        }
+    
+        @Override
+        public T next() {
+            if(hasNext()) {
+                return getVertices().get(position++);
+            }
+            return null;
+        }
+    
+    }
+    */
+
 }
 
