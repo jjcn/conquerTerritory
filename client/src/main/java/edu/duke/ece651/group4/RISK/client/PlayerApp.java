@@ -31,13 +31,17 @@ public class PlayerApp {
         return myPlayer;
     }
 
-    public void doPlacementPhase() throws IOException{
-//        Map<Integer, List<Territory>> groups=this.theWorld.divideTerritories(5);
-//        groups.get(id);
-//        Integer assignedGroup=new Scanner(myPlayer.getName()).useDelimiter("\\D+").nextInt();
+    public void doPlacementPhase(){
         List<Territory> myGroup =null;
         myGroup=(List<Territory>) receiveInfo(myGroup,this.playerClient);
-        List<Order> orders=this.myPlayer.doPlacement(myGroup,this.totalPopulation);
+        List<Order> orders = null;
+        while(orders==null) {
+            try {
+                orders = this.myPlayer.doPlacement(myGroup, this.totalPopulation);
+            }catch(Exception e){
+                System.out.println("Wrong placement");
+            }
+        }
         for(Order p:orders){
             sendInfo((PlaceOrder)p,this.playerClient);
         }
@@ -45,7 +49,20 @@ public class PlayerApp {
 
     }
 
-    public void doActionPhase() throws IOException{
+    public void runGame(){
+//        while(this.theWorld.checkLost(this)) {
+            doActionPhase();
+//        }
+        System.out.println("You lost");
+
+//        while(this.myPlayer.checkExit()){
+//         World newWorld=null;
+//        this.theWorld=(World) receiveInfo(newWorld,this.playerClient);
+//        }
+
+    }
+
+    public void doActionPhase(){
         boolean turnEnd=false;
 
         while(!turnEnd){
@@ -114,7 +131,9 @@ public class PlayerApp {
 //        }
 
         PlayerApp myApp=new PlayerApp(myClient,name,System.out,inRead,gameWorld,15);
-
+        myApp.doPlacementPhase();
+        myApp.runGame();
+        
 
 
 
