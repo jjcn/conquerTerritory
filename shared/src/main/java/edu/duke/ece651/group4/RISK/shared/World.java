@@ -7,13 +7,14 @@ import java.util.HashMap;
 import java.util.NoSuchElementException;
 
 /**
- * This class models the world which constitutes a certain number of territories.
+ * This class models the world which constitutes 
+ * a certain number of territories connected with each other.
  */
-public class World{
+public class World {
     /**
      * Error messages
      */
-    final String NOT_ENOUGH_TROOP_MSG = "";
+    final String NOT_ENOUGH_TROOP_MSG = "The troop size you want is larger than that on this territory.";
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
     final String NOT_POSITIVE_MSG = "Number of groups should be positive.";
@@ -75,13 +76,18 @@ public class World{
     }
 
     /**
-     * Set the troop of a territory.
+     * Station troop to a territory.
      * @param terrName is the territory name.
      * @param num is the population of the troop.
      */   
-    public void setTerritoryTroop(String terrName, int num) {
+    public void stationTroop(String terrName, int num) {
         Territory terr = findTerritory(terrName);
         terr.initializeTerritory(num, terr.getOwner());
+    }
+
+    public void stationTroop(String terrName, Troop troop) {
+        Territory terr = findTerritory(terrName);
+        terr.initializeTerritory(troop.checkTroopSize(), troop.getOwner());
     }
 
     /**
