@@ -45,8 +45,8 @@ public class TextPlayer implements Player {
     private String readInput(String instr) throws IOException {
         out.print(instr + "\n");
         String input = inputReader.readLine();
-        if (playerName == null) {
-            throw new EOFException("Can't read name of the player.\n");
+        if (input == null) {
+            throw new EOFException("Can't read input.\n");
         }
         return input;
     }

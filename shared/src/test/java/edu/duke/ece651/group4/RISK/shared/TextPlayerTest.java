@@ -95,7 +95,7 @@ class TextPlayerTest {
                 "\n" +
                 "Please input the group number you would like to choose:\n" +
                 "You have chose an invalid group number, please choose again:\n";
-//        assertEquals(expected,bytes.toString());
+//        assertEquals(expected, bytes.toString());
         assertEquals(2, choice);
     }
 

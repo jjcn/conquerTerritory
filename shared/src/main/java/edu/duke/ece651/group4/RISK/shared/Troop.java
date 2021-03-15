@@ -1,6 +1,6 @@
 package edu.duke.ece651.group4.RISK.shared;
+
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Random;
 
 
@@ -80,7 +80,6 @@ public class Troop {
         }
     }
     public Player getOwner(){
-
         return this.owner;
     }
     
