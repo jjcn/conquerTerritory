@@ -1,9 +1,12 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-import java.lang.reflect.Array;
-import java.util.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Random;
 
-public class Territory {
+public class Territory implements Serializable {
 
     private final String name;
 
