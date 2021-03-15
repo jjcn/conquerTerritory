@@ -26,6 +26,8 @@ public class AttackOrderCheckerTest {
                         new Troop(13, red), new Troop(14, red), new Troop(3, green),
                         new Troop(5, blue), new Troop(6, blue),new Troop(3, green)};
 
+    AttackOrderChecker aoc = new AttackOrderChecker();
+
     /**
      * Creates a world for test. 
      * Territory layout is the same as that on Evolution 1 requirements.
@@ -65,7 +67,6 @@ public class AttackOrderCheckerTest {
     @Test
     public void testAttackOrderCheckerValid() {
         World world = createWorld(names, troopsConnected);
-        AttackOrderChecker<Territory> aoc = new AttackOrderChecker<>(null);
 
         BasicOrder order1 = new BasicOrder("Narnia", "Elantris", new Troop(3, green), 'A');
         assertEquals(null, aoc.checkMyOrder(order1, world));
@@ -76,8 +77,7 @@ public class AttackOrderCheckerTest {
 
     @Test
     public void testAttackOrderCheckerSameOwner() {
-        World world = createWorld(names, troopsConnected);
-        AttackOrderChecker<Territory> aoc = new AttackOrderChecker<>(null);
+        World world = createWorld(names, troopsConnected);   
 
         BasicOrder order1 = new BasicOrder("Narnia", "Midkemia", new Troop(3, green), 'A');
         assertEquals(SAME_OWNER_MSG, aoc.checkMyOrder(order1, world));
@@ -89,7 +89,6 @@ public class AttackOrderCheckerTest {
     @Test
     public void testAttackOrderCheckerNotAttackOrder() {
         World world = createWorld(names, troopsConnected);
-        AttackOrderChecker<Territory> aoc = new AttackOrderChecker<>(null);
 
         BasicOrder order1 = new BasicOrder("Narnia", "Elantris", new Troop(3, green), 'M');
         assertEquals(NOT_ATTACK_ORDER_MSG, aoc.checkMyOrder(order1, world));
@@ -101,7 +100,6 @@ public class AttackOrderCheckerTest {
     @Test
     public void testAttackOrderCheckerNotAdjacent() {
         World world = createWorld(names, troopsConnected);
-        AttackOrderChecker<Territory> aoc = new AttackOrderChecker<>(null);
 
         BasicOrder order1 = new BasicOrder("Narnia", "Scadrial", new Troop(3, green), 'A');
         assertEquals(NOT_ADJACENT_MSG, aoc.checkMyOrder(order1, world));

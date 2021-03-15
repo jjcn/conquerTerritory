@@ -14,7 +14,7 @@ public class OrderChecker { // FIXIT: bad code design
      * @return null, if the order is legal;
      *         a String indicating the problem, if not.
      */
-    public String checkOrder(Order order, World world) { 
+    public String checkOrder(BasicOrder order, World world) { 
         if (order.getActionName() == 'A') {
             AttackOrderChecker aoc = new AttackOrderChecker();
             aoc.checkMyOrder(order, world);

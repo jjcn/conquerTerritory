@@ -32,7 +32,7 @@ public class MoveOrderChecker {
      * @return null, if the order is legal;
      *         a String indicating the problem, if not.
      */
-    protected String checkMyOrder(Order order, World world) {
+    protected String checkMyOrder(BasicOrder order, World world) {
         if (order.getActionName() == 'M') {
             Territory start = world.findTerritory(order.getSrcName());
             Territory end = world.findTerritory(order.getDesName());

@@ -1,6 +1,5 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -24,7 +23,7 @@ public class World {
      * All territories in the world. Implemented with a graph structure.
      */
     public Graph<Territory> territories;
-    private final OrderChecker orderChecker;
+    private final OrderChecker basicOrderChecker;
 
     public World() {
         this(new Graph<Territory>());
@@ -32,7 +31,7 @@ public class World {
 
     public World(Graph<Territory> territories) {
         this.territories = territories;
-        this.orderChecker = new OrderChecker();
+        this.basicOrderChecker = new OrderChecker();
     }
     
     /**
@@ -215,8 +214,8 @@ public class World {
      * @return null, if the order is legal;
      *         a String indicating the problem, if not.
      */
-    public String checkOrder(Order order) {
-        return orderChecker.checkOrder(order, this);
+    public String checkBasicOrder(BasicOrder order) {
+        return basicOrderChecker.checkOrder(order, this);
     }
 
     @Override
