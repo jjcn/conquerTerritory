@@ -11,7 +11,7 @@ import java.util.Iterator;
  * - edge is not weighted.
  * - only one edge is allowed between 2 vertices.
  */
-public class Graph<T> implements Iterable<T> {
+public class Graph<T> {
     /**
      * All vertices.
      */

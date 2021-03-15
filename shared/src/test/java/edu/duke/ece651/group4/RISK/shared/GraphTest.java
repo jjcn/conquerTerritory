@@ -165,6 +165,7 @@ public class GraphTest {
         // TODO
     }
 
+    /*
     @Test
     public void testIterator() {
         Graph<String> graph = createTestGraph1();
@@ -172,5 +173,6 @@ public class GraphTest {
         while (gi.hasNext()) {
             System.out.println(gi.next());
         }
-    } 
+    }
+    */
 }
