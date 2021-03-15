@@ -1,6 +1,7 @@
 package edu.duke.ece651.group4.RISK.shared;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,8 +45,8 @@ public class TextPlayer implements Player, Serializable {
     private String readInput(String instr) throws IOException {
         out.print(instr + "\n");
         String input = inputReader.readLine();
-        if (playerName == null) {
-            throw new EOFException("Can't read name of the player.\n");
+        if (input == null) {
+            throw new EOFException("Can't read input.\n");
         }
         return input;
     }
@@ -54,8 +55,8 @@ public class TextPlayer implements Player, Serializable {
      * Output sample:
      * <p>
      * what would you like to do?\n
-     * (M)ove\n
      * (A)ttack\n
+     * (M)ove\n
      * (D)one\n
      * <\p>
      * The action type is checked here. The validity of action is not checked here.
@@ -66,20 +67,27 @@ public class TextPlayer implements Player, Serializable {
      * Please input the number of soldiers you would like to send:\n
      * <\p>
      * Territory name is not checked here. Number for troop only requires input an integer here.
+     * If input is not an integer, ask the user to input again until receive a valid number:
+     * <p>
+     * Please choose a valid action type:\n
+     * </p>
      *
      * @return an Order containing the information of the action; null if the user has done their actions in this turn.
      * Order information for move and attack includes source, destination and action name.
      * @throws IOException
      */
     @Override
-    public BasicOrder doOneAction() throws IOException {
+    public Order doOneAction() throws IOException {
         StringBuilder instr = new StringBuilder("what would you like to do?\n");
         for (String act : actionTypes.values()) {
-            instr.append(act + "\n");
+            if (act != "(D)one") {
+                instr.append(act + "\n");
+            }
         }
+        instr.append("(D)one\n");
         Character actionName = readActionName(instr.toString());
         if (actionName == 'D') {
-            return null;
+            return new DoneOrder();
         } else {
             String src = readInput("Please input the territory name you would like to send out troop from:");
             String des = readInput("Please input the territory name you would like to send troop to:");
@@ -112,6 +120,7 @@ public class TextPlayer implements Player, Serializable {
 
     /**
      * Displays the int to territories mapping to user and asks them to choose one group.
+     * Input of users must be an integer and should belong to the group.
      *
      * @param map containing the info of created territories.
      * @return an int the user input representing the territory they choose.
@@ -119,7 +128,7 @@ public class TextPlayer implements Player, Serializable {
      */
     @Override
     public int chooseTerritory(HashMap<Integer, List<Territory>> map) throws IOException {
-        StringBuilder info = new StringBuilder("The world has following groups of integers:\n");
+        StringBuilder info = new StringBuilder("The world has following groups of territories:\n");
         for (Map.Entry<Integer, List<Territory>> entry : map.entrySet()) {
             info.append(entry.getKey()).append(":");
             String sep = " ";
@@ -129,10 +138,59 @@ public class TextPlayer implements Player, Serializable {
             }
             info.append("\n");
         }
-        info.append("Please input the group number you would like to choose:");
         out.println(info);
-        String instr = "Please input the number of one territory you would like to choose:";
-        return readInteger(instr);
+        String instr = "Please input the group number you would like to choose:";
+        int choice = readInteger(instr);
+        while (!map.keySet().contains(choice)) {
+            instr = "You have chose an invalid group number, please choose again:";
+            choice = readInteger(instr);
+        }
+        return choice;
+    }
+
+    /**
+     * Asks the user to re-input their placement if
+     *
+     * @param terrs that player own
+     * @param total number of soldiers player can place.
+     * @return an Order list.
+     */
+    public List<Order> doPlacement(List<Territory> terrs, int total) throws IOException {
+        List<Order> orders = tryPlacement(terrs, total);
+        while (orders.equals(null)) {
+            out.print("Your have placed wrong number of total soldiers.Please input again.\n");
+            orders = tryPlacement(terrs, total);
+        }
+        return orders;
+    }
+
+    /**
+     * Automatically assign rest territories with 0 soldier if
+     *
+     * @param terrs
+     * @param total
+     * @return List<Order> if total of soldiers are place; null if exceeded or not enough soldier are placed.
+     * @throws IOException
+     */
+    private List<Order> tryPlacement(List<Territory> terrs, int total) throws IOException {
+        List<Order> orders = new ArrayList<Order>();
+        int currSum = 0;
+        while (currSum < total && !terrs.isEmpty()) {
+            Territory terr = terrs.remove(0);
+            String name = terr.getName();
+            int add = readInteger("Please input the number of soldiers you want to place in " + name + ":");
+            currSum += add;
+            orders.add(new PlaceOrder(name, new Troop(add, this)));
+        }
+        if (currSum == total) {
+            for (Territory terr : terrs) {
+                out.print("You have used up soldiers, remaining territories automatically have 0.");
+                orders.add(new PlaceOrder(terr.getName(), new Troop(0, this)));
+            }
+        } else {
+            return null;
+        }
+        return orders;
     }
 
     private int readInteger(String instr) throws IOException {
@@ -169,5 +227,14 @@ public class TextPlayer implements Player, Serializable {
     @Override
     public String getName() {
         return playerName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o.getClass().equals(this.getClass())) {
+            TextPlayer c = (TextPlayer) o;
+            return c.getName().equals(playerName);
+        }
+        return false;
     }
 }
