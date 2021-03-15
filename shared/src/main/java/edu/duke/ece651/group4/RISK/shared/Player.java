@@ -22,6 +22,8 @@ public interface Player {
      **/
     int chooseTerritory(HashMap<Integer, List<Territory>> map) throws IOException;
 
+    List<Order> doPlacement(List<Territory> ters, int total) throws IOException;
+
     /**
      * @return name of a player.
      **/
