@@ -1,6 +1,8 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-public class BasicOrder implements Order {
+import java.io.Serializable;
+
+public class BasicOrder implements Order, Serializable {
     private String src;
     private String des;
     private Troop troop;

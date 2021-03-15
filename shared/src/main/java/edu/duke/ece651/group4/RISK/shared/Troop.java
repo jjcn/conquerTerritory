@@ -1,10 +1,10 @@
 package edu.duke.ece651.group4.RISK.shared;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
 
-public class Troop {
+public class Troop implements Serializable {
 
     private final ArrayList<Unit> population;
 
@@ -80,6 +80,7 @@ public class Troop {
         }
     }
     public Player getOwner(){
+
         return this.owner;
     }
     

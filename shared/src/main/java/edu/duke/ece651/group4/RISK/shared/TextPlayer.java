@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TextPlayer implements Player {
+public class TextPlayer implements Player, Serializable {
     private String playerName;
     final private PrintStream out;
     final private BufferedReader inputReader;

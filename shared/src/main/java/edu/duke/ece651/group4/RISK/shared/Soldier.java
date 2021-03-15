@@ -1,8 +1,10 @@
 
 package edu.duke.ece651.group4.RISK.shared;
+
+import java.io.Serializable;
 import java.util.Random;
 
-public class Soldier implements Unit {
+public class Soldier implements Unit, Serializable {
 
   private final String jobName;
   private final Random dice;
