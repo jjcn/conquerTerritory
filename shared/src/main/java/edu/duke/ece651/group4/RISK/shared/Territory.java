@@ -14,7 +14,7 @@ public class Territory implements Serializable {
 
     private final HashMap<String,Troop> enemyOnTerritory;
 
-    private  Random rnd;
+    private Random rnd;
 
     public Territory(String name, Player owner, int population, Random rnd) {
         this.name = name;

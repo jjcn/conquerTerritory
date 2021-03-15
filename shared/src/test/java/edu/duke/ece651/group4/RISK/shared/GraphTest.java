@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+//import edu.duke.ece651.group4.RISK.shared.Graph.GraphIterator;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -163,5 +165,14 @@ public class GraphTest {
         // TODO
     }
 
-
+    /*
+    @Test
+    public void testIterator() {
+        Graph<String> graph = createTestGraph1();
+        GraphIterator gi = graph.iterator();
+        while (gi.hasNext()) {
+            System.out.println(gi.next());
+        }
+    }
+    */
 }
