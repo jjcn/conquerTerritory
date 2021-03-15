@@ -22,7 +22,7 @@ public class World {
     /**
      * All territories in the world. Implemented with a graph structure.
      */
-    public Graph<Territory> territories;
+    public static Graph<Territory> territories;
     private final OrderChecker basicOrderChecker;
 
     public World() {
@@ -90,6 +90,17 @@ public class World {
     public void stationTroop(String terrName, Troop troop) {
         Territory terr = findTerritory(terrName);
         terr.initializeTerritory(troop.checkTroopSize(), troop.getOwner());
+    }
+
+    /**
+     * Set a random seed to each territory.
+     * @param seeds is an array of random seeds.
+     */
+    public void setRandomSeeds(long... seeds) {
+        
+        for (int i = 0; i <) {
+            terr.setRandomSeed(seeds[i]);
+        }
     }
 
     /**

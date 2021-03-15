@@ -1,10 +1,8 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-import java.io.Serializable;
 import java.util.List;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 /**
  * This class implements a generic graph data structure.
@@ -12,7 +10,7 @@ import java.util.Iterator;
  * - edge is not weighted.
  * - only one edge is allowed between 2 vertices.
  */
-public class Graph<T> implements Serializable {
+public class Graph<T> {
     /**
      * All vertices.
      */
@@ -171,6 +169,5 @@ public class Graph<T> implements Serializable {
     }
     */
 
-    // TODO: function that checks if two vertices have a path between them (must be of same owner)
 }
 
