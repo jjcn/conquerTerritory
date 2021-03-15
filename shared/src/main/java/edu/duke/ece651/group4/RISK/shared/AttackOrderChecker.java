@@ -1,10 +1,5 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-import java.util.Set;
-import java.util.Stack;
-import java.util.HashSet;
-import java.util.List;
-
 /**
  * See "Evolution 1: 4. Turn structure" for rules related with move order.
  * a. A move order must specify the number of units to move, the source territory, and
@@ -14,19 +9,25 @@ import java.util.List;
  * c. Move orders move units from one territory to another territory controlled by the
  *    same player.
  * 
- * This class also checks if the order is a move order.
+ * Also checks if the order is a move order.
  * 
  */
-public class AttackOrderChecker<T> extends OrderChecker<T> {
+public class AttackOrderChecker {
     private final String SAME_OWNER_MSG = "Cannot attack a territory with the same owner.";
     private final String NOT_ATTACK_ORDER_MSG = "This is not an attack order.";
     private final String NOT_ADJACENT_MSG = "The attack should be performed on adjacent territories.";
 
-    public AttackOrderChecker(OrderChecker<T> next) {
-        super(next);
+    public AttackOrderChecker() {
+        super();
     }
 
-    @Override
+    /**
+     * Checks if an attack order is legal.
+     * @param order is the order given.
+     * @param world is the world object.
+     * @return null, if the order is legal;
+     *         a String indicating the problem, if not.
+     */
     protected String checkMyOrder(Order order, World world) {
         if (order.getActionName() == 'A') {
             Territory start = world.findTerritory(order.getSrcName());

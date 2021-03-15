@@ -21,12 +21,22 @@ public class MoveOrderCheckerTest {
             "Narnia, Midkemia, Oz, Gondor, Mordor, Hogwarts, Scadrial, Elantris, Roshar".split(", ");
     Troop troopsConnected[] = {new Troop(10, green), new Troop(12, green), new Troop(8, green),
                         new Troop(13, red), new Troop(14, red), new Troop(3, red),
-                        new Troop(5, blue), new Troop(6, blue),new Troop(3, blue)};
+                        new Troop(5, blue), new Troop(6, blue), new Troop(3, blue)};
     Troop troopsSeparated[] = {new Troop(10, green), new Troop(12, red), new Troop(8, green),
                         new Troop(13, red), new Troop(14, red), new Troop(3, green),
-                        new Troop(5, blue), new Troop(6, blue),new Troop(3, green)};
+                        new Troop(5, blue), new Troop(6, blue), new Troop(3, green)};
     /**
-     * Creates a world for test. Same as the one on Evolution 1 requirements.
+     * Creates a world for test. 
+     * Territory layout is the same as that on Evolution 1 requirements.
+     * N-----M--O--G
+     * |   /  |/ \ | 
+     * |  /   S ---M     
+     * |/   / |  \ |
+     * E------R----H
+     * Can specify territory names and troops stationed on the territories.
+     * @param names is an array of territory names. 
+     * @param troops is the corresponding troops on these territories.
+     * @return a world object.
      */
     public World createWorld(String names[], Troop troops[]) {
         World world = new World();

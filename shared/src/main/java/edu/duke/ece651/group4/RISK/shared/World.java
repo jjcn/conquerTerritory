@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
  * This class models the world which constitutes 
  * a certain number of territories connected with each other.
  */
-public class World implements Serializable {
+public class World {
     /**
      * Error messages
      */
@@ -24,13 +24,15 @@ public class World implements Serializable {
      * All territories in the world. Implemented with a graph structure.
      */
     public Graph<Territory> territories;
+    private final OrderChecker orderChecker;
 
     public World() {
-        this.territories = new Graph<Territory>();
+        this(new Graph<Territory>());
     }
 
     public World(Graph<Territory> territories) {
         this.territories = territories;
+        this.orderChecker = new OrderChecker();
     }
     
     /**
@@ -207,6 +209,16 @@ public class World implements Serializable {
         return groups;
     }
     
+    /**
+     * Checks if an order is legal.
+     * @param order is the order to check.
+     * @return null, if the order is legal;
+     *         a String indicating the problem, if not.
+     */
+    public String checkOrder(Order order) {
+        return orderChecker.checkOrder(order, this);
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other != null && other.getClass().equals(getClass())) {

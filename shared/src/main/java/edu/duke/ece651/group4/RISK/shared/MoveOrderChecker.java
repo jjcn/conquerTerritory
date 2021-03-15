@@ -3,7 +3,6 @@ package edu.duke.ece651.group4.RISK.shared;
 import java.util.Set;
 import java.util.Stack;
 import java.util.HashSet;
-import java.util.List;
 
 /**
  * See "Evolution 1: 4. Turn structure" for rules related with move order.
@@ -14,19 +13,25 @@ import java.util.List;
  * c. Move orders move units from one territory to another territory controlled by the
  *    same player.
  * 
- * This class also checks if the order is a move order.
+ * Also checks if the order is a move order.
  * 
  */
-public class MoveOrderChecker<T> extends OrderChecker<T> {
+public class MoveOrderChecker {
     private final String NOT_SAME_OWNER_MSG = "Cannot move troop to a territory with different owner.";
     private final String NOT_MOVE_ORDER_MSG = "This is not a move order.";
     private final String NOT_LINKED_MSG = "There is not a path of territories that all belongs to you.";
 
-    public MoveOrderChecker(OrderChecker<T> next) {
-        super(next);
+    public MoveOrderChecker() {
+        super();
     }
 
-    @Override
+    /**
+     * Checks if a move order is legal.
+     * @param order is the order given.
+     * @param world is the world object.
+     * @return null, if the order is legal;
+     *         a String indicating the problem, if not.
+     */
     protected String checkMyOrder(Order order, World world) {
         if (order.getActionName() == 'M') {
             Territory start = world.findTerritory(order.getSrcName());
@@ -35,10 +40,11 @@ public class MoveOrderChecker<T> extends OrderChecker<T> {
             // if the start and end do not have the same owner
             if (!start.getOwner().equals(end.getOwner())) {
                 return NOT_SAME_OWNER_MSG;
-            }
+            }  
+            // if not linked
+            // FIXIT: this has bugs
             Stack<Territory> toCheck = new Stack<>();
             Set<Territory> checked = new HashSet<>();
-            // search the map from 'start'
             toCheck.push(start);
             while (!toCheck.empty()) {
                 Territory key = toCheck.pop();
@@ -56,6 +62,7 @@ public class MoveOrderChecker<T> extends OrderChecker<T> {
             }
             return NOT_LINKED_MSG;
         }
+        // if not move order
         return NOT_MOVE_ORDER_MSG;
     }
     
