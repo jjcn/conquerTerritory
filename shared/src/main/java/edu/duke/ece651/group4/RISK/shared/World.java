@@ -22,16 +22,16 @@ public class World {
     /**
      * All territories in the world. Implemented with a graph structure.
      */
-    public static Graph<Territory> territories;
+    public Graph<Territory> territories;
     private final OrderChecker basicOrderChecker;
 
     public World() {
         this(new Graph<Territory>());
     }
 
-    public World(Graph<Territory> territories) {
-        this.territories = territories;
-        this.basicOrderChecker = new OrderChecker();
+    public World(Graph<Territory> terrs) {
+        territories = terrs;
+        basicOrderChecker = new OrderChecker();
     }
     
     /**
@@ -93,14 +93,12 @@ public class World {
     }
 
     /**
-     * Set a random seed to each territory.
-     * @param seeds is an array of random seeds.
+     * Set a random seed to a territory.
+     * @param terrName is the territory to set random seed.
+     * @param seeds is a random seed.
      */
-    public void setRandomSeeds(long... seeds) {
-        
-        for (int i = 0; i <) {
-            terr.setRandomSeed(seeds[i]);
-        }
+    public void setRandomSeed(String terrName, long seed) {
+        findTerritory(terrName).setRandomSeed(seed);
     }
 
     /**
