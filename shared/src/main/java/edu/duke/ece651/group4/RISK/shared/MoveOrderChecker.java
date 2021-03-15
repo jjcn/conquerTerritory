@@ -39,15 +39,15 @@ public class MoveOrderChecker<T> extends OrderChecker<T> {
             Stack<Territory> toCheck = new Stack<>();
             Set<Territory> checked = new HashSet<>();
             // search the map from 'start'
-            toCheck.add(start);
+            toCheck.push(start);
             while (!toCheck.empty()) {
                 Territory key = toCheck.pop();
+                if (key.equals(end)) {
+                    return null;
+                }
                 if (!checked.contains(key)) {
                     for (Territory terr : world.getAdjacents(key)) {
-                        if (!checked.contains(terr) && terr.getOwner().equals(owner)) {
-                            if (terr.equals(end)) {
-                                return null;
-                            }
+                        if (terr.getOwner().equals(owner)) {
                             toCheck.push(terr);
                         }
                     }
