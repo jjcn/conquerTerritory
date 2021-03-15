@@ -40,6 +40,17 @@ public class World implements Serializable {
     }
     
     /**
+     * Creates a world with only its number of territories specified.
+     * @param numTerrs is the number of territories.
+     */
+    public World(int numTerrs) {
+        this();
+        for (int i = 0; i < numTerrs; i++) {
+            addTerritory(new Territory(String.format("%d", i)));
+        }
+    }
+
+    /**
      * Get all the territories in the world.
      * @return a list of all territories in the world.
      */
