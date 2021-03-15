@@ -23,7 +23,7 @@ public class MoveOrderChecker<T> extends OrderChecker<T> {
             toCheck.add(start);
             while (!toCheck.empty()) {
                 Territory key = toCheck.pop();
-                if (!checked.contains(key) {
+                if (!checked.contains(key)) {
                     List<Territory> adjacents = world.getAdjacents(key);
                     for (Territory terr : adjacents) {
                         if (!checked.contains(terr) && terr.getOwner().equals(owner)) {

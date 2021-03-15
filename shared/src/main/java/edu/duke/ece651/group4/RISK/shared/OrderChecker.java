@@ -31,7 +31,7 @@ public abstract class OrderChecker<T> {
      */
     public String checkOrder(Order order, World world) {
         // if we fail our own rule: stop the placement is not legal
-        if (checkMyRule(order, world) != null) {
+        if (checkMyOrder(order, world) != null) {
             return "That order is invalid.\n";
         }
         // other wise, ask the rest of the chain.
