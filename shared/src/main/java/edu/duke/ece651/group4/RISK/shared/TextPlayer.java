@@ -1,6 +1,7 @@
 package edu.duke.ece651.group4.RISK.shared;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,8 +83,8 @@ public class TextPlayer implements Player {
             if (act != "(D)one") {
                 instr.append(act + "\n");
             }
-            instr.append("(D)one\n");
         }
+        instr.append("(D)one\n");
         Character actionName = readActionName(instr.toString());
         if (actionName == 'D') {
             return new DoneOrder();
@@ -100,7 +101,7 @@ public class TextPlayer implements Player {
      * Here checks if the input action name is in the action types.
      * If not belong to any action type, output:
      * <p>
-     *     Please choose a valid action type:\n
+     * Please choose a valid action type:\n
      * <\p>
      * until a valid action type is received.
      *
@@ -136,10 +137,53 @@ public class TextPlayer implements Player {
             }
             info.append("\n");
         }
-        info.append("Please input the group number you would like to choose:");
         out.println(info);
-        String instr = "Please input the number of one territory you would like to choose:";
+        String instr = "Please input the group number you would like to choose:";
         return readInteger(instr);
+    }
+
+    /**
+     * Asks the user to re-input their placement if
+     *
+     * @param terrs that player own
+     * @param total number of soldiers player can place.
+     * @return an Order list.
+     */
+    public List<Order> doPlacement(List<Territory> terrs, int total) throws IOException {
+        List<Order> orders = tryPlacement(terrs, total);
+        while (orders.equals(null)) {
+            out.print("Your have placed wrong number of total soldiers.Please input again.\n");
+            orders = tryPlacement(terrs, total);
+        }
+        return orders;
+    }
+
+    /**
+     * Automatically assign rest territories with 0 soldier if
+     *
+     * @param terrs
+     * @param total
+     * @return List<Order> if total of soldiers are place; null if exceeded or not enough soldier are placed.
+     * @throws IOException
+     */
+    private List<Order> tryPlacement(List<Territory> terrs, int total) throws IOException {
+        List<Order> orders = new ArrayList<Order>();
+        int currSum = 0;
+        while (currSum < total && !terrs.isEmpty()) {
+            Territory terr = terrs.remove(0);
+            String name = terr.getName();
+            int add = readInteger("Please input the number of soldiers you want to place in" + name);
+            currSum += add;
+            orders.add(new PlaceOrder(name, new Troop(add, this)));
+        }
+        if (currSum == total) {
+            for (Territory terr : terrs) {
+                orders.add(new PlaceOrder(terr.getName(), new Troop(0, this)));
+            }
+        } else {
+            return null;
+        }
+        return orders;
     }
 
     private int readInteger(String instr) throws IOException {
