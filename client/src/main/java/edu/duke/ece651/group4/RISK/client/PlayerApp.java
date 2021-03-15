@@ -8,24 +8,40 @@ import edu.duke.ece651.group4.RISK.shared.*;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class PlayerApp {
     private Client playerClient;
     private TextPlayer myPlayer;
     private World theWorld;
+    private final int totalPopulation;
 
-    public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader,World theWorld) {
+    public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader,World theWorld,int num) {
         this.playerClient=myClient;
         this.myPlayer=new TextPlayer(out,inputReader, name);
         this.theWorld=theWorld;
+        this.totalPopulation=num;
     }
+
+
 
     public TextPlayer getMyPlayer() {
         return myPlayer;
     }
 
     public void doPlacementPhase() throws IOException{
-
+//        Map<Integer, List<Territory>> groups=this.theWorld.divideTerritories(5);
+//        groups.get(id);
+//        Integer assignedGroup=new Scanner(myPlayer.getName()).useDelimiter("\\D+").nextInt();
+        List<Territory> myGroup =null;
+        myGroup=(List<Territory>) receiveInfo(myGroup,this.playerClient);
+        List<Order> orders=this.myPlayer.doPlacement(myGroup,this.totalPopulation);
+        for(Order p:orders){
+            sendInfo((PlaceOrder)p,this.playerClient);
+        }
+        this.theWorld=(World) receiveInfo(theWorld,this.playerClient);
 
     }
 
@@ -34,7 +50,7 @@ public class PlayerApp {
 
         while(!turnEnd){
             boolean received=false;
-            Order receiveMessage = null;
+            BasicOrder receiveMessage = null;
             while(!received) {
 
                 try {
@@ -97,7 +113,7 @@ public class PlayerApp {
 //            }
 //        }
 
-        PlayerApp myApp=new PlayerApp(myClient,name,System.out,inRead,gameWorld);
+        PlayerApp myApp=new PlayerApp(myClient,name,System.out,inRead,gameWorld,15);
 
 
 

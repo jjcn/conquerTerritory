@@ -77,7 +77,7 @@ public class TextPlayer implements Player, Serializable {
      * @throws IOException
      */
     @Override
-    public Order doOneAction() throws IOException {
+    public BasicOrder doOneAction() throws IOException {
         StringBuilder instr = new StringBuilder("what would you like to do?\n");
         for (String act : actionTypes.values()) {
             if (act != "(D)one") {
@@ -87,7 +87,7 @@ public class TextPlayer implements Player, Serializable {
         instr.append("(D)one\n");
         Character actionName = readActionName(instr.toString());
         if (actionName == 'D') {
-            return new DoneOrder();
+            return new BasicOrder(null, null, null, actionName);
         } else {
             String src = readInput("Please input the territory name you would like to send out troop from:");
             String des = readInput("Please input the territory name you would like to send troop to:");
