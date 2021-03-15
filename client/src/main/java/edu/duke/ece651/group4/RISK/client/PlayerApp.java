@@ -34,7 +34,7 @@ public class PlayerApp {
 
         while(!turnEnd){
             boolean received=false;
-            BasicOrder receiveMessage = null;
+            Order receiveMessage = null;
             while(!received) {
 
                 try {
