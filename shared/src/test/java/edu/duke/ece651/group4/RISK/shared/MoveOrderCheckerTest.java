@@ -81,7 +81,7 @@ public class MoveOrderCheckerTest {
     }
 
     @Test
-    public void testMoveOrderCheckerNotMove() {
+    public void testMoveOrderCheckerNotMoveOrder() {
         World world = createWorld(names, troopsConnected);
         MoveOrderChecker<Territory> moc = new MoveOrderChecker<>(null);
 
