@@ -33,10 +33,19 @@ public class World{
     
     /**
      * Get all the territories in the world.
-     * @return A list of all territories in the world.
+     * @return a list of all territories in the world.
      */
     public List<Territory> getAllTerritories() {
         return territories.getVertices();
+    }
+
+    /**
+     * Get all the territories that are adjacent to a certain territory.
+     * @param key is the territory to search adjacents.
+     * @return a list of adjacent territories.
+     */
+    public List<Territory> getAdjacents(Territory key) {
+        return territories.getAdjacentVertices(key);
     }
 
     /**
@@ -205,7 +214,7 @@ public class World{
     @Override
     public String toString() {
         // TODO: change placeholder
-        return "World.toString() placeholder";
+        return "World.toString placeholder";
     }
 
     @Override
