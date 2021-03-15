@@ -109,6 +109,7 @@ public class World{
      * @param end is the territory the troop ends in.
      */
     public void moveTroop(Territory start, Troop troop, Territory end) {
+        // TODO: check if the troop population is valid
         start.sendOutTroop(troop);
         end.sendInTroop(troop);
     }
@@ -120,6 +121,7 @@ public class World{
      * @param end is the territory the troop ends in.
      */
     public void attackATerritory(Territory start, Troop troop, Territory end) {
+        // TODO: check if the troop population is valid
         start.sendOutTroop(troop);
         end.sendInEnemyTroop(troop);
     }
@@ -171,19 +173,16 @@ public class World{
 
         return groups;
     }
-    /*
+    
     /**
      * Set the owner of a teritory to a certain player.
      * @param terrName is the territory name.
      * @param ownerName is the player name.
-     */
-
-    /*
-    public void setTerritoryOwner(String terrName, String ownerName) {
+     */   
+    public void setTerritory(String terrName, int num) {
         Territory terr = findTerritory(terrName);
-        terr.setOwner(ownerName); // FIXIT: no setOwner() function in Territory.java
+        terr.initializeTerritory(num, terr.getOwner());
     }
-    */
 
     @Override
     public boolean equals(Object other) {
