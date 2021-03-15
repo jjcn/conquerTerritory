@@ -65,6 +65,16 @@ public class World{
     }
 
     /**
+     * Set the troop of a territory.
+     * @param terrName is the territory name.
+     * @param num is the population of the troop.
+     */   
+    public void setTerritoryTroop(String terrName, int num) {
+        Territory terr = findTerritory(terrName);
+        terr.initializeTerritory(num, terr.getOwner());
+    }
+
+    /**
      * Check if two territories are adjacent to each other
      * @param terr1 is a territory.
      * @param terr2 is the other territory.
@@ -174,16 +184,6 @@ public class World{
         return groups;
     }
     
-    /**
-     * Set the owner of a teritory to a certain player.
-     * @param terrName is the territory name.
-     * @param ownerName is the player name.
-     */   
-    public void setTerritory(String terrName, int num) {
-        Territory terr = findTerritory(terrName);
-        terr.initializeTerritory(num, terr.getOwner());
-    }
-
     @Override
     public boolean equals(Object other) {
         if (other != null && other.getClass().equals(getClass())) {
