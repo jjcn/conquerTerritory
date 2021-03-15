@@ -17,23 +17,10 @@ class ClientTest {
     static Client clientInServer;
 
     @Test
-    public void setUpAServerSocket(){
-        new Thread( ()-> {
-            try{
-                 hostSocket = new ServerSocket(PORT);
-            } catch (IOException e) {
-            }
-            try {
-                Thread.sleep(TIME);
-            } catch (InterruptedException e) {
-            }
-        }
-        ).start();
-    }
-
     public void testSendAndRecvStringObject() throws IOException, ClassNotFoundException {
         new Thread( ()-> {
             try{
+                hostSocket = new ServerSocket(PORT);
                 Socket s = hostSocket.accept();
                 clientInServer = new Client(s);
                 String strFromClient = (String) clientInServer.recvObject();
@@ -44,21 +31,21 @@ class ClientTest {
             try {
                 Thread.sleep(TIME);
             } catch (InterruptedException e) {
+
             }
         }
         ).start();
-
-        clientSocket = new Client("localhost", String.valueOf(PORT));
+        clientSocket = new Client("127.0.0.1", String.valueOf(PORT));
         clientSocket.sendObject("Hi, this is client");
         String strFromServer = (String) clientSocket.recvObject();
         assertEquals(strFromServer, "Copy that, this is server");
-        String strNULL = (String) clientSocket.recvObject();
-        assertEquals(strFromServer, null);
     }
-
+    @Test
     public void testIsClose() throws IOException {
         clientSocket = new Client("localhost", String.valueOf(PORT));
         clientSocket.close();
         assertThrows(IllegalArgumentException.class, () -> clientSocket.sendObject("Hi, this is client"));
     }
+
+
 }
