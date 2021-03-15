@@ -4,18 +4,69 @@
 package edu.duke.ece651.group4.RISK.client;
 
 
+import edu.duke.ece651.group4.RISK.shared.Client;
+import edu.duke.ece651.group4.RISK.shared.TextPlayer;
 import edu.duke.ece651.group4.RISK.shared.Troop;
+import edu.duke.ece651.group4.RISK.shared.World;
 
+import java.io.*;
 import java.net.Socket;
 
 public class PlayerApp {
-    private Socket mySocket;
+    private Client playerClient;
+    private TextPlayer myPlayer;
 
-    public PlayerApp(){
+    public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader) {
+        this.playerClient=myClient;
+        this.myPlayer=new TextPlayer(out,inputReader, name);
+    }
+
+    public void doPlacementPhase() throws IOException{
+
 
     }
 
-    public static void main(String[] args){
+
+
+    public static void main(String[] args) {
+        String instruct1 = "Please enter the hostName";
+        String instruct2 = "Please enter the port";
+        BufferedReader inRead=new BufferedReader(new InputStreamReader(System.in));
+
+        Client myClient=null;
+        boolean setConnect = false;
+
+        while (!setConnect) {
+            try {
+                System.out.println(instruct1);
+                String hostName = inRead.readLine();
+                System.out.println(instruct2);
+                String port = inRead.readLine();
+                myClient = new Client(hostName, port);
+                setConnect = true;
+            } catch (Exception e) {
+                System.out.println("Please enter correct host information!");
+
+            }
+        }
+
+        String name=null;
+        while(name==null){
+            try{
+                name=(String) myClient.recvObject();
+            }catch(Exception e){
+                System.out.println("Socket problem!");
+            }
+        }
+//        World gameWorld = (World) myClient.recvObject();
+        PlayerApp myApp=new PlayerApp(myClient,name,System.out,inRead);
+
+
+
 
     }
-}
+
+
+
+    }
+
