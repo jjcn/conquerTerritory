@@ -131,7 +131,9 @@ public class PlayerApp {
 //        }
 
         PlayerApp myApp=new PlayerApp(myClient,name,System.out,inRead,gameWorld,15);
-
+        myApp.doPlacementPhase();
+        myApp.runGame();
+        
 
 
 
