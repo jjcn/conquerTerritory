@@ -4,13 +4,18 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+
 import java.util.NoSuchElementException;
+
+import java.util.Random;
+
+import java.io.Serializable;
 
 /**
  * This class models the world which constitutes 
  * a certain number of territories connected with each other.
  */
-public class World {
+public class World implements Serializable {
     /**
      * Error messages
      */
@@ -95,10 +100,14 @@ public class World {
     /**
      * Set a random seed to a territory.
      * @param terrName is the territory to set random seed.
-     * @param seeds is a random seed.
+     * @param seed is a random seed.
      */
-    public void setRandomSeed(String terrName, long seed) {
-        findTerritory(terrName).setRandomSeed(seed);
+    public void setRandom(Territory terr, Random seed) {
+        terr.setRandom(seed);
+    }
+
+    public void setRandom(String terrName, Random seed) {
+        findTerritory(terrName).setRandom(seed);
     }
 
     /**
@@ -125,7 +134,7 @@ public class World {
 
     /**
      * Finds a territory by its name. 
-     * If the territory exists, returns that territory specified by that name.
+     * If the territory exists, returns that territory of that name.
      * If not, an exception will be thrown.
      * @param terrName is the territory name to search.
      * @return the specified territory.
