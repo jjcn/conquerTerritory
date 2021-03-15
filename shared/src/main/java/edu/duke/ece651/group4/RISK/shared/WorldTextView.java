@@ -79,6 +79,7 @@ public class WorldTextView implements WorldView<String> {
         display.append(" (next to: ");
         String sep = "";
         for (Territory near : toDisplay.territories.getAdjacentVertices(terr)) {
+            display.append(sep);
             display.append(near.getName());
             sep = ", ";
         }

@@ -120,6 +120,7 @@ public class TextPlayer implements Player {
 
     /**
      * Displays the int to territories mapping to user and asks them to choose one group.
+     * Input of users must be an integer and should belong to the group.
      *
      * @param map containing the info of created territories.
      * @return an int the user input representing the territory they choose.
@@ -127,7 +128,7 @@ public class TextPlayer implements Player {
      */
     @Override
     public int chooseTerritory(HashMap<Integer, List<Territory>> map) throws IOException {
-        StringBuilder info = new StringBuilder("The world has following groups of integers:\n");
+        StringBuilder info = new StringBuilder("The world has following groups of territories:\n");
         for (Map.Entry<Integer, List<Territory>> entry : map.entrySet()) {
             info.append(entry.getKey()).append(":");
             String sep = " ";
@@ -139,7 +140,12 @@ public class TextPlayer implements Player {
         }
         out.println(info);
         String instr = "Please input the group number you would like to choose:";
-        return readInteger(instr);
+        int choice = readInteger(instr);
+        while (!map.keySet().contains(choice)) {
+            instr = "You have chose an invalid group number, please choose again:";
+            choice = readInteger(instr);
+        }
+        return choice;
     }
 
     /**
@@ -172,12 +178,13 @@ public class TextPlayer implements Player {
         while (currSum < total && !terrs.isEmpty()) {
             Territory terr = terrs.remove(0);
             String name = terr.getName();
-            int add = readInteger("Please input the number of soldiers you want to place in" + name);
+            int add = readInteger("Please input the number of soldiers you want to place in " + name + ":");
             currSum += add;
             orders.add(new PlaceOrder(name, new Troop(add, this)));
         }
         if (currSum == total) {
             for (Territory terr : terrs) {
+                out.print("You have used up soldiers, remaining territories automatically have 0.");
                 orders.add(new PlaceOrder(terr.getName(), new Troop(0, this)));
             }
         } else {
