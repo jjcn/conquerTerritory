@@ -1,5 +1,7 @@
 package edu.duke.ece651.group4.RISK.shared;
 
+import java.io.Serializable;
+
 /*
 This class hadles the textual display of a World by output a string.
 i.e. 
@@ -21,7 +23,7 @@ Red player:
 14 units in Mordor (next to: Hogwarts, Gondor, Oz, Scadrial) 
 3 units in Hogwarts (next to: Mordor, Scadrial, Roshar)
  */
-public class WorldTextView implements WorldView<Character> {
+public class WorldTextView implements WorldView<Character>, Serializable {
     private final Graph<Territory> toDisplay;
 
     /**

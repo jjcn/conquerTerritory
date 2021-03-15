@@ -1,5 +1,6 @@
 package edu.duke.ece651.group4.RISK.shared;
 
+import java.io.Serializable;
 import java.util.List;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.Iterator;
  * - edge is not weighted.
  * - only one edge is allowed between 2 vertices.
  */
-public class Graph<T> {
+public class Graph<T> implements Serializable {
     /**
      * All vertices.
      */
