@@ -171,12 +171,13 @@ public class World{
 
         return groups;
     }
-
+    /*
     /**
      * Set the owner of a teritory to a certain player.
      * @param terrName is the territory name.
      * @param ownerName is the player name.
      */
+
     /*
     public void setTerritoryOwner(String terrName, String ownerName) {
         Territory terr = findTerritory(terrName);
