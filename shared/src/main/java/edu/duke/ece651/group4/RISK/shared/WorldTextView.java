@@ -54,11 +54,11 @@ public class WorldTextView implements WorldView<String> {
         for (Territory terr : toDisplay.getAllTerritories()) {
             String ownerName = terr.getOwner().getName();
             List<Territory> curr = w.get(ownerName);
-            if (curr.equals(null)) {
+            if (curr == null) {
                 curr = new ArrayList<Territory>();
             }
             curr.add(terr);
-            w.put(ownerName, new ArrayList<Territory>());
+            w.put(ownerName, curr);
         }
         return w;
     }
@@ -69,6 +69,7 @@ public class WorldTextView implements WorldView<String> {
         for (Territory terr : w) {
             display.append(displayOneTerr(terr));
         }
+        display.append("\n");
         return display.toString();
     }
 
