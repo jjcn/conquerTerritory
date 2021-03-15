@@ -54,8 +54,8 @@ public class TextPlayer implements Player {
      * Output sample:
      * <p>
      * what would you like to do?\n
-     * (M)ove\n
      * (A)ttack\n
+     * (M)ove\n
      * (D)one\n
      * <\p>
      * The action type is checked here. The validity of action is not checked here.
@@ -66,20 +66,27 @@ public class TextPlayer implements Player {
      * Please input the number of soldiers you would like to send:\n
      * <\p>
      * Territory name is not checked here. Number for troop only requires input an integer here.
+     * If input is not an integer, ask the user to input again until receive a valid number:
+     * <p>
+     * Please choose a valid action type:\n
+     * </p>
      *
      * @return an Order containing the information of the action; null if the user has done their actions in this turn.
      * Order information for move and attack includes source, destination and action name.
      * @throws IOException
      */
     @Override
-    public BasicOrder doOneAction() throws IOException {
+    public Order doOneAction() throws IOException {
         StringBuilder instr = new StringBuilder("what would you like to do?\n");
         for (String act : actionTypes.values()) {
-            instr.append(act + "\n");
+            if (act != "(D)one") {
+                instr.append(act + "\n");
+            }
+            instr.append("(D)one\n");
         }
         Character actionName = readActionName(instr.toString());
         if (actionName == 'D') {
-            return null;
+            return new DoneOrder();
         } else {
             String src = readInput("Please input the territory name you would like to send out troop from:");
             String des = readInput("Please input the territory name you would like to send troop to:");
@@ -93,7 +100,7 @@ public class TextPlayer implements Player {
      * Here checks if the input action name is in the action types.
      * If not belong to any action type, output:
      * <p>
-     * Please choose a valid action type:\n
+     *     Please choose a valid action type:\n
      * <\p>
      * until a valid action type is received.
      *
@@ -169,5 +176,14 @@ public class TextPlayer implements Player {
     @Override
     public String getName() {
         return playerName;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o.getClass().equals(this.getClass())) {
+            TextPlayer c = (TextPlayer) o;
+            return c.getName().equals(playerName);
+        }
+        return false;
     }
 }

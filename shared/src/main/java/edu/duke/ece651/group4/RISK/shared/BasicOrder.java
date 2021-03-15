@@ -13,17 +13,14 @@ public class BasicOrder implements Order {
         this.actionName = name;
     }
 
-    @Override
     public String getSrcName() {
         return src;
     }
 
-    @Override
     public String getDesName() {
         return des;
     }
 
-    @Override
     public Troop getActTroop() {
         return troop;
     }
@@ -31,18 +28,6 @@ public class BasicOrder implements Order {
     @Override
     public Character getActionName() {
         return actionName;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o.getClass().equals(this.getClass())) {
-            BasicOrder c = (BasicOrder) o;
-            return c.getActionName().equals(actionName) &&
-                    c.getSrcName().equals(src) &&
-                    c.getDesName().equals(des) &&
-                    c.getActTroop().equals(troop);
-        }
-        return false;
     }
 }
 

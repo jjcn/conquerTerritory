@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TextPlayerTest {
 
@@ -15,11 +15,11 @@ class TextPlayerTest {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         String input = "M\nsrc1\ndes1\n12\n" + "A\nsrc2\ndes2\n4t\n3\n" + "k\nD\n";
         TextPlayer player = createTextPlayer(bytes, input, "Red\n");
-        BasicOrder o1 = player.doOneAction();
-        BasicOrder o2 = player.doOneAction();
-        BasicOrder o3 = player.doOneAction();
+        Order o1 = player.doOneAction();
+        Order o2 = player.doOneAction();
+        Order o3 = player.doOneAction();
 
-        String instr = "what would you like to do?\n(A)ttack\n(D)one\n(M)ove\n\n";
+        String instr = "what would you like to do?\n(A)ttack\n(M)ove\n(D)one\n\n";
         String instr2 = "Please input the territory name you would like to send out troop from:\n" +
                 "Please input the territory name you would like to send troop to:\n" +
                 "Please input the number of soldiers you would like to send:\n";
@@ -28,10 +28,23 @@ class TextPlayerTest {
         String expected = instr + instr2 + instr + instr2 + reinputInstr1 + instr + reinputInstr2;
         BasicOrder ot1 = new BasicOrder("src1", "des1", new Troop(12, player), 'M');
         BasicOrder ot2 = new BasicOrder("src2", "des2", new Troop(3, player), 'A');
-        // assertTrue(o1.equals(ot1));
-        // assertTrue(o2.equals(ot2));
-        assertNull(o3);
+        assertTrue(checkOrderEqual((BasicOrder) o1, ot1));
+        assertTrue(checkOrderEqual((BasicOrder) o2, ot2));
+        assertEquals('D', o3.getActionName());
         assertEquals(expected, bytes.toString());
+    }
+
+    /*
+    checks if two order contains same content.
+     */
+    private boolean checkOrderEqual(BasicOrder a, BasicOrder b) {
+        Troop ta = a.getActTroop();
+        Troop tb = b.getActTroop();
+        return a.getActionName().equals(b.getActionName()) &&
+                a.getSrcName().equals(b.getSrcName()) &&
+                a.getDesName().equals(b.getDesName()) &&
+                ta.getOwner().equals(tb.getOwner()) &&
+                ta.checkTroopSize() == tb.checkTroopSize();
     }
 
     /*
