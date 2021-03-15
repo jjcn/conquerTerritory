@@ -4,10 +4,7 @@
 package edu.duke.ece651.group4.RISK.client;
 
 
-import edu.duke.ece651.group4.RISK.shared.Client;
-import edu.duke.ece651.group4.RISK.shared.TextPlayer;
-import edu.duke.ece651.group4.RISK.shared.Troop;
-import edu.duke.ece651.group4.RISK.shared.World;
+import edu.duke.ece651.group4.RISK.shared.*;
 
 import java.io.*;
 import java.net.Socket;
@@ -15,16 +12,53 @@ import java.net.Socket;
 public class PlayerApp {
     private Client playerClient;
     private TextPlayer myPlayer;
+    private World theWorld;
 
-    public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader) {
+    public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader,World theWorld) {
         this.playerClient=myClient;
         this.myPlayer=new TextPlayer(out,inputReader, name);
+        this.theWorld=theWorld;
+    }
+
+    public TextPlayer getMyPlayer() {
+        return myPlayer;
     }
 
     public void doPlacementPhase() throws IOException{
 
 
     }
+
+    public void doActionPhase() throws IOException{
+        boolean turnEnd=false;
+
+        while(!turnEnd){
+            boolean received=false;
+            BasicOrder receiveMessage = null;
+            while(!received) {
+
+                try {
+                    receiveMessage=this.myPlayer.doOneAction();
+                    if (receiveMessage.getActionName() == 'A') {
+                        this.theWorld.moveTroop(theWorld.findTerritory(receiveMessage.getSrcName()), receiveMessage.getActTroop(), theWorld.findTerritory(receiveMessage.getDesName()));
+                    } else if (receiveMessage.getActionName() == 'M') {
+                        this.theWorld.attackATerritory(theWorld.findTerritory(receiveMessage.getSrcName()), receiveMessage.getActTroop(), theWorld.findTerritory(receiveMessage.getDesName()));
+                    } else {
+                        turnEnd = true;
+                    }
+                    received=true;
+                }catch(Exception e) {
+                    System.out.println("Please enter correct order!");
+                }
+            }
+           sendInfo(receiveMessage,this.playerClient);
+        }
+
+        World newWorld=null;
+        this.theWorld=(World) receiveInfo(newWorld,this.playerClient);
+    }
+
+
 
 
 
@@ -51,22 +85,48 @@ public class PlayerApp {
         }
 
         String name=null;
-        while(name==null){
-            try{
-                name=(String) myClient.recvObject();
-            }catch(Exception e){
-                System.out.println("Socket problem!");
-            }
-        }
-//        World gameWorld = (World) myClient.recvObject();
-        PlayerApp myApp=new PlayerApp(myClient,name,System.out,inRead);
+        World gameWorld=null;
+        name=(String) receiveInfo(name,myClient);
+        gameWorld=(World) receiveInfo(gameWorld,myClient);
+//        while(name==null){
+//            try{
+//                name=(String) myClient.recvObject();
+//
+//            }catch(Exception e){
+//                System.out.println("Socket name problem!");
+//            }
+//        }
+
+        PlayerApp myApp=new PlayerApp(myClient,name,System.out,inRead,gameWorld);
 
 
 
 
     }
 
+    public static Object receiveInfo(Object o, Client c){
+        while(o==null) {
 
+            try {
+                o = c.recvObject();
+            } catch (Exception e) {
+                System.out.println("Socket name problem!");
+            }
+        }
+        return o;
+    }
+
+    public static void sendInfo(Object o, Client c){
+        while(o==null) {
+
+            try {
+                c.sendObject(o);
+            } catch (Exception e) {
+                System.out.println("Socket problem!");
+            }
+        }
+
+    }
 
     }
 
