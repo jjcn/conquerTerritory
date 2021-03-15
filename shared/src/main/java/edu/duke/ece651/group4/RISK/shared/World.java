@@ -13,10 +13,11 @@ public class World{
     /**
      * Error messages
      */
+    final String NOT_ENOUGH_TROOP_MSG = "";
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
     final String NOT_POSITIVE_MSG = "Number of groups should be positive.";
-
+    
     /**
      * All territories in the world. Implemented with a graph structure.
      */
@@ -114,24 +115,30 @@ public class World{
 
     /**
      * Move a troop to a different a territory. Owner of the troop is not checked.
+     * Also checks if the troop is valid to send from the starting territory.
      * @param start is the territory the troop starts from.
      * @param troop is the troop to move.
      * @param end is the territory the troop ends in.
      */
     public void moveTroop(Territory start, Troop troop, Territory end) {
-        // TODO: check if the troop population is valid
+        if (start.checkPopulation() < troop.checkTroopSize()) {
+            throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
+        }
         start.sendOutTroop(troop);
         end.sendInTroop(troop);
     }
 
     /**
      * Send a troop to a territory with different owner, in order to engage in battle. 
+     * Also checks if the troop is valid to send from the starting territory.
      * @param start is the territory the troop starts from.
      * @param troop is the troop to send.
      * @param end is the territory the troop ends in.
      */
     public void attackATerritory(Territory start, Troop troop, Territory end) {
-        // TODO: check if the troop population is valid
+        if (start.checkPopulation() < troop.checkTroopSize()) {
+            throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
+        }
         start.sendOutTroop(troop);
         end.sendInEnemyTroop(troop);
     }
