@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class GraphTest {
     String[] names1 = 
@@ -46,6 +47,21 @@ public class GraphTest {
         Graph<Integer> intGraph = new Graph<>();
         Graph<String> stringGraph = new Graph<>();
         Graph<Territory> terrGraph = new Graph<>();
+    }
+
+    @Test
+    public void testCreateRandomConnections() {
+        Graph<Integer> intGraph = new Graph<>();
+        for (int i = 1; i <= 9; i++) {
+            intGraph.addVertex(i);
+        }
+        intGraph.createRandomConnections(intGraph.size(), new Random());
+        for (int i = 0; i < intGraph.size(); i++) {
+            for (int j = 0; j < intGraph.size(); j++) {
+                System.out.print((intGraph.adjMatrix[i][j] == true ? 1 : 0) + " ");
+            }
+            System.out.println();
+        }
     }
 
     @Test

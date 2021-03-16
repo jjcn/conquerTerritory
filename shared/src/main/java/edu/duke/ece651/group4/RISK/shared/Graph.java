@@ -1,6 +1,7 @@
 package edu.duke.ece651.group4.RISK.shared;
 
 import java.util.List;
+import java.util.Random;
 import java.util.ArrayList;
 
 import java.io.Serializable;
@@ -30,6 +31,25 @@ public class Graph<T> implements Serializable {
     public Graph(List<T> vertices, boolean[][] adjMatrix) {
         this.vertices = vertices;
         this.adjMatrix = adjMatrix;
+    }
+
+    /**
+     * Creates a spanning tree, and add several random connections to it
+     * @param newConnections is the number of new connections introduced to the spanning tree.
+     * @param rand is the Random object.
+     */
+    public void createRandomConnections(int newConnections, Random rand) {
+        if (size() == 0 || size() == 1) {
+            return;
+        }
+        for (int i = 0; i < size() - 1; i++) {
+            adjMatrix[i][i + 1] = true;
+            adjMatrix[i + 1][i] = true;
+        }
+        while (newConnections > 0) {
+            adjMatrix[rand.nextInt(size())][rand.nextInt(size())] = true;
+            newConnections--;
+        }
     }
 
     /**
