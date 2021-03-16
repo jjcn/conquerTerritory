@@ -38,7 +38,7 @@ public class Graph<T> implements Serializable {
      * @param newConnections is the number of new connections introduced to the spanning tree.
      * @param rand is the Random object.
      */
-    public void createRandomConnections(int newConnections, Random rand) {
+    public void createRandomEdges(int newConnections, Random rand) {
         if (size() == 0 || size() == 1) {
             return;
         }
@@ -46,6 +46,7 @@ public class Graph<T> implements Serializable {
             adjMatrix[i][i + 1] = true;
             adjMatrix[i + 1][i] = true;
         }
+        // add random connections to it
         while (newConnections > 0) {
             adjMatrix[rand.nextInt(size())][rand.nextInt(size())] = true;
             newConnections--;

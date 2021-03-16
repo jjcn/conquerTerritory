@@ -49,19 +49,27 @@ public class GraphTest {
         Graph<Territory> terrGraph = new Graph<>();
     }
 
+    /**
+     * Helper function that prints out adjacent matrix as 0's and 1's.
+     * @param matrix is a boolean adjacent matrix
+     */
+    public void print2dArray(boolean[][] matrix) {
+        for (int i = 0; i < matrix[0].length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                System.out.print((matrix[i][j] == true ? 1 : 0) + " ");
+            }
+            System.out.println();
+        }
+    }
+
     @Test
-    public void testCreateRandomConnections() {
+    public void testCreateRandomEdges() {
         Graph<Integer> intGraph = new Graph<>();
         for (int i = 1; i <= 9; i++) {
             intGraph.addVertex(i);
         }
-        intGraph.createRandomConnections(intGraph.size(), new Random());
-        for (int i = 0; i < intGraph.size(); i++) {
-            for (int j = 0; j < intGraph.size(); j++) {
-                System.out.print((intGraph.adjMatrix[i][j] == true ? 1 : 0) + " ");
-            }
-            System.out.println();
-        }
+        intGraph.createRandomEdges(intGraph.size(), new Random(0));
+        print2dArray(intGraph.adjMatrix);
     }
 
     @Test
