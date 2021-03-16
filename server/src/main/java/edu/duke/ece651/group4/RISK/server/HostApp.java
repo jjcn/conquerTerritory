@@ -26,7 +26,7 @@ public class HostApp {
         this.barrier = null;
         this.NumOfPlayers = 0;
         this.theWorld = null;
-        this.playerNames = new ArrayList<String>();
+        this.playerNames = new ArrayList<>();
 
     }
 
@@ -54,8 +54,9 @@ public class HostApp {
 
     private void setUpClients() {
         int PlayerID = 0;
-        while(true) {
-            try {
+        try {
+             while(true) {
+
                 Socket s = hostSocket.accept();
                 Client theClient = new Client(s);
                 PlayerState playerState = new PlayerState("R");
@@ -63,9 +64,11 @@ public class HostApp {
                 ClientThread theThread = new ClientThread(theWorld, playerNames.get(PlayerID), PlayerID, barrier, playerState,
                         theClient, hostState);
 
-            theThread.run();
-            }catch(IOException e){
+                theThread.run();
+
             }
+        }catch(IOException e){
+            System.out.println("Socket Problem");
         }
     }
 
