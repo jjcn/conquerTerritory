@@ -3,9 +3,14 @@ package edu.duke.ece651.group4.RISK.shared;
 /**
  * Checks if a order is valid.
  */
-public class OrderChecker { // FIXIT: bad code design
- 
-    public OrderChecker() {}
+public class OrderChecker { // TODO: bad code design
+    AttackOrderChecker aoc;
+    MoveOrderChecker moc;
+
+    public OrderChecker() {
+        aoc = new AttackOrderChecker();
+        moc = new MoveOrderChecker();
+    }
 
     /**
      * Checks if an order is legal.
@@ -15,14 +20,12 @@ public class OrderChecker { // FIXIT: bad code design
      *         a String indicating the problem, if not.
      */
     public String checkOrder(BasicOrder order, World world) { 
-        if (order.getActionName() == 'A') {
-            AttackOrderChecker aoc = new AttackOrderChecker();
+        if (order.getActionName() == 'A') { 
             aoc.checkMyOrder(order, world);
         }
-        else if (order.getActionName() == 'M') {
-            MoveOrderChecker moc = new MoveOrderChecker();
+        else if (order.getActionName() == 'M') {   
             moc.checkMyOrder(order, world);
         }
-        return "Not a valid order type.";
+        return "Not a valid basic order type."; // that is, not Attack or Move
     }
 }

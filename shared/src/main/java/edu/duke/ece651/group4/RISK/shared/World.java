@@ -23,30 +23,14 @@ public class World implements Serializable {
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
     final String NOT_POSITIVE_MSG = "Number of groups should be positive.";
-    final Random rnd;
+    
     /**
      * All territories in the world. Implemented with a graph structure.
      */
     public Graph<Territory> territories;
     private final OrderChecker basicOrderChecker;
+    final Random rand;
 
-    /**
-     * Construct world with a graph.
-     * @param terrs
-     */
-    public World(Graph<Territory> terrs) {
-//        territories = terrs;
-//        basicOrderChecker = new OrderChecker();
-//        rnd=new Random();
-        this(terrs,new Random());
-    }
-
-    public World(Graph<Territory> terrs,Random random){
-        territories = terrs;
-        basicOrderChecker = new OrderChecker();
-        rnd=random;
-    }
-    
     /**
      * Construct a default world with an empty graph.
      */
@@ -55,19 +39,40 @@ public class World implements Serializable {
     }
 
     /**
+     * Construct world with a graph.
+     * @param terrs
+     */
+    public World(Graph<Territory> terrs) {
+        this(terrs, new Random());
+    }
+
+    /**
+     * Construct world with a graph and a random seed.
+     * @param terrs is the number of territories.
+     * @param random is the random seed.
+     */
+    public World(Graph<Territory> terrs, Random random){
+        territories = terrs;
+        basicOrderChecker = new OrderChecker();
+        rand = random;
+    }
+    
+
+    /**
      * Creates a world, specify a number of total territories and a random seed.
+     * The territories created will share a random seed with the world.
      * Territory names are: 1, 2, 3, ... 
      * Number of total connections is random,
      * and is propotional to number of territories.
      * @param numTerrs is the number of territories.
      */
-    public World(int numTerrs, Random rand) {
-        this(new Graph<Territory>(),rand);
+    public World(int numTerrs, Random random) {
+        this(new Graph<Territory>(), random);
 
         for (int i = 1; i <= numTerrs; i++) {
-            addTerritory(new Territory(String.format("%d", i),rand));
+            addTerritory(new Territory(String.format("%d", i), random));
         }
-        territories.addRandomEdges(numTerrs, rand);
+        territories.addRandomEdges(numTerrs, random);
 
     }
 
@@ -254,7 +259,6 @@ public class World implements Serializable {
      * NOTE: group number starts from 0.
      */
     public Map<Integer, List<Territory>> divideTerritories(int nGroup) {
-        Random rand=this.rnd;
         // check if it is an integer > 0
         if (nGroup <= 0) {
             throw new IllegalArgumentException(NOT_POSITIVE_MSG);
@@ -270,7 +274,7 @@ public class World implements Serializable {
             randomInds[i] = i;
         }
         // shuffle indices to create random groups
-        Shuffler shuffler = new Shuffler(rand);
+        Shuffler shuffler = new Shuffler(this.rand);
         shuffler.shuffle(randomInds);
         // divide
         List<Territory> terrList = territories.getVertices();
@@ -320,6 +324,34 @@ public class World implements Serializable {
             }
         }
         return false;
+    }
+
+    /**
+     * Check if the game has ended, that is, a player owns all the territories.
+     * @return true, if the game ends.
+     *         false, if not.
+     */
+    public boolean isGameEnd() { 
+        // if a territory has an owner other than the first one, then the game hasn't ended.
+        Player player = territories.getVertices().get(0).getOwner();
+        for (Territory terr : getAllTerritories()) {
+            if (!terr.getOwner().equals(player)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Get the name of winner of the game.
+     * @return winner's the name, if the game has ended.
+     *         null, if there is no winner yet.
+     */
+    public String getWinner() {
+        if (isGameEnd()) {
+            return territories.getVertices().get(0).getOwner().getName();
+        }
+        return null;
     }
 
     @Override
