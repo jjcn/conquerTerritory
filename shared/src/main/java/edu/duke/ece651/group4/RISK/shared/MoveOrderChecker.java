@@ -3,6 +3,9 @@ package edu.duke.ece651.group4.RISK.shared;
 import java.util.Set;
 import java.util.Stack;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  * See "Evolution 1: 4. Turn structure" for rules related with move order.
@@ -19,7 +22,7 @@ import java.util.HashSet;
 public class MoveOrderChecker {
     private final String NOT_SAME_OWNER_MSG = "Cannot move troop to a territory with different owner.";
     private final String NOT_MOVE_ORDER_MSG = "This is not a move order.";
-    private final String NOT_LINKED_MSG = "There is not a path of territories that all belongs to you.";
+    private final String NOT_REACHABLE_MSG = "There is not a path of territories that all belongs to you.";
 
     public MoveOrderChecker() {
         super();
@@ -43,24 +46,27 @@ public class MoveOrderChecker {
             }  
             // if not linked
             // FIXIT: this has bugs
-            Stack<Territory> toCheck = new Stack<>();
-            Set<Territory> checked = new HashSet<>();
-            toCheck.push(start);
-            while (!toCheck.empty()) {
-                Territory key = toCheck.pop();
-                if (key.equals(end)) {
-                    return null;
-                }
-                if (!checked.contains(key)) {
-                    for (Territory terr : world.getAdjacents(key)) {
-                        if (terr.getOwner().equals(owner)) {
-                            toCheck.push(terr);
-                        }
+            Queue<Territory> queue = new LinkedList<>();
+            Set<Territory> visited = new HashSet<>();
+            
+            queue.add(start);
+            visited.add(start);
+            while (queue.size() != 0) {
+                Territory key = queue.poll();
+                List<Territory> adjacents = world.getAdjacents(key);
+                for (Territory adjacent : adjacents) {
+                    if (adjacent.equals(end)) {
+                        return null;
                     }
+                    if (!visited.contains(adjacent)) {
+                        if (adjacent.getOwner().equals(owner)) {
+                                visited.add(adjacent);
+                                queue.add(adjacent);
+                            }
+                        }
                 }
-                checked.add(key);
             }
-            return NOT_LINKED_MSG;
+            return NOT_REACHABLE_MSG;
         }
         // if not move order
         return NOT_MOVE_ORDER_MSG;

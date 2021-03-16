@@ -30,29 +30,41 @@ public class World implements Serializable {
     public Graph<Territory> territories;
     private final OrderChecker basicOrderChecker;
 
-    public World() {
-        this(new Graph<Territory>());
-    }
-
+    /**
+     * Construct world with a graph.
+     * @param terrs
+     */
     public World(Graph<Territory> terrs) {
         territories = terrs;
         basicOrderChecker = new OrderChecker();
     }
     
     /**
-     * Creates a world with only its number of territories specified.
+     * Construct a default world with an empty graph.
+     */
+    public World() {
+        this(new Graph<Territory>());
+    }
+
+    /**
+     * Creates a world, specify a number of total territories and a random seed.
      * Territory names are: 1, 2, 3, ... 
-     * Number of connections is propotional to number of territories.
+     * Number of total connections is random,
+     * and is propotional to number of territories.
      * @param numTerrs is the number of territories.
      */
     public World(int numTerrs, Random rand) {
-        this();
+        this(new Graph<Territory>());
         for (int i = 1; i <= numTerrs; i++) {
             addTerritory(new Territory(String.format("%d", i),rand));
         }
-        territories.createRandomConnections(numTerrs, rand);
+        territories.addRandomEdges(numTerrs, rand);
     }
 
+    /**
+     * Overloading constructor that only has its number of territories specified.
+     * @param numTerrs is the number of territories.
+     */
     public World(int numTerrs) {
         this(numTerrs, new Random());
     }
@@ -67,11 +79,39 @@ public class World implements Serializable {
 
     /**
      * Get all the territories that are adjacent to a certain territory.
-     * @param key is the territory to search adjacents.
+     * @param terr is the territory to search adjacents.
      * @return a list of adjacent territories.
      */
-    public List<Territory> getAdjacents(Territory key) {
-        return territories.getAdjacentVertices(key);
+    public List<Territory> getAdjacents(Territory terr) {
+        return territories.getAdjacentVertices(terr);
+    }
+
+    /**
+     * Get all the territories that are adjacent to a territory 
+     * of certain name.
+     * @param terrName is the name of territory to search adjacents.
+     * @return a list of adjacent territories.
+     */
+    public List<Territory> getAdjacents(String terrName) {
+        return territories.getAdjacentVertices(findTerritory(terrName));
+    }
+
+    /**
+     * Set a random seed on a territory.
+     * @param terrName is the territory to set random seed.
+     * @param seed is a random seed.
+     */
+    public void setRandom(Territory terr, Random seed) {
+        terr.setRandom(seed);
+    }
+
+    /**
+     * Set a random seed on a territory with certain name.
+     * @param terrName is the name of the territory to set random seed.
+     * @param seed is a random seed.
+     */
+    public void setRandom(String terrName, Random seed) {
+        findTerritory(terrName).setRandom(seed);
     }
 
     /**
@@ -103,67 +143,21 @@ public class World implements Serializable {
     /**
      * Station troop to a territory.
      * @param terrName is the territory name.
-     * @param num is the population of the troop.
+     * @param troop is a Troop object.
      */   
-    public void stationTroop(String terrName, int num) {
-        Territory terr = findTerritory(terrName);
-        terr.initializeTerritory(num, terr.getOwner());
-    }
-
     public void stationTroop(String terrName, Troop troop) {
         Territory terr = findTerritory(terrName);
         terr.initializeTerritory(troop.checkTroopSize(), troop.getOwner());
     }
-
+    
     /**
-     * Set a random seed to a territory.
-     * @param terrName is the territory to set random seed.
-     * @param seed is a random seed.
-     */
-    public void setRandom(Territory terr, Random seed) {
-        terr.setRandom(seed);
-    }
-
-    public void setRandom(String terrName, Random seed) {
-        findTerritory(terrName).setRandom(seed);
-    }
-
-    /**
-     * Check if two territories are adjacent to each other
-     * @param terr1 is a territory.
-     * @param terr2 is the other territory.
-     * @return true, if two territories are adjacent;
-     *         false, if not.
-     */
-    public boolean checkIfAdjacent(Territory terr1, Territory terr2) {
-        return territories.isAdjacent(terr1, terr2);
-    }
-
-    /**
-     * Check if two territories are adjacent to each other by their names. 
-     * @param name1 is the name of one territory to check.
-     * @param name2 is the name of thr other territory.
-     * @return true, if two territories are adjacent;
-     *         false, if not.
-     */
-    public boolean checkIfAdjacent(String name1, String name2) {
-        return checkIfAdjacent(findTerritory(name1), findTerritory(name2));
-    }
-
-    /**
-     * Finds a territory by its name. 
-     * If the territory exists, returns that territory of that name.
-     * If not, an exception will be thrown.
-     * @param terrName is the territory name to search.
-     * @return the specified territory.
-     */
-    public Territory findTerritory(String terrName) {
-        for (Territory terr : territories.getVertices()) {
-            if (terr.getName().equals(terrName)) {
-                return terr;
-            }
-        }
-        throw new NoSuchElementException(String.format(TERRITORY_NOT_FOUND_MSG, terrName));
+     * Station troop to a territory by specifying territory name and population.
+     * @param terrName is the territory name.
+     * @param population is the population of the troop.
+     */   
+    public void stationTroop(String terrName, int population) {
+        Territory terr = findTerritory(terrName);
+        terr.initializeTerritory(population, terr.getOwner());
     }
 
     /**
@@ -206,12 +200,50 @@ public class World implements Serializable {
     }
 
     /**
+     * Check if two territories are adjacent to each other
+     * @param terr1 is a territory.
+     * @param terr2 is the other territory.
+     * @return true, if two territories are adjacent;
+     *         false, if not.
+     */
+    public boolean checkIfAdjacent(Territory terr1, Territory terr2) {
+        return territories.isAdjacent(terr1, terr2);
+    }
+
+    /**
+     * Check if two territories are adjacent to each other by their names. 
+     * @param name1 is the name of one territory to check.
+     * @param name2 is the name of thr other territory.
+     * @return true, if two territories are adjacent;
+     *         false, if not.
+     */
+    public boolean checkIfAdjacent(String name1, String name2) {
+        return checkIfAdjacent(findTerritory(name1), findTerritory(name2));
+    }
+
+    /**
+     * Finds a territory by its name. 
+     * If the territory exists, returns that territory of that name.
+     * If not, an exception will be thrown.
+     * @param terrName is the territory name to search.
+     * @return the specified territory.
+     */
+    public Territory findTerritory(String terrName) {
+        for (Territory terr : territories.getVertices()) {
+            if (terr.getName().equals(terrName)) {
+                return terr;
+            }
+        }
+        throw new NoSuchElementException(String.format(TERRITORY_NOT_FOUND_MSG, terrName));
+    }
+
+    /**
      * Divide territories into n equal groups.
      * @param nGroup is the number of groups the world is divided into.
      * @return a HashMap. The mapping being: group number -> grouped territories.
      * NOTE: group number starts from 0.
      */
-    public Map<Integer, List<Territory>> divideTerritories(int nGroup) {
+    public Map<Integer, List<Territory>> divideTerritories(int nGroup, Random rand) {
         // check if it is an integer > 0
         if (nGroup <= 0) {
             throw new IllegalArgumentException(NOT_POSITIVE_MSG);
@@ -227,7 +259,7 @@ public class World implements Serializable {
             randomInds[i] = i;
         }
         // shuffle indices to create random groups
-        Shuffler shuffler = new Shuffler();
+        Shuffler shuffler = new Shuffler(rand);
         shuffler.shuffle(randomInds);
         // divide
         List<Territory> terrList = territories.getVertices();
@@ -252,6 +284,31 @@ public class World implements Serializable {
      */
     public String checkBasicOrder(BasicOrder order) {
         return basicOrderChecker.checkOrder(order, this);
+    }
+
+    /**
+     * Add unit to all territories.
+     * @param num is the number of units to add to every territory.
+     */
+    public void addUnitToAll(int num) {
+        for (Territory terr : getAllTerritories()) {
+            terr.addUnit(num);
+        }
+    }
+
+    /**
+     * Checks if a player has lost the game ny losing all his territories.
+     * @param playerName is the player's name.
+     * @return true, if player has lost.
+     *         false, if not.
+     */
+    public boolean checkLost(String playerName) {
+        for (Territory terr : getAllTerritories()) {
+            if (terr.getOwner().getName().equals(playerName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
