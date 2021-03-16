@@ -27,7 +27,7 @@ import java.util.Map;
  * 3 units in Hogwarts (next to: Mordor, Scadrial, Roshar)
  **/
 public class WorldTextView implements WorldView<String> {
-    private final World toDisplay;
+    private World toDisplay;
 
     public WorldTextView(World toDisplay) {
         this.toDisplay = toDisplay;
@@ -38,8 +38,18 @@ public class WorldTextView implements WorldView<String> {
      * 1. the player can immediately see the moves he did;
      * 2. the player cannot see the results of other players' action.
      **/
-    @Override
     public String displayWorld() {
+        StringBuilder display = new StringBuilder();
+        HashMap<String, List<Territory>> w = getPlayerToTerr();
+        for (Map.Entry player : w.entrySet()) {
+            display.append(displayOnePlayer((String) player.getKey(), (List<Territory>) player.getValue()));
+        }
+        return display.toString();
+    }
+
+    @Override
+    public String displayWorld(World world) {
+        this.toDisplay = world;
         StringBuilder display = new StringBuilder();
         HashMap<String, List<Territory>> w = getPlayerToTerr();
         for (Map.Entry player : w.entrySet()) {

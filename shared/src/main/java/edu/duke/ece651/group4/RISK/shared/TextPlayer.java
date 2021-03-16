@@ -10,7 +10,7 @@ public class TextPlayer implements Player, Serializable {
     final private HashMap<Character, String> actionTypes;
     final private Random rnd;
 
-    public TextPlayer(PrintStream out, Reader inputReader, String playerName,Random rnd) {
+    public TextPlayer(PrintStream out, Reader inputReader, String playerName, Random rnd) {
         this.playerName = playerName;
         this.inputReader = (BufferedReader) inputReader;
         this.out = out;
@@ -18,11 +18,11 @@ public class TextPlayer implements Player, Serializable {
         actionTypes.put('D', "(D)one");
         actionTypes.put('M', "(M)ove");
         actionTypes.put('A', "(A)ttack");
-        this.rnd=rnd;
+        this.rnd = rnd;
     }
 
     public TextPlayer(PrintStream out, Reader inputReader, String playerName) {
-        this(out,inputReader,playerName,new Random());
+        this(out, inputReader, playerName, new Random());
     }
 
     /**
@@ -95,7 +95,7 @@ public class TextPlayer implements Player, Serializable {
             String src = readInput("Please input the territory name you would like to send out troop from:");
             String des = readInput("Please input the territory name you would like to send troop to:");
             int pop = readInteger("Please input the number of soldiers you would like to send:");
-            Troop troop = new Troop(pop, this,this.rnd);
+            Troop troop = new Troop(pop, this, this.rnd);
             return new BasicOrder(src, des, troop, actionName);
         }
     }
@@ -114,11 +114,23 @@ public class TextPlayer implements Player, Serializable {
     private Character readActionName(String instr) throws IOException {
         char action = ' ';
         while (!actionTypes.keySet().contains(action)) {
-            String actionName = readInput(instr);
-            action = actionName.trim().charAt(0);
+            action = getInChar(instr);
             instr = "Please choose a valid action type:";
         }
         return action;
+    }
+
+    private char getInChar(String instr) throws IOException {
+        char inChar = 0;
+        String inStr = readInput(instr);
+        inStr = inStr.trim();
+        try {
+            inChar = inStr.charAt(0);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            System.out.println(e.getMessage());
+        }
+        return inChar;
     }
 
     /**
@@ -183,12 +195,12 @@ public class TextPlayer implements Player, Serializable {
             String name = terr.getName();
             int add = readInteger("Please input the number of soldiers you want to place in " + name + ":");
             currSum += add;
-            orders.add(new PlaceOrder(name, new Troop(add, this,this.rnd)));
+            orders.add(new PlaceOrder(name, new Troop(add, this, this.rnd)));
         }
         if (currSum == total) {
             for (Territory terr : terrs) {
                 out.print("You have used up soldiers, remaining territories automatically have 0.");
-                orders.add(new PlaceOrder(terr.getName(), new Troop(0, this,this.rnd)));
+                orders.add(new PlaceOrder(terr.getName(), new Troop(0, this, this.rnd)));
             }
         } else {
             return null;
@@ -240,4 +252,23 @@ public class TextPlayer implements Player, Serializable {
         }
         return false;
     }
+
+    /**
+     * asks the user if he want to exit the game. valid choices: string starts with Y/y or N/n.
+     * @return true if receive input start with 'Y' or 'y', false if recieve 'N' or 'n'
+     * @throws IOException
+     */
+    public boolean checkExit() throws IOException {
+        String instr = "Do you want to exit game? y/n";
+        Character e = getInChar(instr);
+        while (e != 'Y' && e != 'y' && e != 'N' && e != 'n') {
+            e = getInChar("Please input a valid choice:");
+        }
+        if (e == 'Y' || e == 'y') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
