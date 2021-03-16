@@ -58,7 +58,7 @@ public class World implements Serializable {
         for (int i = 1; i <= numTerrs; i++) {
             addTerritory(new Territory(String.format("%d", i),rand));
         }
-        territories.createRandomEdges(numTerrs, rand);
+        territories.addRandomEdges(numTerrs, rand);
     }
 
     /**

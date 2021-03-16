@@ -12,15 +12,15 @@ import java.util.List;
 import java.util.Random;
 
 public class GraphTest {
-    String[] names1 = 
+    String[] names = 
         "Narnia, Midkemia, Oz, Gondor, Mordor, Hogwarts, Scadrial, Elantris, Roshar".split(", ");
 
     /**
      * Creates a test graph. Same as the one on Evolution 1 requirements.
      */
-    public Graph<String> createTestGraph1() {
+    public Graph<String> createGraphFantasy() {
         Graph<String> graph = new Graph<>();
-        for (String name: names1) {
+        for (String name: names) {
             graph.addVertex(name);
         }
         graph.addEdge("Narnia", "Midkemia");
@@ -62,13 +62,6 @@ public class GraphTest {
         }
     }
 
-    /**
-     * This only prints out adjacent matrix.
-     * TODO: a function that checks if
-     *  - Each territory shall be adjacent to one or more other territories.
-        - The territories must form a connected graph (all territories must be reachable from any
-        other territory).
-     */
     @Test
     public void testCreateRandomEdges() {
         Graph<Integer> intGraph = new Graph<>();
@@ -101,10 +94,10 @@ public class GraphTest {
 
     @Test
     public void testGetVertices() {
-        Graph<String> graph = createTestGraph1();
+        Graph<String> graph = createGraphFantasy();
         
         List<String> expected = new ArrayList<>();
-        for (String name: names1) {
+        for (String name: names) {
             expected.add(name);
         }
         
@@ -113,7 +106,7 @@ public class GraphTest {
 
     @Test
     public void testGetAdjacentVertices() {
-        Graph<String> graph = createTestGraph1();
+        Graph<String> graph = createGraphFantasy();
 
         List<String> adjsScadrial = graph.getAdjacentVertices("Scadrial");
         List<String> expectedScadrial = new ArrayList<>();
@@ -206,4 +199,16 @@ public class GraphTest {
         }
     }
     */
+
+    @Test
+    public void testIsFullyConnected() {
+        Graph<String> graph1 = createGraphFantasy();
+        assertTrue(graph1.isFullyConnected());
+
+        Graph<Integer> graph2 = new Graph<>();
+        for (int i = 1; i <= 9; i++) {
+            graph2.addVertex(i);
+        }
+        graph2.addRandomEdges(newEdges, rand);
+    }
 }

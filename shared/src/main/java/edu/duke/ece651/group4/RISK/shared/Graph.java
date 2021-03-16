@@ -1,8 +1,9 @@
 package edu.duke.ece651.group4.RISK.shared;
 
 import java.util.List;
-import java.util.Random;
 import java.util.ArrayList;
+
+import java.util.Random;
 
 import java.io.Serializable;
 
@@ -35,10 +36,10 @@ public class Graph<T> implements Serializable {
 
     /**
      * Creates a spanning tree, and add several random connections to it
-     * @param newEdges is the number of new connections introduced to the spanning tree.
+     * @param numNewEdges is the number of new connections introduced to the spanning tree.
      * @param rand is the Random object.
      */
-    public void createRandomEdges(int newEdges, Random rand) {
+    public void addRandomEdges(int numNewEdges, Random rand) {
         if (size() == 0 || size() == 1) {
             return;
         }
@@ -47,9 +48,9 @@ public class Graph<T> implements Serializable {
             adjMatrix[i + 1][i] = true;
         }
         // add random connections to it
-        while (newEdges > 0) {
+        while (numNewEdges > 0) {
             adjMatrix[rand.nextInt(size())][rand.nextInt(size())] = true;
-            newEdges--;
+            numNewEdges--;
         }
     }
 
@@ -165,12 +166,47 @@ public class Graph<T> implements Serializable {
     }
 
     /**
-     * This only prints out adjacent matrix.
-     * TODO: a function that checks if
-     *  - Each territory shall be adjacent to one or more other territories.
-        - The territories must form a connected graph (all territories must be reachable from any
-        other territory).
+     * Checks if a graph obeys certain rules. The rules are
+     * - Each vertex be adjacent to one or more other vertices.
+       - The vertices must form a connected graph (all vertices must be reachable from any
+         other vertex).
+     * @return true, if the graph obeys the rules;
+     *         false, if not.
      */
+    public boolean checkGraphValidity() {
+        return isFullyConnected() && isConnectedGraph();
+    }
+
+    /**
+     * Checks if a graph obeys the following rule:
+     * - Each vertex be adjacent to one or more other vertices.
+     * @return true, if the graph obeys the rules;
+     *         false, if not.
+     */
+    public boolean isFullyConnected() {
+        for (int i = 0; i < size(); i++) {
+            boolean hasAdjacent = false;
+            for (int j = 0; j < size(); j++) { // iterate over a line of adjacency matrix
+                hasAdjacent = hasAdjacent || adjMatrix[i][j];
+            }
+            if (hasAdjacent == false) { // false if no adjacents found with this vertex
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks if a graph obeys the following rule:
+       - The vertices must form a connected graph (all vertices must be reachable from any
+         other vertex).
+     * @return true, if the graph obeys the rules;
+     *         false, if not.
+     */
+    public boolean isConnectedGraph() {
+        // TODO
+        return false;
+    }
 
     /*
     @Override
