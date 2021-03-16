@@ -1,5 +1,7 @@
 package edu.duke.ece651.group4.RISK.shared;
 
+import java.io.Serializable;
+
 /**
  * See "Evolution 1: 4. Turn structure" for rules related with move order.
  * a. A move order must specify the number of units to move, the source territory, and
@@ -12,7 +14,7 @@ package edu.duke.ece651.group4.RISK.shared;
  * Also checks if the order is a move order.
  * 
  */
-public class AttackOrderChecker {
+public class AttackOrderChecker implements Serializable {
     private final String SAME_OWNER_MSG = "Cannot attack a territory with the same owner.";
     private final String NOT_ATTACK_ORDER_MSG = "This is not an attack order.";
     private final String NOT_ADJACENT_MSG = "The attack should be performed on adjacent territories.";

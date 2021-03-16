@@ -1,5 +1,6 @@
 package edu.duke.ece651.group4.RISK.shared;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.Map;
  * 14 units in Mordor (next to: Hogwarts, Gondor, Oz, Scadrial)
  * 3 units in Hogwarts (next to: Mordor, Scadrial, Roshar)
  **/
-public class WorldTextView implements WorldView<String> {
+public class WorldTextView implements WorldView<String>, Serializable {
     private World toDisplay;
 
     public WorldTextView(World toDisplay) {

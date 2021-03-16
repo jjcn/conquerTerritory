@@ -1,6 +1,8 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-public class DoneOrder implements Order {
+import java.io.Serializable;
+
+public class DoneOrder implements Order, Serializable {
     final private Character actionName;
 
     public DoneOrder() {

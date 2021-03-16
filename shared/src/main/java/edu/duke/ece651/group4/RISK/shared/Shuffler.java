@@ -1,12 +1,13 @@
 package edu.duke.ece651.group4.RISK.shared;
 
+import java.io.Serializable;
 import java.util.Random;
 
 /**
  * This class does shuffling of an array.
  * Takes a Random object to construct a shuffler.
  */
-public class Shuffler {
+public class Shuffler implements Serializable {
     Random rand;
 
     public Shuffler() {
