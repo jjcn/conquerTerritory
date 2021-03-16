@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 public class WorldTest {
     /**
@@ -147,15 +148,15 @@ public class WorldTest {
     public void testDivideTerritories() {
         // test if exceptions are thrown correctly
         World world = createWorld2(); // evolution 1 example world, has 9 territories
-        assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(-1), NON_POSITIVE_MSG);
-        assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(0), NON_POSITIVE_MSG);
-        assertDoesNotThrow(() -> world.divideTerritories(1));
-        assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(2), INDIVISIBLE_MSG);
-        assertDoesNotThrow(() -> world.divideTerritories(3));
-        assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(18), INDIVISIBLE_MSG);
+        Random rand = new Random(0);
+        assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(-1, rand), NON_POSITIVE_MSG);
+        assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(0, rand), NON_POSITIVE_MSG);
+        assertDoesNotThrow(() -> world.divideTerritories(1, rand));
+        assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(2, rand), INDIVISIBLE_MSG);
+        assertDoesNotThrow(() -> world.divideTerritories(3, rand));
+        assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(18, rand), INDIVISIBLE_MSG);
     
-        
-        Map<Integer, List<Territory>> groups = world.divideTerritories(3);
+        Map<Integer, List<Territory>> groups = world.divideTerritories(3, rand);
         // test number of groups
         assertEquals(groups.size(), 3);
         // test keys
