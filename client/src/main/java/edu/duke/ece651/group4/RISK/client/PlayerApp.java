@@ -42,9 +42,10 @@ public class PlayerApp {
         return myPlayer;
     }
 
-    public void doPlacementPhase(){
+    public void doPlacementPhase() throws IOException {
         List<Territory> myGroup =null;
         myGroup=(List<Territory>) receiveInfo(myGroup,this.playerClient);
+        System.out.println("Finish all setup and let's start the game!");
         List<Order> orders = null;
         while(orders==null) {
             try {
@@ -60,7 +61,7 @@ public class PlayerApp {
 
     }
 
-    public void runGame(){
+    public void runGame() throws IOException {
 //        while(this.theWorld.checkLost(this)) {
         doActionPhase();
 //        }
@@ -76,7 +77,7 @@ public class PlayerApp {
 
     }
 
-    public void doActionPhase(){
+    public void doActionPhase() throws IOException {
         boolean turnEnd=false;
 
         while(!turnEnd){
@@ -110,7 +111,7 @@ public class PlayerApp {
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         String instruct1 = "Please enter the hostName";
         String instruct2 = "Please enter the port";
         BufferedReader inRead=new BufferedReader(new InputStreamReader(System.in));
@@ -134,8 +135,15 @@ public class PlayerApp {
 
         String name=null;
         World gameWorld=null;
+        System.out.println( "Wait for setup from the server.");
+//        name= (String) myClient.recvObject();
+
         name=(String) receiveInfo(name,myClient);
+        System.out.println( "Get the name：" +name +"from the server.");
         gameWorld=(World) receiveInfo(gameWorld,myClient);
+//        gameWorld=(World) myClient.recvObject();
+        System.out.println( "Get the world from the server.");
+
 //        while(name==null){
 //            try{
 //                name=(String) myClient.recvObject();
@@ -155,26 +163,24 @@ public class PlayerApp {
     }
 
     public static Object receiveInfo(Object o, Client c){
-        while(o==null) {
 
-            try {
-                o = c.recvObject();
-            } catch (Exception e) {
-                System.out.println("Socket name problem!");
-            }
+        try {
+            o = c.recvObject();
+        } catch (Exception e) {
+            System.out.println("Socket receive object problem!");
         }
+
         return o;
     }
 
-    public static void sendInfo(Object o, Client c){
-        while(o==null) {
+    public static void sendInfo(Object o, Client c) throws IOException {
 
-            try {
-                c.sendObject(o);
-            } catch (Exception e) {
-                System.out.println("Socket problem!");
-            }
+        try {
+            c.sendObject(o);
+        } catch (Exception e) {
+            System.out.println("Socket send object problem!");
         }
+
 
     }
 

@@ -3,6 +3,7 @@ package edu.duke.ece651.group4.RISK.server;
 import edu.duke.ece651.group4.RISK.shared.*;
 
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CyclicBarrier;
 
@@ -30,21 +31,21 @@ public class ClientThread extends Thread{
     /*
      *  This sends a player info to each Client.
      * */
-    private void sendPlayerNameToClient(){
-        sendInfo(this.playerName,this.theClient);
+    private void sendPlayerNameToClient() throws IOException {
+        this.theClient.sendObject(this.playerName);
     }
 
     /*
      *  This send the newest worldMap to the Client
      * */
-    private void sendWorldToClient(){
-        sendInfo(this.theWorld,this.theClient);
+    private void sendWorldToClient() throws IOException {
+        this.theClient.sendObject(this.theWorld);
     }
 
     /*
     * This send init territory to each player.
     * */
-    private void sendInitTerritory(){sendInfo(this.initTerritory,this.theClient); }
+    private void sendInitTerritory() throws IOException {this.theClient.sendObject(this.initTerritory); }
 
     /*
      * This is to select territory for each player.
@@ -54,7 +55,6 @@ public class ClientThread extends Thread{
         while(orderNum>0) {
             PlaceOrder newOrder = null;
             newOrder = (PlaceOrder) receiveInfo(newOrder, this.theClient);
-
             this.theWorld.stationTroop(newOrder.getDesName(),newOrder.getActTroop());
             orderNum--;
         }
@@ -131,10 +131,10 @@ public class ClientThread extends Thread{
         try {
             barrier.await();
             sendPlayerNameToClient();
-            this.theClient.sendObject(this.playerName);
+//            this.theClient.sendObject(this.playerName);
             System.out.println("To " + this.playerName + ", send the name" );
-//            sendWorldToClient();
-            this.theClient.sendObject(this.theWorld);
+            sendWorldToClient();
+//            this.theClient.sendObject(this.theWorld);
             System.out.println("To " + this.playerName + ", send the world" );
             sendInitTerritory();
             System.out.println("To " + this.playerName + ", send territories" );
