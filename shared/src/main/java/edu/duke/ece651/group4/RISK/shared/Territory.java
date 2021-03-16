@@ -14,7 +14,7 @@ public class Territory implements Serializable {
 
     private final HashMap<String,Troop> enemyOnTerritory;
 
-    private final Random rnd;
+    private Random rnd;
 
     public Territory(String name, Player owner, int population, Random rnd) {
         this.name = name;
@@ -28,6 +28,13 @@ public class Territory implements Serializable {
         this.enemyOnTerritory = new HashMap<>();
         this.ownerTroop = new Troop(0, null, new Random()); // default Troop.owner == null, cannot call equals()
         this.rnd = new Random();
+    }
+
+    public Territory(String name,Random rnd) {
+        this.name = name;
+        this.enemyOnTerritory = new HashMap<>();
+        this.ownerTroop = new Troop(0, null, new Random()); // default Troop.owner == null, cannot call equals()
+        this.rnd = rnd;
     }
 
     public Troop sendOutTroop(Troop subTroop) {
@@ -102,6 +109,10 @@ public class Territory implements Serializable {
         else {
             return false;
         }
+    }
+
+    public void setRandom(Random seed){
+        this.rnd=seed;
     }
     
 }

@@ -1,8 +1,10 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-import java.io.Serializable;
 import java.util.List;
+import java.util.Random;
 import java.util.ArrayList;
+
+import java.io.Serializable;
 
 /**
  * This class implements a generic graph data structure.
@@ -29,6 +31,25 @@ public class Graph<T> implements Serializable {
     public Graph(List<T> vertices, boolean[][] adjMatrix) {
         this.vertices = vertices;
         this.adjMatrix = adjMatrix;
+    }
+
+    /**
+     * Creates a spanning tree, and add several random connections to it
+     * @param newConnections is the number of new connections introduced to the spanning tree.
+     * @param rand is the Random object.
+     */
+    public void createRandomConnections(int newConnections, Random rand) {
+        if (size() == 0 || size() == 1) {
+            return;
+        }
+        for (int i = 0; i < size() - 1; i++) {
+            adjMatrix[i][i + 1] = true;
+            adjMatrix[i + 1][i] = true;
+        }
+        while (newConnections > 0) {
+            adjMatrix[rand.nextInt(size())][rand.nextInt(size())] = true;
+            newConnections--;
+        }
     }
 
     /**
@@ -142,8 +163,32 @@ public class Graph<T> implements Serializable {
         return adjMatrix[i][j];
     }
 
-    // TODO: function that checks if two vertices have a path between them
+    /*
+    @Override
+    public Iterator<T> iterator() {
+        return new GraphIterator();
+    }
 
-    // TODO: add iterator
+    public class GraphIterator implements Iterator<T> {
+        private int position = 0;
+        @Override
+        public boolean hasNext() {
+            if (position < getVertices().size()) {
+                return true;
+            } 
+            return false;
+        }
+    
+        @Override
+        public T next() {
+            if(hasNext()) {
+                return getVertices().get(position++);
+            }
+            return null;
+        }
+    
+    }
+    */
+
 }
 

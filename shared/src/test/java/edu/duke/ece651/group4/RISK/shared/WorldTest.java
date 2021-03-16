@@ -34,7 +34,7 @@ public class WorldTest {
         "Narnia, Midkemia, Oz, Gondor, Mordor, Hogwarts, Scadrial, Elantris, Roshar".split(", ");
 
     /**
-     * Creates a test graph. Same as the one on Evolution 1 requirements.
+     * Creates a test world. Troop not specified. Same as the one on Evolution 1 requirements.
      */
     public World createWorld2() {
         World world = new World();

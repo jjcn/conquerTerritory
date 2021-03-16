@@ -1,6 +1,5 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -8,28 +7,71 @@ import java.util.HashMap;
 
 import java.util.NoSuchElementException;
 
+import java.util.Random;
+
+import java.io.Serializable;
+
 /**
- * This class models the world which constitutes a certain number of territories.
+ * This class models the world which constitutes 
+ * a certain number of territories connected with each other.
  */
 public class World implements Serializable {
     /**
      * Error messages
      */
+    final String NOT_ENOUGH_TROOP_MSG = "The troop size you want is larger than that on this territory.";
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
-    final String NON_POSITIVE_MSG = "Number of groups should be positive.";
-
+    final String NOT_POSITIVE_MSG = "Number of groups should be positive.";
+    
     /**
      * All territories in the world. Implemented with a graph structure.
      */
     public Graph<Territory> territories;
+    private final OrderChecker basicOrderChecker;
 
     public World() {
-        this.territories = new Graph<Territory>();
+        this(new Graph<Territory>());
     }
 
-    public World(Graph<Territory> territories) {
-        this.territories = territories;
+    public World(Graph<Territory> terrs) {
+        territories = terrs;
+        basicOrderChecker = new OrderChecker();
+    }
+    
+    /**
+     * Creates a world with only its number of territories specified.
+     * Territory names are: 1, 2, 3, ... 
+     * Number of connections is propotional to number of territories.
+     * @param numTerrs is the number of territories.
+     */
+    public World(int numTerrs, Random rand) {
+        this();
+        for (int i = 1; i <= numTerrs; i++) {
+            addTerritory(new Territory(String.format("%d", i),rand));
+        }
+        territories.createRandomConnections(numTerrs, rand);
+    }
+
+    public World(int numTerrs) {
+        this(numTerrs, new Random());
+    }
+
+    /**
+     * Get all the territories in the world.
+     * @return a list of all territories in the world.
+     */
+    public List<Territory> getAllTerritories() {
+        return territories.getVertices();
+    }
+
+    /**
+     * Get all the territories that are adjacent to a certain territory.
+     * @param key is the territory to search adjacents.
+     * @return a list of adjacent territories.
+     */
+    public List<Territory> getAdjacents(Territory key) {
+        return territories.getAdjacentVertices(key);
     }
 
     /**
@@ -58,13 +100,32 @@ public class World implements Serializable {
         addConnection(findTerritory(name1), findTerritory(name2));
     }
 
-    
     /**
-     * Get all the territories in the world.
-     * @return A list of all territories in the world.
+     * Station troop to a territory.
+     * @param terrName is the territory name.
+     * @param num is the population of the troop.
+     */   
+    public void stationTroop(String terrName, int num) {
+        Territory terr = findTerritory(terrName);
+        terr.initializeTerritory(num, terr.getOwner());
+    }
+
+    public void stationTroop(String terrName, Troop troop) {
+        Territory terr = findTerritory(terrName);
+        terr.initializeTerritory(troop.checkTroopSize(), troop.getOwner());
+    }
+
+    /**
+     * Set a random seed to a territory.
+     * @param terrName is the territory to set random seed.
+     * @param seed is a random seed.
      */
-    public List<Territory> getAllTerritories() {
-        return territories.getVertices();
+    public void setRandom(Territory terr, Random seed) {
+        terr.setRandom(seed);
+    }
+
+    public void setRandom(String terrName, Random seed) {
+        findTerritory(terrName).setRandom(seed);
     }
 
     /**
@@ -91,7 +152,7 @@ public class World implements Serializable {
 
     /**
      * Finds a territory by its name. 
-     * If the territory exists, returns that territory specified by that name.
+     * If the territory exists, returns that territory of that name.
      * If not, an exception will be thrown.
      * @param terrName is the territory name to search.
      * @return the specified territory.
@@ -107,22 +168,30 @@ public class World implements Serializable {
 
     /**
      * Move a troop to a different a territory. Owner of the troop is not checked.
+     * Also checks if the troop is valid to send from the starting territory.
      * @param start is the territory the troop starts from.
      * @param troop is the troop to move.
      * @param end is the territory the troop ends in.
      */
     public void moveTroop(Territory start, Troop troop, Territory end) {
+        if (start.checkPopulation() < troop.checkTroopSize()) {
+            throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
+        }
         start.sendOutTroop(troop);
         end.sendInTroop(troop);
     }
 
     /**
      * Send a troop to a territory with different owner, in order to engage in battle. 
+     * Also checks if the troop is valid to send from the starting territory.
      * @param start is the territory the troop starts from.
      * @param troop is the troop to send.
      * @param end is the territory the troop ends in.
      */
     public void attackATerritory(Territory start, Troop troop, Territory end) {
+        if (start.checkPopulation() < troop.checkTroopSize()) {
+            throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
+        }
         start.sendOutTroop(troop);
         end.sendInEnemyTroop(troop);
     }
@@ -145,7 +214,7 @@ public class World implements Serializable {
     public Map<Integer, List<Territory>> divideTerritories(int nGroup) {
         // check if it is an integer > 0
         if (nGroup <= 0) {
-            throw new IllegalArgumentException(NON_POSITIVE_MSG);
+            throw new IllegalArgumentException(NOT_POSITIVE_MSG);
         } 
         // check if size / n is an integer
         else if (territories.size() % nGroup != 0) {
@@ -174,19 +243,16 @@ public class World implements Serializable {
 
         return groups;
     }
-    /*
+    
     /**
-     * Set the owner of a teritory to a certain player.
-     * @param terrName is the territory name.
-     * @param ownerName is the player name.
+     * Checks if an order is legal.
+     * @param order is the order to check.
+     * @return null, if the order is legal;
+     *         a String indicating the problem, if not.
      */
-
-    /*
-    public void setTerritoryOwner(String terrName, String ownerName) {
-        Territory terr = findTerritory(terrName);
-        terr.setOwner(ownerName); // FIXIT: no setOwner() function in Territory.java
+    public String checkBasicOrder(BasicOrder order) {
+        return basicOrderChecker.checkOrder(order, this);
     }
-    */
 
     @Override
     public boolean equals(Object other) {
@@ -202,12 +268,13 @@ public class World implements Serializable {
     @Override
     public String toString() {
         // TODO: change placeholder
-        return "World.toString() placeholder";
+        return "World.toString placeholder";
     }
 
     @Override
     public int hashCode() {
         return toString().hashCode();
     }
+
 }
 
