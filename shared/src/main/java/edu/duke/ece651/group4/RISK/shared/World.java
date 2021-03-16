@@ -30,29 +30,41 @@ public class World implements Serializable {
     public Graph<Territory> territories;
     private final OrderChecker basicOrderChecker;
 
-    public World() {
-        this(new Graph<Territory>());
-    }
-
+    /**
+     * Construct world with a graph.
+     * @param terrs
+     */
     public World(Graph<Territory> terrs) {
         territories = terrs;
         basicOrderChecker = new OrderChecker();
     }
     
     /**
-     * Creates a world with only its number of territories specified.
+     * Construct a default world with an empty graph.
+     */
+    public World() {
+        this(new Graph<Territory>());
+    }
+
+    /**
+     * Creates a world, specify a number of total territories and a random seed.
      * Territory names are: 1, 2, 3, ... 
-     * Number of connections is propotional to number of territories.
+     * Number of total connections is random,
+     * and is propotional to number of territories.
      * @param numTerrs is the number of territories.
      */
     public World(int numTerrs, Random rand) {
-        this();
+        this(new Graph<Territory>());
         for (int i = 1; i <= numTerrs; i++) {
             addTerritory(new Territory(String.format("%d", i)));
         }
         territories.createRandomEdges(numTerrs, rand);
     }
 
+    /**
+     * Overloading constructor that only has its number of territories specified.
+     * @param numTerrs is the number of territories.
+     */
     public World(int numTerrs) {
         this(numTerrs, new Random());
     }
@@ -67,15 +79,25 @@ public class World implements Serializable {
 
     /**
      * Get all the territories that are adjacent to a certain territory.
-     * @param key is the territory to search adjacents.
+     * @param terr is the territory to search adjacents.
      * @return a list of adjacent territories.
      */
-    public List<Territory> getAdjacents(Territory key) {
-        return territories.getAdjacentVertices(key);
+    public List<Territory> getAdjacents(Territory terr) {
+        return territories.getAdjacentVertices(terr);
     }
 
     /**
-     * Set a random seed to a territory.
+     * Get all the territories that are adjacent to a territory 
+     * of certain name.
+     * @param terrName is the name of territory to search adjacents.
+     * @return a list of adjacent territories.
+     */
+    public List<Territory> getAdjacents(String terrName) {
+        return territories.getAdjacentVertices(findTerritory(terrName));
+    }
+
+    /**
+     * Set a random seed on a territory.
      * @param terrName is the territory to set random seed.
      * @param seed is a random seed.
      */
@@ -83,6 +105,11 @@ public class World implements Serializable {
         terr.setRandom(seed);
     }
 
+    /**
+     * Set a random seed on a territory with certain name.
+     * @param terrName is the name of the territory to set random seed.
+     * @param seed is a random seed.
+     */
     public void setRandom(String terrName, Random seed) {
         findTerritory(terrName).setRandom(seed);
     }
@@ -116,16 +143,21 @@ public class World implements Serializable {
     /**
      * Station troop to a territory.
      * @param terrName is the territory name.
+     * @param troop is a Troop object.
+     */   
+    public void stationTroop(String terrName, Troop troop) {
+        Territory terr = findTerritory(terrName);
+        terr.initializeTerritory(troop.checkTroopSize(), troop.getOwner());
+    }
+
+    /**
+     * Station troop to a territory by specifying territory name and population.
+     * @param terrName is the territory name.
      * @param population is the population of the troop.
      */   
     public void stationTroop(String terrName, int population) {
         Territory terr = findTerritory(terrName);
         terr.initializeTerritory(population, terr.getOwner());
-    }
-
-    public void stationTroop(String terrName, Troop troop) {
-        Territory terr = findTerritory(terrName);
-        terr.initializeTerritory(troop.checkTroopSize(), troop.getOwner());
     }
 
     /**

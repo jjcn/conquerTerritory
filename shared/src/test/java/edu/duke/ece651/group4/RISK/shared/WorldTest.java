@@ -181,8 +181,8 @@ public class WorldTest {
     /*
     @Test
     public void testEqualsRandom() { // can Random objects be equal?
-        Random r1 = new Random();
-        Random r2 = new Random();
+        Random r1 = new Random(0);
+        Random r2 = new Random(0);
         assertEquals(r1, r2);
     }
     */
