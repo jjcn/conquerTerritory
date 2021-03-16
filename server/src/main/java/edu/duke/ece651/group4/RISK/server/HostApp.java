@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CyclicBarrier;
 
-public class HostApp {
+public class HostApp implements Runnable {
     ServerSocket hostSocket;
     World theWorld;
     HostState hostState;
@@ -34,7 +34,7 @@ public class HostApp {
      * */
     HostApp(ServerSocket hostSocket,int num){
         this.hostSocket = hostSocket;
-        this.hostState = new HostState();
+        this.hostState = new HostState("WaitForUpdateWorld");
         this.barrier = null;
         this.numOfPlayers = 0;
         this.theWorld = null;
@@ -75,8 +75,7 @@ public class HostApp {
         }
         this.numOfPlayers=playerNum;
         this.theWorld=new World(playerNum*this.numTerritoryPerPlayer);
-        this.groups=new HashMap<>();
-//        this.groups=(HashMap<Integer, List<Territory>>) this.theWorld.divideTerritories(playerNum);
+        this.groups=(HashMap<Integer, List<Territory>>) this.theWorld.divideTerritories(playerNum);
     }
 
     public boolean isNumeric(String strNum) {
@@ -101,18 +100,16 @@ public class HostApp {
     private void setUpClients() {
         int PlayerID = 0;
         try {
-            while(PlayerID <numOfPlayers) {
-
+            while(PlayerID < numOfPlayers) {
                 Socket s = hostSocket.accept();
                 Client theClient = new Client(s);
-                PlayerState playerState = new PlayerState("R");
-                playerNames.add( "Player" +PlayerID);
+                PlayerState playerState = new PlayerState("Ready");
+                playerNames.add( "Player" + PlayerID);
                 hostState.addOnePlayerState(playerState);
                 ClientThread theThread = new ClientThread(theWorld, playerNames.get(PlayerID), PlayerID, barrier, playerState,
                         theClient, hostState,this.groups.get(PlayerID));
-
-                theThread.run();
-
+                theThread.start();
+                PlayerID += 1;
             }
         }catch(IOException e){
             System.out.println("Socket Problem");
@@ -122,21 +119,20 @@ public class HostApp {
     /*
      * This will finish all attacks on world and get a final new world.
      * And change the hostSate to "finishUpdateMap"
+     * If some players are not done with one turn, skip
      * */
 
     private void finishBattlesOneTurn() {
-        while(hostState.isAllPlayersDoneOneTurn()) {
+        if(!hostState.isFinishUpdate()) {
             theWorld.doAllBattles();
-            hostState.changeStateTo("finishUpdateMap");
-
+            hostState.changeStateTo("finishUpdateWorld");
+            System.out.println("The host finish updating the world after do all battles.");
         }
     }
 
 
     /*
      * This is the the main function of the game process
-     *
-     *
      * */
     public void run() {
         setUpWorld();
@@ -144,12 +140,12 @@ public class HostApp {
         setUpClients();
 
         while(true) {
-            finishBattlesOneTurn();
-
-            if(hostState.isEndGame()) {
-                hostState.changeStateTo("endGame");
-                //next winnermessage
-                break;  // we should decide to quit the game after all thread are quit.
+            if(hostState.isAllPlayersDoneOneTurn()) {
+                finishBattlesOneTurn();
+            }
+            if(hostState.isALlThreadsQuit()) {
+                System.out.println("The host quits after all threads quit.");
+                break;  // we should decide to quit the game after all thread  quit.
             }
         }
     }

@@ -1,59 +1,52 @@
 package edu.duke.ece651.group4.RISK.server;
 
 import java.util.HashSet;
-
+/*
+* This class handle the state of the host
+* It also records all states of players
+* hostState: 1. FinishUpdateWorld
+*            2. WaitForUpdateWorld
+* */
 public class HostState{
     HashSet<PlayerState> statsOfPlayers;
     String hostState;
 
-    public HostState(){
-        hostState = null;
+    public HostState(String hostState){
+        this.hostState = hostState;
         statsOfPlayers = new HashSet<PlayerState>();
     }
 
-
-
+    /*
+    *  This helps to add one PlayerState to hostState
+    * */
     public void addOnePlayerState(PlayerState s){
         statsOfPlayers.add(s);
     }
 
-    public boolean isReadyToUpdate(){
-        for (PlayerState s: statsOfPlayers){
-            if(s.isReadyToDoAction()){
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean isFinishUpdate(){
-        return hostState.equals("finishUpdateMap") ;
-    }
-
+    /*
+    * This helps to check if all players finish oneTurn of moving or attacking
+    * If all players get one turn done, host will update the world
+    * */
     public boolean isAllPlayersDoneOneTurn(){
         for(PlayerState s: statsOfPlayers){
-            if(!s.isFinishOneAction()){
+            if(!s.isDoneOneTurn()){
                 return false;
             }
         }
         return false;
     }
 
-    public boolean isEndGame(){
-        int num = statsOfPlayers.size();
-        int numLosers = 0;
-        for(PlayerState s: statsOfPlayers){
-            if(s.isLose()){
-                numLosers += 1;
-            }
-        }
-        return numLosers == (num-1);
-    }
-
+    /*
+    * This helps to change hostState
+    * */
     public void changeStateTo(String s){
         this.hostState = s;
     }
 
+    /*
+    * This helps to check if all thread closes.
+    * after all threads close, the host will close
+    * */
     public boolean isALlThreadsQuit(){
         for(PlayerState s: statsOfPlayers){
             if(!s.isQuit()){
@@ -62,8 +55,11 @@ public class HostState{
         }
         return true;
     }
-//    public boolean isEndGame(){
-//        return hostState.equals("endGame");
-//    }
 
+    /*
+    * This helps each thread knows if the host finish update the world
+    * */
+    public boolean isFinishUpdate(){
+        return this.hostState.equals("finishUpdateWorld") ;
+    }
 }
