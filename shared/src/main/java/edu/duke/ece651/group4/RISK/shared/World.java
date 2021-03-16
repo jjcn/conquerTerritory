@@ -75,6 +75,19 @@ public class World implements Serializable {
     }
 
     /**
+     * Set a random seed to a territory.
+     * @param terrName is the territory to set random seed.
+     * @param seed is a random seed.
+     */
+    public void setRandom(Territory terr, Random seed) {
+        terr.setRandom(seed);
+    }
+
+    public void setRandom(String terrName, Random seed) {
+        findTerritory(terrName).setRandom(seed);
+    }
+
+    /**
      * Add a territory to the world.
      * @param terr is the territory to add.
      */
@@ -103,29 +116,16 @@ public class World implements Serializable {
     /**
      * Station troop to a territory.
      * @param terrName is the territory name.
-     * @param num is the population of the troop.
+     * @param population is the population of the troop.
      */   
-    public void stationTroop(String terrName, int num) {
+    public void stationTroop(String terrName, int population) {
         Territory terr = findTerritory(terrName);
-        terr.initializeTerritory(num, terr.getOwner());
+        terr.initializeTerritory(population, terr.getOwner());
     }
 
     public void stationTroop(String terrName, Troop troop) {
         Territory terr = findTerritory(terrName);
         terr.initializeTerritory(troop.checkTroopSize(), troop.getOwner());
-    }
-
-    /**
-     * Set a random seed to a territory.
-     * @param terrName is the territory to set random seed.
-     * @param seed is a random seed.
-     */
-    public void setRandom(Territory terr, Random seed) {
-        terr.setRandom(seed);
-    }
-
-    public void setRandom(String terrName, Random seed) {
-        findTerritory(terrName).setRandom(seed);
     }
 
     /**
@@ -211,7 +211,7 @@ public class World implements Serializable {
      * @return a HashMap. The mapping being: group number -> grouped territories.
      * NOTE: group number starts from 0.
      */
-    public Map<Integer, List<Territory>> divideTerritories(int nGroup) {
+    public Map<Integer, List<Territory>> divideTerritories(int nGroup, Random rand) {
         // check if it is an integer > 0
         if (nGroup <= 0) {
             throw new IllegalArgumentException(NOT_POSITIVE_MSG);
@@ -227,7 +227,7 @@ public class World implements Serializable {
             randomInds[i] = i;
         }
         // shuffle indices to create random groups
-        Shuffler shuffler = new Shuffler();
+        Shuffler shuffler = new Shuffler(rand);
         shuffler.shuffle(randomInds);
         // divide
         List<Territory> terrList = territories.getVertices();

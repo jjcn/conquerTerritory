@@ -164,6 +164,14 @@ public class Graph<T> implements Serializable {
         return adjMatrix[i][j];
     }
 
+    /**
+     * This only prints out adjacent matrix.
+     * TODO: a function that checks if
+     *  - Each territory shall be adjacent to one or more other territories.
+        - The territories must form a connected graph (all territories must be reachable from any
+        other territory).
+     */
+
     /*
     @Override
     public Iterator<T> iterator() {
