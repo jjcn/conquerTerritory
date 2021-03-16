@@ -4,17 +4,24 @@ import java.util.Random;
 
 /**
  * This class does shuffling of an array.
+ * Takes a Random object to construct a shuffler.
  */
 public class Shuffler {
-    
-    public Shuffler() {}
+    Random rand;
+
+    public Shuffler() {
+        this(new Random());
+    }
+
+    public Shuffler(Random rand) {
+        this.rand = rand;
+    }
     
     /**
      * Shuffle an array. Uses Fisher-Yates shuffle algorithm.
      * @param arr is the array to shuffle.
      */
     public void shuffle(int[] arr) {
-        Random rand = new Random(); 
         for (int i = arr.length - 1; i >= 0; i--) {
             int randomNum = rand.nextInt(i + 1);
             int swap = arr[randomNum]; 

@@ -12,15 +12,15 @@ import java.util.List;
 import java.util.Random;
 
 public class GraphTest {
-    String[] names1 = 
+    String[] names = 
         "Narnia, Midkemia, Oz, Gondor, Mordor, Hogwarts, Scadrial, Elantris, Roshar".split(", ");
 
     /**
      * Creates a test graph. Same as the one on Evolution 1 requirements.
      */
-    public Graph<String> createTestGraph1() {
+    public Graph<String> createGraphFantasy() {
         Graph<String> graph = new Graph<>();
-        for (String name: names1) {
+        for (String name: names) {
             graph.addVertex(name);
         }
         graph.addEdge("Narnia", "Midkemia");
@@ -49,19 +49,27 @@ public class GraphTest {
         Graph<Territory> terrGraph = new Graph<>();
     }
 
+    /**
+     * Helper function that prints out adjacent matrix as 0's and 1's.
+     * @param matrix is a boolean adjacent matrix
+     */
+    public void print2dArray(boolean[][] matrix) {
+        for (int i = 0; i < matrix[0].length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                System.out.print((matrix[i][j] == true ? 1 : 0) + " ");
+            }
+            System.out.println();
+        }
+    }
+
     @Test
-    public void testCreateRandomConnections() {
+    public void testAddRandomEdges() {
         Graph<Integer> intGraph = new Graph<>();
         for (int i = 1; i <= 9; i++) {
             intGraph.addVertex(i);
         }
-        intGraph.createRandomConnections(intGraph.size(), new Random());
-        for (int i = 0; i < intGraph.size(); i++) {
-            for (int j = 0; j < intGraph.size(); j++) {
-                System.out.print((intGraph.adjMatrix[i][j] == true ? 1 : 0) + " ");
-            }
-            System.out.println();
-        }
+        intGraph.addRandomEdges(intGraph.size(), new Random(0));
+        print2dArray(intGraph.adjMatrix);
     }
 
     @Test
@@ -86,10 +94,10 @@ public class GraphTest {
 
     @Test
     public void testGetVertices() {
-        Graph<String> graph = createTestGraph1();
+        Graph<String> graph = createGraphFantasy();
         
         List<String> expected = new ArrayList<>();
-        for (String name: names1) {
+        for (String name: names) {
             expected.add(name);
         }
         
@@ -98,7 +106,7 @@ public class GraphTest {
 
     @Test
     public void testGetAdjacentVertices() {
-        Graph<String> graph = createTestGraph1();
+        Graph<String> graph = createGraphFantasy();
 
         List<String> adjsScadrial = graph.getAdjacentVertices("Scadrial");
         List<String> expectedScadrial = new ArrayList<>();
@@ -191,4 +199,61 @@ public class GraphTest {
         }
     }
     */
+
+    @Test
+    public void testIsValid() {
+        // empty graph
+        Graph<String> graphEmpty = new Graph<>();
+        assertTrue(graphEmpty.isValid());
+
+        // one vertex
+        Graph<Integer> graphOneVertex = new Graph<>();
+        graphOneVertex.addVertex(1);
+        assertFalse(graphOneVertex.isValid());
+
+        // fantasy 
+        Graph<String> graphFantasy = createGraphFantasy();
+        assertTrue(graphFantasy.isValid());
+
+        // random using addRandomEdges()
+        Graph<Integer> graphRandom = new Graph<>();
+        for (int i = 1; i <= 9; i++) {
+            graphRandom.addVertex(i);
+        }
+        graphRandom.addRandomEdges(graphRandom.size(), new Random());
+        assertTrue(graphRandom.isValid());
+
+        // not fully connected
+        Graph<Integer> graphNotFullyConnected = new Graph<>();
+        for (int i = 1; i <= 4; i++) {
+            graphNotFullyConnected.addVertex(i);
+        }
+        graphNotFullyConnected.addEdge(1, 2);
+        graphNotFullyConnected.addEdge(1, 3);
+        assertFalse(graphNotFullyConnected.isValid());
+    }
+
+    @Test
+    public void testHasPath() {
+        // one vertex
+        Graph<Integer> graphOneVertex = new Graph<>();
+        graphOneVertex.addVertex(1);
+        assertTrue(graphOneVertex.hasPath(1, 1));
+
+        // fantasy 
+        Graph<String> graphFantasy = createGraphFantasy();
+        assertTrue(graphFantasy.hasPath("Mordor", "Mordor"));
+        assertTrue(graphFantasy.hasPath("Mordor", "Gondor"));
+        assertTrue(graphFantasy.hasPath("Oz", "Scadrial"));
+
+        // not fully connected
+        Graph<Integer> graphNotFullyConnected = new Graph<>();
+        for (int i = 1; i <= 4; i++) {
+            graphNotFullyConnected.addVertex(i);
+        }
+        graphNotFullyConnected.addEdge(1, 2);
+        graphNotFullyConnected.addEdge(1, 3);
+        assertTrue(graphNotFullyConnected.hasPath(2, 3));
+        assertFalse(graphNotFullyConnected.hasPath(2, 4));
+    }
 }

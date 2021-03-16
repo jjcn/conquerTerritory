@@ -1,8 +1,12 @@
 package edu.duke.ece651.group4.RISK.shared;
 
 import java.util.List;
-import java.util.Random;
+import java.util.Queue;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Random;
+import java.util.Set;
 
 import java.io.Serializable;
 
@@ -35,10 +39,10 @@ public class Graph<T> implements Serializable {
 
     /**
      * Creates a spanning tree, and add several random connections to it
-     * @param newConnections is the number of new connections introduced to the spanning tree.
+     * @param numNewEdges is the number of new connections introduced to the spanning tree.
      * @param rand is the Random object.
      */
-    public void createRandomConnections(int newConnections, Random rand) {
+    public void addRandomEdges(int numNewEdges, Random rand) {
         if (size() == 0 || size() == 1) {
             return;
         }
@@ -46,9 +50,10 @@ public class Graph<T> implements Serializable {
             adjMatrix[i][i + 1] = true;
             adjMatrix[i + 1][i] = true;
         }
-        while (newConnections > 0) {
+        // add random connections to it
+        while (numNewEdges > 0) {
             adjMatrix[rand.nextInt(size())][rand.nextInt(size())] = true;
-            newConnections--;
+            numNewEdges--;
         }
     }
 
@@ -161,6 +166,90 @@ public class Graph<T> implements Serializable {
         int i = vertices.indexOf(v1);
         int j = vertices.indexOf(v2);
         return adjMatrix[i][j];
+    }
+
+    /**
+     * Checks if a graph obeys certain rules. The rules are
+     * - Each vertex be adjacent to one or more other vertices.
+       - The vertices must form a connected graph (all vertices must be reachable from any
+         other vertex).
+     * @return true, if the graph obeys the rules;
+     *         false, if not.
+     */
+    public boolean isValid() {
+        return allHasAdjacents() && isConnectedGraph();
+    }
+
+    /**
+     * Checks if a graph obeys the following rule:
+     * - Each vertex is adjacent to one or more other vertices.
+     * @return true, if the graph obeys the rules;
+     *         false, if not.
+     */
+    private boolean allHasAdjacents() {
+        for (int i = 0; i < size(); i++) {
+            boolean hasAdjacent = false;
+            for (int j = 0; j < size(); j++) { // iterate over a line of adjacency matrix
+                hasAdjacent = hasAdjacent || adjMatrix[i][j];
+            }
+            if (hasAdjacent == false) { // false if no adjacents found with this vertex
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks if a graph obeys the following rule:
+       - The vertices must form a connected graph (all vertices must be reachable from any
+         other vertex).
+     * @return true, if the graph obeys the rules;
+     *         false, if not.
+     */
+    private boolean isConnectedGraph() {
+        if (size() == 0) {
+            return true;
+        }
+        List<T> vertices = getVertices();
+        for (int i = 0; i < size(); i++) {
+            if (!hasPath(vertices.get(0), vertices.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks if v1 can reach v2.
+     * @param start is the starting vertex.
+     * @param end is the target vertex.
+     * @return true, if v2 is reachable from v1;
+     *         false, if not.
+     */
+    public boolean hasPath(T start, T end) {
+        if (start.equals(end)) {
+            return true;
+        }
+        
+        Queue<T> queue = new LinkedList<>();
+        Set<T> visited = new HashSet<>();
+        
+        queue.add(start);
+        visited.add(start);
+        while (queue.size() != 0) {
+            T key = queue.poll();
+            List<T> adjacents = getAdjacentVertices(key);
+            for (T adjacent : adjacents) {
+                if (adjacent.equals(end)) {
+                    return true;
+                }
+                if (!visited.contains(adjacent)) {
+                    visited.add(adjacent);
+                    queue.add(adjacent);
+                }
+            }
+        }
+        return false;
     }
 
     /*
