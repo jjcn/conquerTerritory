@@ -326,6 +326,34 @@ public class World implements Serializable {
         return false;
     }
 
+    /**
+     * Check if the game has ended, that is, a player owns all the territories.
+     * @return true, if the game ends.
+     *         false, if not.
+     */
+    public boolean isGameEnd() { 
+        // if a territory has an owner other than the first one, then the game hasn't ended.
+        Player player = territories.getVertices().get(0).getOwner();
+        for (Territory terr : getAllTerritories()) {
+            if (!terr.getOwner().equals(player)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Get the name of winner of the game.
+     * @return winner's the name, if the game has ended.
+     *         null, if there is no winner yet.
+     */
+    public String getWinner() {
+        if (isGameEnd()) {
+            return territories.getVertices().get(0).getOwner().getName();
+        }
+        return null;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other != null && other.getClass().equals(getClass())) {
