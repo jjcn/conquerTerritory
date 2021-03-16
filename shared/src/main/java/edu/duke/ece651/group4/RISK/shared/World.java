@@ -149,7 +149,7 @@ public class World implements Serializable {
         Territory terr = findTerritory(terrName);
         terr.initializeTerritory(troop.checkTroopSize(), troop.getOwner());
     }
-
+    
     /**
      * Station troop to a territory by specifying territory name and population.
      * @param terrName is the territory name.
@@ -158,44 +158,6 @@ public class World implements Serializable {
     public void stationTroop(String terrName, int population) {
         Territory terr = findTerritory(terrName);
         terr.initializeTerritory(population, terr.getOwner());
-    }
-
-    /**
-     * Check if two territories are adjacent to each other
-     * @param terr1 is a territory.
-     * @param terr2 is the other territory.
-     * @return true, if two territories are adjacent;
-     *         false, if not.
-     */
-    public boolean checkIfAdjacent(Territory terr1, Territory terr2) {
-        return territories.isAdjacent(terr1, terr2);
-    }
-
-    /**
-     * Check if two territories are adjacent to each other by their names. 
-     * @param name1 is the name of one territory to check.
-     * @param name2 is the name of thr other territory.
-     * @return true, if two territories are adjacent;
-     *         false, if not.
-     */
-    public boolean checkIfAdjacent(String name1, String name2) {
-        return checkIfAdjacent(findTerritory(name1), findTerritory(name2));
-    }
-
-    /**
-     * Finds a territory by its name. 
-     * If the territory exists, returns that territory of that name.
-     * If not, an exception will be thrown.
-     * @param terrName is the territory name to search.
-     * @return the specified territory.
-     */
-    public Territory findTerritory(String terrName) {
-        for (Territory terr : territories.getVertices()) {
-            if (terr.getName().equals(terrName)) {
-                return terr;
-            }
-        }
-        throw new NoSuchElementException(String.format(TERRITORY_NOT_FOUND_MSG, terrName));
     }
 
     /**
@@ -235,6 +197,44 @@ public class World implements Serializable {
         for (Territory terr : territories.getVertices()) {
             terr.doBattles(); // FIXIT: doOneBattle requires a Troop argument
         }
+    }
+
+    /**
+     * Check if two territories are adjacent to each other
+     * @param terr1 is a territory.
+     * @param terr2 is the other territory.
+     * @return true, if two territories are adjacent;
+     *         false, if not.
+     */
+    public boolean checkIfAdjacent(Territory terr1, Territory terr2) {
+        return territories.isAdjacent(terr1, terr2);
+    }
+
+    /**
+     * Check if two territories are adjacent to each other by their names. 
+     * @param name1 is the name of one territory to check.
+     * @param name2 is the name of thr other territory.
+     * @return true, if two territories are adjacent;
+     *         false, if not.
+     */
+    public boolean checkIfAdjacent(String name1, String name2) {
+        return checkIfAdjacent(findTerritory(name1), findTerritory(name2));
+    }
+
+    /**
+     * Finds a territory by its name. 
+     * If the territory exists, returns that territory of that name.
+     * If not, an exception will be thrown.
+     * @param terrName is the territory name to search.
+     * @return the specified territory.
+     */
+    public Territory findTerritory(String terrName) {
+        for (Territory terr : territories.getVertices()) {
+            if (terr.getName().equals(terrName)) {
+                return terr;
+            }
+        }
+        throw new NoSuchElementException(String.format(TERRITORY_NOT_FOUND_MSG, terrName));
     }
 
     /**
@@ -284,6 +284,16 @@ public class World implements Serializable {
      */
     public String checkBasicOrder(BasicOrder order) {
         return basicOrderChecker.checkOrder(order, this);
+    }
+
+    /**
+     * Add unit to all territories.
+     * @param num is the number of units to add to every territory.
+     */
+    public void addUnitToAll(int num) {
+        for (Territory terr : getAllTerritories()) {
+            terr.addUnit(num);
+        }
     }
 
     /**
