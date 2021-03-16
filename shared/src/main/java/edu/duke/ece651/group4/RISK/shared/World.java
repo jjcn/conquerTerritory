@@ -286,6 +286,21 @@ public class World implements Serializable {
         return basicOrderChecker.checkOrder(order, this);
     }
 
+    /**
+     * Checks if a player has lost the game ny losing all his territories.
+     * @param playerName is the player's name.
+     * @return true, if player has lost.
+     *         false, if not.
+     */
+    public boolean checkLost(String playerName) {
+        for (Territory terr : getAllTerritories()) {
+            if (terr.getOwner().getName().equals(playerName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (other != null && other.getClass().equals(getClass())) {
