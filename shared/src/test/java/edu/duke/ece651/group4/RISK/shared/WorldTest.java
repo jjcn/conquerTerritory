@@ -63,6 +63,12 @@ public class WorldTest {
     }
 
     @Test
+    public void testCreation() {
+        World randomWorldWithSeed = new World(9, new Random(0));
+        World randomWorld = new World(9);
+    }
+
+    @Test
     public void testAddTerritory() {
         World world = new World();
         List<Territory> expected = new ArrayList<>();
