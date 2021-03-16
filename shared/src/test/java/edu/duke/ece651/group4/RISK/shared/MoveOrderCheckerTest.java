@@ -9,7 +9,7 @@ import java.io.*;
 public class MoveOrderCheckerTest {
     private final String NOT_SAME_OWNER_MSG = "Cannot move troop to a territory with different owner.";
     private final String NOT_MOVE_ORDER_MSG = "This is not a move order.";
-    private final String NOT_LINKED_MSG = "There is not a path of territories that all belongs to you.";
+    private final String NOT_REACHABLE_MSG = "There is not a path of territories that all belongs to you.";
 
     PrintStream out = null;
     Reader inputReader = null;
@@ -112,6 +112,6 @@ public class MoveOrderCheckerTest {
         assertEquals(null, moc.checkMyOrder(order1, world));
         */
         BasicOrder order2 = new BasicOrder("Roshar", "Oz", new Troop(3, green), 'M');
-        assertEquals(NOT_LINKED_MSG, moc.checkMyOrder(order2, world));
+        assertEquals(NOT_REACHABLE_MSG, moc.checkMyOrder(order2, world));
     }
 }
