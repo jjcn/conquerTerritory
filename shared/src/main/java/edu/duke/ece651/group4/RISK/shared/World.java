@@ -23,30 +23,14 @@ public class World implements Serializable {
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
     final String NOT_POSITIVE_MSG = "Number of groups should be positive.";
-    final Random rnd;
+    
     /**
      * All territories in the world. Implemented with a graph structure.
      */
     public Graph<Territory> territories;
     private final OrderChecker basicOrderChecker;
+    final Random rand;
 
-    /**
-     * Construct world with a graph.
-     * @param terrs
-     */
-    public World(Graph<Territory> terrs) {
-//        territories = terrs;
-//        basicOrderChecker = new OrderChecker();
-//        rnd=new Random();
-        this(terrs,new Random());
-    }
-
-    public World(Graph<Territory> terrs,Random random){
-        territories = terrs;
-        basicOrderChecker = new OrderChecker();
-        rnd=random;
-    }
-    
     /**
      * Construct a default world with an empty graph.
      */
@@ -55,19 +39,40 @@ public class World implements Serializable {
     }
 
     /**
+     * Construct world with a graph.
+     * @param terrs
+     */
+    public World(Graph<Territory> terrs) {
+        this(terrs, new Random());
+    }
+
+    /**
+     * Construct world with a graph and a random seed.
+     * @param terrs is the number of territories.
+     * @param random is the random seed.
+     */
+    public World(Graph<Territory> terrs, Random random){
+        territories = terrs;
+        basicOrderChecker = new OrderChecker();
+        rand = random;
+    }
+    
+
+    /**
      * Creates a world, specify a number of total territories and a random seed.
+     * The territories created will share a random seed with the world.
      * Territory names are: 1, 2, 3, ... 
      * Number of total connections is random,
      * and is propotional to number of territories.
      * @param numTerrs is the number of territories.
      */
-    public World(int numTerrs, Random rand) {
-        this(new Graph<Territory>(),rand);
+    public World(int numTerrs, Random random) {
+        this(new Graph<Territory>(), random);
 
         for (int i = 1; i <= numTerrs; i++) {
-            addTerritory(new Territory(String.format("%d", i),rand));
+            addTerritory(new Territory(String.format("%d", i), random));
         }
-        territories.addRandomEdges(numTerrs, rand);
+        territories.addRandomEdges(numTerrs, random);
 
     }
 
