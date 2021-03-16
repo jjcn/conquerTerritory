@@ -63,12 +63,12 @@ public class GraphTest {
     }
 
     @Test
-    public void testCreateRandomEdges() {
+    public void testAddRandomEdges() {
         Graph<Integer> intGraph = new Graph<>();
         for (int i = 1; i <= 9; i++) {
             intGraph.addVertex(i);
         }
-        intGraph.createRandomEdges(intGraph.size(), new Random(0));
+        intGraph.addRandomEdges(intGraph.size(), new Random(0));
         print2dArray(intGraph.adjMatrix);
     }
 
@@ -202,13 +202,29 @@ public class GraphTest {
 
     @Test
     public void testIsFullyConnected() {
-        Graph<String> graph1 = createGraphFantasy();
-        assertTrue(graph1.isFullyConnected());
+        // empty graph
+        Graph<String> graphEmpty = createGraphFantasy();
+        assertTrue(graphEmpty.isFullyConnected());
 
-        Graph<Integer> graph2 = new Graph<>();
+        // fantasy 
+        Graph<String> graphFantasy = createGraphFantasy();
+        assertTrue(graphFantasy.isFullyConnected());
+
+        // random using addRandomEdges()
+        Graph<Integer> graphRandom = new Graph<>();
         for (int i = 1; i <= 9; i++) {
-            graph2.addVertex(i);
+            graphRandom.addVertex(i);
         }
-        graph2.addRandomEdges(newEdges, rand);
+        graphRandom.addRandomEdges(graphRandom.size(), new Random());
+        assertTrue(graphRandom.isFullyConnected());
+
+        // not fully connected
+        Graph<Integer> graphNotFullyConnected = new Graph<>();
+        for (int i = 1; i <= 4; i++) {
+            graphNotFullyConnected.addVertex(i);
+        }
+        graphNotFullyConnected.addEdge(1, 2);
+        graphNotFullyConnected.addEdge(1, 3);
+        assertFalse(graphNotFullyConnected.isFullyConnected());
     }
 }
