@@ -45,12 +45,16 @@ public class World implements Serializable {
      * Number of connections is propotional to number of territories.
      * @param numTerrs is the number of territories.
      */
-    public World(int numTerrs) {
+    public World(int numTerrs, Random rand) {
         this();
         for (int i = 1; i <= numTerrs; i++) {
             addTerritory(new Territory(String.format("%d", i)));
         }
-        territories.createRandomConnections(numTerrs, new Random());
+        territories.createRandomConnections(numTerrs, rand);
+    }
+
+    public World(int numTerrs) {
+        this(numTerrs, new Random());
     }
 
     /**
