@@ -51,7 +51,7 @@ public class HostApp {
 
 
         int playerNum = 0;
-        while (playerNum != 0) {
+        while (playerNum == 0) {
             try {
                 System.out.println(instruct1);
                 String playerNumRead = inRead.readLine();
