@@ -1,9 +1,12 @@
 package edu.duke.ece651.group4.RISK.shared;
 
 import java.util.List;
+import java.util.Queue;
 import java.util.ArrayList;
-
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Random;
+import java.util.Set;
 
 import java.io.Serializable;
 
@@ -173,17 +176,17 @@ public class Graph<T> implements Serializable {
      * @return true, if the graph obeys the rules;
      *         false, if not.
      */
-    public boolean checkGraphValidity() {
-        return isFullyConnected() && isConnectedGraph();
+    public boolean isValid() {
+        return allHasAdjacents() && isConnectedGraph();
     }
 
     /**
      * Checks if a graph obeys the following rule:
-     * - Each vertex be adjacent to one or more other vertices.
+     * - Each vertex is adjacent to one or more other vertices.
      * @return true, if the graph obeys the rules;
      *         false, if not.
      */
-    public boolean isFullyConnected() {
+    private boolean allHasAdjacents() {
         for (int i = 0; i < size(); i++) {
             boolean hasAdjacent = false;
             for (int j = 0; j < size(); j++) { // iterate over a line of adjacency matrix
@@ -203,8 +206,49 @@ public class Graph<T> implements Serializable {
      * @return true, if the graph obeys the rules;
      *         false, if not.
      */
-    public boolean isConnectedGraph() {
-        // TODO
+    private boolean isConnectedGraph() {
+        if (size() == 0) {
+            return true;
+        }
+        List<T> vertices = getVertices();
+        for (int i = 0; i < size(); i++) {
+            if (!hasPath(vertices.get(0), vertices.get(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks if v1 can reach v2.
+     * @param start is the starting vertex.
+     * @param end is the target vertex.
+     * @return true, if v2 is reachable from v1;
+     *         false, if not.
+     */
+    public boolean hasPath(T start, T end) {
+        if (start.equals(end)) {
+            return true;
+        }
+        
+        Queue<T> queue = new LinkedList<>();
+        Set<T> visited = new HashSet<>();
+        
+        queue.add(start);
+        visited.add(start);
+        while (queue.size() != 0) {
+            T key = queue.poll();
+            List<T> adjacents = getAdjacentVertices(key);
+            for (T adjacent : adjacents) {
+                if (adjacent.equals(end)) {
+                    return true;
+                }
+                if (!visited.contains(adjacent)) {
+                    visited.add(adjacent);
+                    queue.add(adjacent);
+                }
+            }
+        }
         return false;
     }
 

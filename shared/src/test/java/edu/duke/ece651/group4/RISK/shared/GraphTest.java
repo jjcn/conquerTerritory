@@ -201,14 +201,19 @@ public class GraphTest {
     */
 
     @Test
-    public void testIsFullyConnected() {
+    public void testIsValid() {
         // empty graph
-        Graph<String> graphEmpty = createGraphFantasy();
-        assertTrue(graphEmpty.isFullyConnected());
+        Graph<String> graphEmpty = new Graph<>();
+        assertTrue(graphEmpty.isValid());
+
+        // one vertex
+        Graph<Integer> graphOneVertex = new Graph<>();
+        graphOneVertex.addVertex(1);
+        assertFalse(graphOneVertex.isValid());
 
         // fantasy 
         Graph<String> graphFantasy = createGraphFantasy();
-        assertTrue(graphFantasy.isFullyConnected());
+        assertTrue(graphFantasy.isValid());
 
         // random using addRandomEdges()
         Graph<Integer> graphRandom = new Graph<>();
@@ -216,7 +221,7 @@ public class GraphTest {
             graphRandom.addVertex(i);
         }
         graphRandom.addRandomEdges(graphRandom.size(), new Random());
-        assertTrue(graphRandom.isFullyConnected());
+        assertTrue(graphRandom.isValid());
 
         // not fully connected
         Graph<Integer> graphNotFullyConnected = new Graph<>();
@@ -225,6 +230,30 @@ public class GraphTest {
         }
         graphNotFullyConnected.addEdge(1, 2);
         graphNotFullyConnected.addEdge(1, 3);
-        assertFalse(graphNotFullyConnected.isFullyConnected());
+        assertFalse(graphNotFullyConnected.isValid());
+    }
+
+    @Test
+    public void testHasPath() {
+        // one vertex
+        Graph<Integer> graphOneVertex = new Graph<>();
+        graphOneVertex.addVertex(1);
+        assertTrue(graphOneVertex.hasPath(1, 1));
+
+        // fantasy 
+        Graph<String> graphFantasy = createGraphFantasy();
+        assertTrue(graphFantasy.hasPath("Mordor", "Mordor"));
+        assertTrue(graphFantasy.hasPath("Mordor", "Gondor"));
+        assertTrue(graphFantasy.hasPath("Oz", "Scadrial"));
+
+        // not fully connected
+        Graph<Integer> graphNotFullyConnected = new Graph<>();
+        for (int i = 1; i <= 4; i++) {
+            graphNotFullyConnected.addVertex(i);
+        }
+        graphNotFullyConnected.addEdge(1, 2);
+        graphNotFullyConnected.addEdge(1, 3);
+        assertTrue(graphNotFullyConnected.hasPath(2, 3));
+        assertFalse(graphNotFullyConnected.hasPath(2, 4));
     }
 }
