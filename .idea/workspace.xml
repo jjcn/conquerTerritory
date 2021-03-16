@@ -6,11 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="dc3521d2-3c1f-4c20-971c-aae893e32c0e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/client/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/edu/duke/ece651/group4/RISK/client/PlayerApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/edu/duke/ece651/group4/RISK/client/PlayerApp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/duke/ece651/group4/RISK/server/ClientThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/duke/ece651/group4/RISK/server/ClientThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/duke/ece651/group4/RISK/server/HostApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/duke/ece651/group4/RISK/server/HostApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/World.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/World.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/test/java/edu/duke/ece651/group4/RISK/shared/WorldTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/test/java/edu/duke/ece651/group4/RISK/shared/WorldTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/AttackOrderChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/AttackOrderChecker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/DoneOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/DoneOrder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/Graph.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/Graph.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/MoveOrderChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/MoveOrderChecker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/OrderChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/OrderChecker.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/PlaceOrder.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/PlaceOrder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/Shuffler.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/Shuffler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/WorldTextView.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/WorldTextView.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,13 +52,15 @@
     <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RunManager">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="class" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -100,6 +109,7 @@
       <workItem from="1615860652380" duration="2027000" />
       <workItem from="1615870672501" duration="32000" />
       <workItem from="1615872678088" duration="774000" />
+      <workItem from="1615914180060" duration="12957000" />
     </task>
     <servers />
   </component>
@@ -117,6 +127,17 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/client/build.gradle</url>
+          <line>19</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/RISK$TextPlayerTest.ic" NAME="TextPlayerTest Coverage Results" MODIFIED="1615835274189" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

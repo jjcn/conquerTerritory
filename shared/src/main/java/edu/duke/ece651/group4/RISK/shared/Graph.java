@@ -75,7 +75,7 @@ public class Graph<T> implements Serializable {
 
     /**
      * Get all the vertices adjacent to a certain vertex.
-     * @param data is the data in the vertex to find adjacents of.
+     * @param key is the data in the vertex to find adjacents of.
      * @return a list of all adjacent vertices.
      */
     public List<T> getAdjacentVertices(T key) {
@@ -109,7 +109,7 @@ public class Graph<T> implements Serializable {
 
     /**
      * Remove a vertex from graph. 
-     * @param data is the data in the vertex to move.
+     * @param key is the data in the vertex to move.
      */
     
     public void removeVertex(T key) {
@@ -131,8 +131,8 @@ public class Graph<T> implements Serializable {
     
     /**
      * Remove edge between two vertices.
-     * @param data1 is the data in one end of the edge.
-     * @param data2 is the data in other end the edge.
+     * @param key1 is the data in one end of the edge.
+     * @param key2 is the data in other end the edge.
      */
     
     public void removeEdge(T key1,T key2) {

@@ -1,9 +1,11 @@
 package edu.duke.ece651.group4.RISK.shared;
 
+import java.io.Serializable;
+
 /**
  * Checks if a order is valid.
  */
-public class OrderChecker { // TODO: bad code design
+public class OrderChecker implements Serializable { // TODO: bad code design
     AttackOrderChecker aoc;
     MoveOrderChecker moc;
 
