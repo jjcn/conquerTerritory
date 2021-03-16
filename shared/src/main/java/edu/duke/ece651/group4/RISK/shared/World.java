@@ -48,7 +48,7 @@ public class World implements Serializable {
     public World(int numTerrs, Random rand) {
         this();
         for (int i = 1; i <= numTerrs; i++) {
-            addTerritory(new Territory(String.format("%d", i)));
+            addTerritory(new Territory(String.format("%d", i),rand));
         }
         territories.createRandomConnections(numTerrs, rand);
     }

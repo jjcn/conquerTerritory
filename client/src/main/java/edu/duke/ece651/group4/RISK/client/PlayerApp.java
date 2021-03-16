@@ -10,6 +10,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 
 public class PlayerApp {
@@ -17,12 +18,18 @@ public class PlayerApp {
     private TextPlayer myPlayer;
     private World theWorld;
     private final int totalPopulation;
+    private Random rnd;
 
-    public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader,World theWorld,int num) {
+    public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader,World theWorld,int num,Random rnd) {
         this.playerClient=myClient;
-        this.myPlayer=new TextPlayer(out,inputReader, name);
+        this.myPlayer=new TextPlayer(out,inputReader, name,rnd);
         this.theWorld=theWorld;
         this.totalPopulation=num;
+        this.rnd=rnd;
+    }
+
+    public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader,World theWorld,int num) {
+        this(myClient,name,out,inputReader,theWorld,num,new Random());
     }
 
 
@@ -133,7 +140,7 @@ public class PlayerApp {
         PlayerApp myApp=new PlayerApp(myClient,name,System.out,inRead,gameWorld,15);
         myApp.doPlacementPhase();
         myApp.runGame();
-        
+
 
 
 
