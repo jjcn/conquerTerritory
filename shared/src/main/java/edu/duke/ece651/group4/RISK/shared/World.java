@@ -259,7 +259,6 @@ public class World implements Serializable {
      * NOTE: group number starts from 0.
      */
     public Map<Integer, List<Territory>> divideTerritories(int nGroup) {
-        Random rand=this.rnd;
         // check if it is an integer > 0
         if (nGroup <= 0) {
             throw new IllegalArgumentException(NOT_POSITIVE_MSG);
@@ -275,7 +274,7 @@ public class World implements Serializable {
             randomInds[i] = i;
         }
         // shuffle indices to create random groups
-        Shuffler shuffler = new Shuffler(rand);
+        Shuffler shuffler = new Shuffler(this.rand);
         shuffler.shuffle(randomInds);
         // divide
         List<Territory> terrList = territories.getVertices();
