@@ -41,7 +41,7 @@ public class MoveOrderCheckerTest {
      * @param troops is the corresponding troops on these territories.
      * @return a world object.
      */
-    public World createWorld(String names[], Troop troops[]) {
+    public World createWorld(Troop... troops) {
         World world = new World();
         for (String name: names) {
             world.addTerritory(new Territory(name));
@@ -63,7 +63,7 @@ public class MoveOrderCheckerTest {
         world.addConnection("Scadrial", "Mordor");
         world.addConnection("Mordor", "Hogwarts");
 
-        for (int i = 0; i < names.length; i++) {
+        for (int i = 0; i < troops.length; i++) {
             world.stationTroop(names[i], troops[i]);
         }
         return world;
@@ -71,7 +71,7 @@ public class MoveOrderCheckerTest {
 
     @Test
     public void testMoveOrderCheckerValid() {
-        World world = createWorld(names, troopsConnected);
+        World world = createWorld(troopsConnected);
 
         BasicOrder order1 = new BasicOrder("Narnia", "Midkemia", new Troop(3, green), 'M');
         assertEquals(null, moc.checkMyOrder(order1, world));
@@ -82,7 +82,7 @@ public class MoveOrderCheckerTest {
 
     @Test
     public void testMoveOrderCheckerNotSameOwner() {
-        World world = createWorld(names, troopsConnected);
+        World world = createWorld(troopsConnected);
 
         BasicOrder order1 = new BasicOrder("Narnia", "Roshar", new Troop(3, green), 'M');
         assertEquals(NOT_SAME_OWNER_MSG, moc.checkMyOrder(order1, world));
@@ -93,7 +93,7 @@ public class MoveOrderCheckerTest {
 
     @Test
     public void testMoveOrderCheckerNotMoveOrder() {
-        World world = createWorld(names, troopsConnected);
+        World world = createWorld(troopsConnected);
 
         BasicOrder order1 = new BasicOrder("Narnia", "Midkemia", new Troop(3, green), 'A');
         assertEquals(NOT_MOVE_ORDER_MSG, moc.checkMyOrder(order1, world));
@@ -104,7 +104,7 @@ public class MoveOrderCheckerTest {
 
     @Test
     public void testMoveOrderCheckerNotLinked() {
-        World world = createWorld(names, troopsSeparated);
+        World world = createWorld(troopsSeparated);
 
         // This test fails
         /*
