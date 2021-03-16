@@ -3,7 +3,9 @@ package edu.duke.ece651.group4.RISK.server;
 import edu.duke.ece651.group4.RISK.shared.Client;
 import edu.duke.ece651.group4.RISK.shared.World;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -40,10 +42,37 @@ public class HostApp {
     *  We need to make sure all variables related world and players are initialized
     * */
 
-    private void setUpWorld(){
+    private void setUpWorld() {
+        String instruct1 = "Please enter the Player Number";
+        BufferedReader inRead = new BufferedReader(new InputStreamReader(System.in));
 
+
+        int playerNum = 0;
+        while (playerNum != 0) {
+            try {
+                System.out.println(instruct1);
+                String playerNumRead = inRead.readLine();
+                if (!isNumeric(playerNumRead)) {
+                    throw new IllegalArgumentException();
+                }
+                playerNum = Integer.parseInt(playerNumRead);
+
+            } catch (Exception e) {
+                System.out.println("Please enter correct number!");
+            }
+        }
     }
-
+    public boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            double d = Double.parseDouble(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
 
 
     /*
