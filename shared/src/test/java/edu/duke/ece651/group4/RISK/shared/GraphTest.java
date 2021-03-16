@@ -45,8 +45,11 @@ public class GraphTest {
     @Test
     public void testCreation() {
         Graph<Integer> intGraph = new Graph<>();
-        Graph<String> stringGraph = new Graph<>();
         Graph<Territory> terrGraph = new Graph<>();
+
+        List<Character> vertices = new ArrayList<>(Arrays.asList('a', 'b', 'c'));
+        boolean adjMatrix[][] = {{false, true, true}, {true, false, true}, {true, true, false}};
+        Graph<Character> charGraph = new Graph<>(vertices, adjMatrix);
     }
 
     /**
@@ -65,6 +68,7 @@ public class GraphTest {
     @Test
     public void testAddRandomEdges() {
         Graph<Integer> intGraph = new Graph<>();
+        intGraph.addRandomEdges(intGraph.size(), new Random(0));
         for (int i = 1; i <= 9; i++) {
             intGraph.addVertex(i);
         }
@@ -229,7 +233,7 @@ public class GraphTest {
             graphNotFullyConnected.addVertex(i);
         }
         graphNotFullyConnected.addEdge(1, 2);
-        graphNotFullyConnected.addEdge(1, 3);
+        graphNotFullyConnected.addEdge(3, 4);
         assertFalse(graphNotFullyConnected.isValid());
     }
 
