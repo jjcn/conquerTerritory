@@ -23,7 +23,7 @@ public class World implements Serializable {
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
     final String NOT_POSITIVE_MSG = "Number of groups should be positive.";
-    
+    final Random rnd;
     /**
      * All territories in the world. Implemented with a graph structure.
      */
@@ -35,8 +35,16 @@ public class World implements Serializable {
      * @param terrs
      */
     public World(Graph<Territory> terrs) {
+//        territories = terrs;
+//        basicOrderChecker = new OrderChecker();
+//        rnd=new Random();
+        this(terrs,new Random());
+    }
+
+    public World(Graph<Territory> terrs,Random random){
         territories = terrs;
         basicOrderChecker = new OrderChecker();
+        rnd=random;
     }
     
     /**
@@ -54,11 +62,13 @@ public class World implements Serializable {
      * @param numTerrs is the number of territories.
      */
     public World(int numTerrs, Random rand) {
-        this(new Graph<Territory>());
+        this(new Graph<Territory>(),rand);
+
         for (int i = 1; i <= numTerrs; i++) {
             addTerritory(new Territory(String.format("%d", i),rand));
         }
         territories.addRandomEdges(numTerrs, rand);
+
     }
 
     /**
@@ -98,7 +108,7 @@ public class World implements Serializable {
 
     /**
      * Set a random seed on a territory.
-     * @param terrName is the territory to set random seed.
+     * @param terr is the territory to set random seed.
      * @param seed is a random seed.
      */
     public void setRandom(Territory terr, Random seed) {
@@ -243,7 +253,8 @@ public class World implements Serializable {
      * @return a HashMap. The mapping being: group number -> grouped territories.
      * NOTE: group number starts from 0.
      */
-    public Map<Integer, List<Territory>> divideTerritories(int nGroup, Random rand) {
+    public Map<Integer, List<Territory>> divideTerritories(int nGroup) {
+        Random rand=this.rnd;
         // check if it is an integer > 0
         if (nGroup <= 0) {
             throw new IllegalArgumentException(NOT_POSITIVE_MSG);
