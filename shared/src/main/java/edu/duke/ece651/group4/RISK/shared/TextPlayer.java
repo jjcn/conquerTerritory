@@ -195,18 +195,19 @@ public class TextPlayer implements Player, Serializable {
      */
     private List<Order> tryPlacement(List<Territory> terrs, int total) throws IOException {
         List<Order> orders = new ArrayList<Order>();
-        int currSum = 0;
+        int remain = total;
         for (Territory terr : terrs) {
             String name = terr.getName();
-            int add = readInteger("Please input the number of soldiers you want to place in " + name + ":");
-            currSum += add;
-            if (currSum > total) {
+            int add = readInteger("You have "+remain+" more soldiers to place.\n" +
+                    "Please input the number of soldiers you want to place in " + name + ":");
+            remain -= add;
+            if (remain < 0) {
                 out.print("You have placed more soldier than you have.\n");
                 return null;
             }
             orders.add(new PlaceOrder(name, new Troop(add, this, this.rnd)));
         }
-        if (currSum < total) {
+        if (remain > 0) {
             out.print("You have not use up all your soldiers. Don't be too confident you will win!!\n");
             return null;
         }

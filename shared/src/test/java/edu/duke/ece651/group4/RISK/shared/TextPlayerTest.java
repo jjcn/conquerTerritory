@@ -122,13 +122,19 @@ class TextPlayerTest {
         int total = 5;
 
         List<Order> orders = p1.doPlacement(terrs, total);
-        String expected = "Please input the number of soldiers you want to place in terr1:\n" +
-                "Please input the number of soldiers you want to place in terr2:\n" +
-                "You have not use up all your soldiers. Don't be too confident you will win!!\n"+
-                "Please input again.\n";
-        expected += "Please input the number of soldiers you want to place in terr1:\n" +
-                "You have placed more soldier than you have.\nPlease input again.\n" +
+        String expected = "You have 5 more soldiers to place.\n" +
                 "Please input the number of soldiers you want to place in terr1:\n" +
+                "You have 4 more soldiers to place.\n" +
+                "Please input the number of soldiers you want to place in terr2:\n" +
+                "You have not use up all your soldiers. Don't be too confident you will win!!\n" +
+                "Please input again.\n" +
+                "You have 5 more soldiers to place.\n" +
+                "Please input the number of soldiers you want to place in terr1:\n" +
+                "You have placed more soldier than you have.\n" +
+                "Please input again.\n" +
+                "You have 5 more soldiers to place.\n" +
+                "Please input the number of soldiers you want to place in terr1:\n" +
+                "You have 2 more soldiers to place.\n" +
                 "Please input the number of soldiers you want to place in terr2:\n";
         checkPlaceOrderEqual((PlaceOrder) orders.get(0), new PlaceOrder("terr1", new Troop(3, p1)));
         checkPlaceOrderEqual((PlaceOrder) orders.get(1), new PlaceOrder("terr2", new Troop(2, p1)));
