@@ -129,15 +129,14 @@ public class TextPlayer implements Player, Serializable {
     }
 
     private char getInChar(String instr) throws IOException {
-        char inChar = 0;
-        String inStr = readInput(instr);
-        inStr = inStr.trim();
-        try {
-            inChar = inStr.charAt(0);
-        } catch (Exception e) {
-            System.out.println(e.toString());
-            System.out.println(e.getMessage());
+        char inChar = ' ';
+        String Str = "";
+        while(Str.length() == 0){
+            Str = readInput(instr);
+            Str = Str.trim();
+            instr = "Nothing input, Please input again:";
         }
+        inChar = Str.charAt(0);
         return inChar;
     }
 

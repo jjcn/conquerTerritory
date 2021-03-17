@@ -1,6 +1,5 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -144,13 +143,14 @@ class TextPlayerTest {
     @Test
     void test_checkExit() throws IOException {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        String input = "k\ny\nN\n";
+        String input = "k\ny\n  \nN\nY\n";
         TextPlayer p1 = createTextPlayer(bytes, input, "p1");
 
-        String expected = "Do you want to exit game? y/n\n" +
-                "Please input a valid choice:\n" + "Do you want to exit game? y/n\n";
+        String expected = "Do you want to exit game? y/n\n" + "Please input a valid choice:\n"
+                + "Do you want to exit game? y/n\n" + "Nothing input, Please input again:\n";
         assertTrue(p1.checkExit());
         assertFalse(p1.checkExit());
+
         assertEquals(expected, bytes.toString());
     }
 
@@ -163,6 +163,15 @@ class TextPlayerTest {
 
         assertTrue(p3.equals(p2));
         assertFalse(p1.equals(p2));
-        assertFalse(a.equals(p1));
+        assertFalse(p1.equals(a));
+    }
+
+    @Test
+    void test_assert() throws IOException {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        String input1 = "";
+        TextPlayer p1 = createTextPlayer(bytes, input1, "p1");
+
+        assertThrows(new EOFException().getClass(), ()->p1.doOneAction());
     }
 }
