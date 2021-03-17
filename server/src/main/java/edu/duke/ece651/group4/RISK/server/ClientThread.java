@@ -31,26 +31,34 @@ public class ClientThread extends Thread{
     /*
      *  This sends a player info to each Client.
      * */
-    private void sendPlayerNameToClient() throws IOException {
+    public void sendPlayerNameToClient() throws IOException {
         this.theClient.sendObject(this.playerName);
     }
 
     /*
      *  This send the newest worldMap to the Client
      * */
-    private void sendWorldToClient() throws IOException {
-        this.theClient.sendObject(this.theWorld);
+    public void sendWorldToClient() throws IOException {
+        World sendWorld=this.theWorld.clone();
+
+        this.theClient.sendObject(sendWorld);
+    }
+
+    public void sendTerritoryToClient() throws IOException {
+
+        Territory test=this.theWorld.findTerritory("4").clone();
+        this.theClient.sendObject(test);
     }
 
     /*
-    * This send init territory to each player.
-    * */
-    private void sendInitTerritory() throws IOException {this.theClient.sendObject(this.initTerritory); }
+     * This send init territory to each player.
+     * */
+    public void sendInitTerritory() throws IOException {this.theClient.sendObject(this.initTerritory); }
 
     /*
      * This is to select territory for each player.
      * */
-    private void selectUnits(){
+    public void selectUnits(){
         int orderNum=this.initTerritory.size();
         while(orderNum>0) {
             PlaceOrder newOrder = null;
@@ -79,15 +87,22 @@ public class ClientThread extends Thread{
      * same world
      * */
     synchronized private void updateActionOnWorld(BasicOrder receiveMessage){
-
-        if (receiveMessage.getActionName() == 'A') {
+        System.out.println(this.playerName +  receiveMessage.getActionName());
+        if (receiveMessage.getActionName() == 'M') {
+//            System.out.println(this.playerName + " start to move");
+//            System.out.println(this.playerName + " ActTroop: " + receiveMessage.getActTroop().checkTroopSize());
+//            System.out.println(this.playerName + " ActTroop: " + receiveMessage.getSrcName());
+//            System.out.println(this.playerName + " Des: " +receiveMessage.getDesName());
             this.theWorld.moveTroop(theWorld.findTerritory(receiveMessage.getSrcName()), receiveMessage.getActTroop(), theWorld.findTerritory(receiveMessage.getDesName()));
-        } else if (receiveMessage.getActionName() == 'M') {
+//            System.out.println(this.playerName + " finish move");
+        } else if (receiveMessage.getActionName() == 'A') {
+//            System.out.println(this.playerName +  " start to attack");
             this.theWorld.attackATerritory(theWorld.findTerritory(receiveMessage.getSrcName()), receiveMessage.getActTroop(), theWorld.findTerritory(receiveMessage.getDesName()));
         } else {
+//            System.out.println(this.playerName +  " Done game");
             playerState.changeStateTo("EndOneTurn");
         }
-
+//        System.out.println(new WorldTextView(this.theWorld).displayWorld());
     }
 
 
@@ -102,16 +117,16 @@ public class ClientThread extends Thread{
 
 
     /*
-    * This is to check if there is only one winner in the world after the world
-    * is updated by the host
-    * */
+     * This is to check if there is only one winner in the world after the world
+     * is updated by the host
+     * */
     private boolean isGameEnd(){
         return this.theWorld.isGameEnd();
     }
 
     /*
-    *  This function is to get name of winner and will send it to all clients
-    * */
+     *  This function is to get name of winner and will send it to all clients
+     * */
     private String getWinnerName(){
         return this.theWorld.getWinner();
     }
@@ -141,7 +156,11 @@ public class ClientThread extends Thread{
             barrier.await();
             selectUnits();
             System.out.println("To " + this.playerName + ", update select Units ");
+//            if(!this.theWorld.checkLost(this.playerName)){
+//                System.out.println("To " + this.playerName + ", world did not update the units ");
+//            }
             barrier.await();
+//            sendTerritoryToClient();
             sendWorldToClient();
             System.out.println("To " + this.playerName + ", send the first complete world.");
             /*
@@ -184,25 +203,24 @@ public class ClientThread extends Thread{
     }
 
     private Object receiveInfo(Object o, Client c){
-        while(o==null) {
-            try {
-                o = c.recvObject();
-            } catch (Exception e) {
-                System.out.println("Socket name problem!");
-            }
+
+        try {
+            o = c.recvObject();
+        } catch (Exception e) {
+            System.out.println("Socket name problem!");
         }
+
         return o;
     }
 
     private void sendInfo(Object o, Client c){
-        while(o==null) {
-            try {
-                c.sendObject(o);
-            } catch (Exception e) {
-                System.out.println("Socket problem!");
-            }
+
+        try {
+            c.sendObject(o);
+        } catch (Exception e) {
+            System.out.println("Socket problem!");
         }
+
 
     }
 }
-
