@@ -163,6 +163,23 @@ public class WorldTest {
     }
 
     @Test
+    public void testStationTroop() {
+        World world = createWorld();
+        world.stationTroop("Narnia", new Troop(8, green));
+        world.stationTroop("Gondor", new Troop(14, red));
+
+        assertEquals(8, world.findTerritory("Narnia").checkPopulation());
+        assertEquals(green, world.findTerritory("Narnia").getOwner());
+        assertEquals(14, world.findTerritory("Gondor").checkPopulation());
+        assertEquals(red, world.findTerritory("Gondor").getOwner());
+    }
+
+    @Test
+    public void testMoveTroop() {
+        World world = createWorld(troopsSeparated);
+    }
+
+    @Test
     public void testGetAllTerritories() {
         World world = createWorld();
 
@@ -223,7 +240,7 @@ public class WorldTest {
     }
 
     @Test
-    public void testcheckAdjacent() {
+    public void testcheckIfAdjacent() {
         World world = createWorldSimple();
         Territory t1 = new Territory("1");
         Territory t2 = new Territory("2");

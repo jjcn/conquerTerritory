@@ -270,8 +270,18 @@ public class World implements Serializable {
 
     /**
      * Iterate over all territories around the world, and do battles on them.
+     */
+    public void doAllBattles() {
+        for (Territory terr : territories.getVertices()) {
+            terr.doBattles(); 
+        }
+    }
+
+    /**
+     * Iterate over all territories around the world, and do battles on them.
      * @return A summary of battle info on all territories.
      */
+    /* // A newer version
     public String doAllBattles() {
         StringBuilder ans = new StringBuilder();
         for (Territory terr : territories.getVertices()) {
@@ -279,6 +289,7 @@ public class World implements Serializable {
         }
         return ans.toString();
     }
+    */
 
     /**
      * Check if two territories are adjacent to each other
