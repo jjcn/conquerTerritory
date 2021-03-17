@@ -95,16 +95,27 @@ public class GraphTest {
         return true;
     }
 
+    public boolean isDiagonalTrue(boolean[][] mat) {
+        for (int i = 0; i < mat.length; i++) {
+            if (mat[i][i] == true) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Test
     public void testAddRandomEdges() {
         Graph<Integer> intGraph = new Graph<>();
         intGraph.addRandomEdges(intGraph.size(), new Random(0));
+
         for (int i = 1; i <= 9; i++) {
             intGraph.addVertex(i);
         }
         intGraph.addRandomEdges(intGraph.size(), new Random(0));
         print2dArray(intGraph.adjMatrix);
         assertTrue(isDiagonalSymmetric(intGraph.adjMatrix));
+        assertFalse(isDiagonalTrue(intGraph.adjMatrix));
     }
 
     @Test

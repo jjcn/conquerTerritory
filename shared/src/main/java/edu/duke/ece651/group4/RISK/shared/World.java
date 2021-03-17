@@ -89,14 +89,12 @@ public class World implements Serializable {
      * @return a deep copy of the world object.
      */
     public World clone() {
-        /*
         boolean[][] adjMatrixCopy = territories.cloneAdj();
         List<Territory> terrsCopy = new ArrayList<>();
         for (Territory terr : getAllTerritories()) {
-            terrsCopy.add(terr);
+            terrsCopy.add(terr.clone());
         }
         return new World(new Graph<Territory>(terrsCopy, adjMatrixCopy));
-        */
     }
 
     /**
@@ -289,7 +287,7 @@ public class World implements Serializable {
             randomInds[i] = i;
         }
         // shuffle indices to create random groups
-        Shuffler shuffler = new Shuffler(this.rand);
+        Shuffler shuffler = new Shuffler(this.rnd);
         shuffler.shuffle(randomInds);
         // divide
         List<Territory> terrList = territories.getVertices();
@@ -327,7 +325,7 @@ public class World implements Serializable {
     }
 
     /**
-     * Checks if a player has lost the game ny losing all his territories.
+     * Checks if a player has lost the game by losing all his territories.
      * @param playerName is the player's name.
      * @return true, if player has lost.
      *         false, if not.
@@ -335,10 +333,10 @@ public class World implements Serializable {
     public boolean checkLost(String playerName) {
         for (Territory terr : getAllTerritories()) {
             if (terr.getOwner().getName().equals(playerName)) {
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     /**

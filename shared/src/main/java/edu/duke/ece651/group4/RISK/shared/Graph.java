@@ -38,8 +38,18 @@ public class Graph<T> implements Serializable {
         this.adjMatrix = adjMatrix;
     }
 
+    public boolean[][] cloneAdj() {
+        boolean[][] ans = new boolean[size()][size()];
+        for (int i = 0; i < size(); i++) {
+            for (int j = 0; j <size(); j++) {
+                ans[i][j] = adjMatrix[i][j];
+            }
+        }
+        return ans;
+    }
+
     /**
-     * Creates a spanning tree, and add several random connections to it
+     * Creates a spanning tree, then add several random connections to it (may with existing ones)
      * @param numNewEdges is the number of new connections introduced to the spanning tree.
      * @param rand is the Random object.
      */
@@ -53,8 +63,12 @@ public class Graph<T> implements Serializable {
         }
         // add random connections to it
         while (numNewEdges > 0) {
-            int i = rand.nextInt(size());
-            int j = rand.nextInt(size());
+            int i = 0;
+            int j = 0;
+            while (i == j) { // ensure that i != j
+                i = rand.nextInt(size());
+                j = rand.nextInt(size());
+            }
             adjMatrix[i][j] = true;
             adjMatrix[j][i] = true;
             numNewEdges--;

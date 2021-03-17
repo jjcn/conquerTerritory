@@ -231,6 +231,19 @@ public class WorldTest {
     }
 
     @Test
+    public void testCheckLost() {
+        World world1 = createWorld(troopsConnected);
+        assertFalse(world1.checkLost("red"));
+        assertFalse(world1.checkLost("blue"));
+        assertFalse(world1.checkLost("green"));
+
+        World world2 = createWorld(troopsSamePlayer);
+        assertFalse(world2.checkLost("red"));
+        assertTrue(world2.checkLost("blue"));
+        assertTrue(world2.checkLost("green"));
+    }
+
+    @Test
     public void testIsGameEnd() {
         World world1 = createWorld(troopsConnected);
         assertFalse(world1.isGameEnd());
