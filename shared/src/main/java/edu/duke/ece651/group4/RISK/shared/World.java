@@ -12,7 +12,7 @@ import java.util.Random;
 import java.io.Serializable;
 
 /**
- * This class models the world which constitutes 
+ * This class models the world which constitutes
  * a certain number of territories connected with each other.
  */
 public class World implements Serializable {
@@ -23,7 +23,7 @@ public class World implements Serializable {
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
     final String NOT_POSITIVE_MSG = "Number of groups should be positive.";
-    
+
     /**
      * All territories in the world. Implemented with a graph structure.
      */
@@ -56,12 +56,12 @@ public class World implements Serializable {
         basicOrderChecker = new OrderChecker();
         rnd = random;
     }
-    
+
 
     /**
      * Creates a world, specify a number of total territories and a random seed.
      * The territories created will share a random seed with the world.
-     * Territory names are: 1, 2, 3, ... 
+     * Territory names are: 1, 2, 3, ...
      * Number of total connections is random,
      * and is propotional to number of territories.
      * @param numTerrs is the number of territories.
@@ -108,7 +108,7 @@ public class World implements Serializable {
     }
 
     /**
-     * Get all the territories that are adjacent to a territory 
+     * Get all the territories that are adjacent to a territory
      * of certain name.
      * @param terrName is the name of territory to search adjacents.
      * @return a list of adjacent territories.
@@ -165,17 +165,18 @@ public class World implements Serializable {
      * Station troop to a territory.
      * @param terrName is the territory name.
      * @param troop is a Troop object.
-     */   
+     */
     public void stationTroop(String terrName, Troop troop) {
+        findTerritory(terrName);
         Territory terr = findTerritory(terrName);
         terr.initializeTerritory(troop.checkTroopSize(), troop.getOwner());
     }
-    
+
     /**
      * Station troop to a territory by specifying territory name and population.
      * @param terrName is the territory name.
      * @param population is the population of the troop.
-     */   
+     */
     public void stationTroop(String terrName, int population) {
         Territory terr = findTerritory(terrName);
         terr.initializeTerritory(population, terr.getOwner());
@@ -192,12 +193,16 @@ public class World implements Serializable {
         if (start.checkPopulation() < troop.checkTroopSize()) {
             throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
         }
+
+        if(!start.getOwner().getName().equals(troop.getOwner().getName())||!start.getOwner().getName().equals(end.getOwner().getName())){
+            throw new IllegalArgumentException("Wrong attack");
+        }
         start.sendOutTroop(troop);
         end.sendInTroop(troop);
     }
 
     /**
-     * Send a troop to a territory with different owner, in order to engage in battle. 
+     * Send a troop to a territory with different owner, in order to engage in battle.
      * Also checks if the troop is valid to send from the starting territory.
      * @param start is the territory the troop starts from.
      * @param troop is the troop to send.
@@ -206,6 +211,10 @@ public class World implements Serializable {
     public void attackATerritory(Territory start, Troop troop, Territory end) {
         if (start.checkPopulation() < troop.checkTroopSize()) {
             throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
+        }
+
+        if(!start.getOwner().getName().equals(troop.getOwner().getName())||start.getOwner().getName().equals(end.getOwner().getName())){
+            throw new IllegalArgumentException("Wrong attack");
         }
         start.sendOutTroop(troop);
         end.sendInEnemyTroop(troop);
@@ -232,7 +241,7 @@ public class World implements Serializable {
     }
 
     /**
-     * Check if two territories are adjacent to each other by their names. 
+     * Check if two territories are adjacent to each other by their names.
      * @param name1 is the name of one territory to check.
      * @param name2 is the name of thr other territory.
      * @return true, if two territories are adjacent;
@@ -243,7 +252,7 @@ public class World implements Serializable {
     }
 
     /**
-     * Finds a territory by its name. 
+     * Finds a territory by its name.
      * If the territory exists, returns that territory of that name.
      * If not, an exception will be thrown.
      * @param terrName is the territory name to search.
@@ -268,14 +277,14 @@ public class World implements Serializable {
         // check if it is an integer > 0
         if (nGroup <= 0) {
             throw new IllegalArgumentException(NOT_POSITIVE_MSG);
-        } 
+        }
         // check if size / n is an integer
         else if (territories.size() % nGroup != 0) {
             throw new IllegalArgumentException(INDIVISIBLE_MSG);
         }
         // create a array of indices
         int nTerritories = territories.size();
-        int randomInds[] = new int[nTerritories]; 
+        int randomInds[] = new int[nTerritories];
         for (int i = 0; i < nTerritories; i++) {
             randomInds[i] = i;
         }
@@ -284,7 +293,7 @@ public class World implements Serializable {
         shuffler.shuffle(randomInds);
         // divide
         List<Territory> terrList = territories.getVertices();
-        Map<Integer, List<Territory>> groups = new HashMap<>(); 
+        Map<Integer, List<Territory>> groups = new HashMap<>();
         int nInGroup = nTerritories / nGroup;
         for (int group = 0; group < nGroup; group++) {
             List<Territory> terrs = new ArrayList<>();
@@ -296,7 +305,7 @@ public class World implements Serializable {
 
         return groups;
     }
-    
+
     /**
      * Checks if an order is legal.
      * @param order is the order to check.
@@ -337,7 +346,7 @@ public class World implements Serializable {
      * @return true, if the game ends.
      *         false, if not.
      */
-    public boolean isGameEnd() { 
+    public boolean isGameEnd() {
         // if a territory has an owner other than the first one, then the game hasn't ended.
         Player player = territories.getVertices().get(0).getOwner();
         for (Territory terr : getAllTerritories()) {
@@ -383,5 +392,18 @@ public class World implements Serializable {
         return toString().hashCode();
     }
 
-}
+    /**
+     * Get a deep copy of a world object.
+     * @return a deep copy of the world object.
+     */
+    public World clone() {
+        boolean[][] adjMatrixCopy=territories.cloneAdj();
+        ArrayList<Territory> old=(ArrayList<Territory>)territories.getList();
+        ArrayList<Territory> cpy=new ArrayList<>();
+        for (Territory item : old) cpy.add(item.clone());
+        Graph<Territory> newG=new Graph<>(cpy,adjMatrixCopy);
+        return new World(newG, this.rand);
+//        return new World(territories.clone(), this.rand);
+    }
 
+}

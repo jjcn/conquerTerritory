@@ -24,7 +24,7 @@ public class Graph<T> implements Serializable {
     protected List<T> vertices;
     /**
      * boolean matrix that stores adjacency relationship between vertices.
-     * true: two vertices are adjacent. 
+     * true: two vertices are adjacent.
      */
     protected boolean[][] adjMatrix;
 
@@ -66,7 +66,7 @@ public class Graph<T> implements Serializable {
     }
 
     /**
-     * Get the number of vertices in graph. 
+     * Get the number of vertices in graph.
      * @return number of vertices in graph;
      */
     public int size() {
@@ -74,7 +74,7 @@ public class Graph<T> implements Serializable {
     }
 
     /**
-     * Get all vertices in the graph. 
+     * Get all vertices in the graph.
      * @return a list of all vertices in the graph.
      */
     public List<T> getVertices() {
@@ -116,14 +116,14 @@ public class Graph<T> implements Serializable {
     }
 
     /**
-     * Remove a vertex from graph. 
+     * Remove a vertex from graph.
      * @param key is the data in the vertex to move.
      */
-    
+
     public void removeVertex(T key) {
         // TODO: Not required in evol1
     }
-    
+
     /**
      * Add edge between two vertices.
      * Duplicated edge will not be added.
@@ -136,18 +136,18 @@ public class Graph<T> implements Serializable {
         adjMatrix[i][j] = true;
         adjMatrix[j][i] = true;
     }
-    
+
     /**
      * Remove edge between two vertices.
      * @param key1 is the data in one end of the edge.
      * @param key2 is the data in other end the edge.
      */
-    
+
     public void removeEdge(T key1,T key2) {
-       // TODO: Not required in evol1
+        // TODO: Not required in evol1
     }
-    
-    
+
+
     /**
      * Extract the data in a collection of vertices.
      * @param vertices is the vertex to extract data from.
@@ -164,7 +164,7 @@ public class Graph<T> implements Serializable {
     */
 
     /**
-     * Check if two vertices in the graph is adjacent to each other. 
+     * Check if two vertices in the graph is adjacent to each other.
      * @param v1 is a vertex
      * @param v2 is the other vertex
      * @return true, if two vertices are adjacent;
@@ -179,8 +179,8 @@ public class Graph<T> implements Serializable {
     /**
      * Checks if a graph obeys certain rules. The rules are
      * - Each vertex be adjacent to one or more other vertices.
-       - The vertices must form a connected graph (all vertices must be reachable from any
-         other vertex).
+     - The vertices must form a connected graph (all vertices must be reachable from any
+     other vertex).
      * @return true, if the graph obeys the rules;
      *         false, if not.
      */
@@ -209,8 +209,8 @@ public class Graph<T> implements Serializable {
 
     /**
      * Checks if a graph obeys the following rule:
-       - The vertices must form a connected graph (all vertices must be reachable from any
-         other vertex).
+     - The vertices must form a connected graph (all vertices must be reachable from any
+     other vertex).
      * @return true, if the graph obeys the rules;
      *         false, if not.
      */
@@ -238,10 +238,10 @@ public class Graph<T> implements Serializable {
         if (start.equals(end)) {
             return true;
         }
-        
+
         Queue<T> queue = new LinkedList<>();
         Set<T> visited = new HashSet<>();
-        
+
         queue.add(start);
         visited.add(start);
         while (queue.size() != 0) {
@@ -260,6 +260,35 @@ public class Graph<T> implements Serializable {
         return false;
     }
 
+//    public Graph<T> clone() {
+//        boolean[][] adjMatrixCopy = new boolean[size()][size()];
+//        for (int i = 0; i < size(); i++) {
+//            for (int j = 0; j < size(); j++) {
+//                adjMatrixCopy[i][j] = adjMatrix[i][j];
+//            }
+//        }
+//        ArrayList<T> cloneList = new ArrayList<T>(vertices.size());
+//        for (T item : vertices) cloneList.add(T.clone());
+//        return new Graph<T>(new ArrayList<T>(vertices), adjMatrixCopy);
+//    }
+
+
+    public boolean[][] cloneAdj() {
+        boolean[][] adjMatrixCopy = new boolean[size()][size()];
+        for (int i = 0; i < size(); i++) {
+            for (int j = 0; j < size(); j++) {
+                adjMatrixCopy[i][j] = adjMatrix[i][j];
+            }
+        }
+
+        return adjMatrixCopy;
+
+    }
+
+    public List<T> getList(){
+        return this.vertices;
+    }
+
     /*
     @Override
     public Iterator<T> iterator() {
@@ -272,10 +301,10 @@ public class Graph<T> implements Serializable {
         public boolean hasNext() {
             if (position < getVertices().size()) {
                 return true;
-            } 
+            }
             return false;
         }
-    
+
         @Override
         public T next() {
             if(hasNext()) {
@@ -283,9 +312,8 @@ public class Graph<T> implements Serializable {
             }
             return null;
         }
-    
+
     }
     */
 
 }
-
