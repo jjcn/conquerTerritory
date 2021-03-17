@@ -83,12 +83,20 @@ public class World implements Serializable {
     public World(int numTerrs) {
         this(numTerrs, new Random());
     }
-
+ 
     /**
      * Get a deep copy of a world object.
      * @return a deep copy of the world object.
      */
-   
+    public World clone() {
+        boolean[][] adjMatrixCopy = territories.cloneAdj();
+        ArrayList<Territory> old = (ArrayList<Territory>)territories.getList();
+        ArrayList<Territory> cpy=new ArrayList<>();
+        for (Territory item : old) {
+            cpy.add(item.clone());
+        }
+        return new World(new Graph<>(cpy,adjMatrixCopy), this.rnd);
+    }
 
     /**
      * Get all the territories in the world.
@@ -390,20 +398,6 @@ public class World implements Serializable {
     @Override
     public int hashCode() {
         return toString().hashCode();
-    }
-
-    /**
-     * Get a deep copy of a world object.
-     * @return a deep copy of the world object.
-     */
-    public World clone() {
-        boolean[][] adjMatrixCopy=territories.cloneAdj();
-        ArrayList<Territory> old=(ArrayList<Territory>)territories.getList();
-        ArrayList<Territory> cpy=new ArrayList<>();
-        for (Territory item : old) cpy.add(item.clone());
-        Graph<Territory> newG=new Graph<>(cpy,adjMatrixCopy);
-        return new World(newG, this.rand);
-//        return new World(territories.clone(), this.rand);
     }
 
 }

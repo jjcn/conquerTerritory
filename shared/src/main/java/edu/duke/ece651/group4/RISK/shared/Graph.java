@@ -38,6 +38,24 @@ public class Graph<T> implements Serializable {
         this.adjMatrix = adjMatrix;
     }
     
+    public List<T> getList(){
+        return this.vertices;
+    }
+
+    /**
+     * Get a deep copy of adjacency matrix.
+     * @return a deep copy of adjacency matrix.s
+     */
+    public boolean[][] cloneAdj() {
+        boolean[][] adjMatrixCopy = new boolean[size()][size()];
+        for (int i = 0; i < size(); i++) {
+            for (int j = 0; j < size(); j++) {
+                adjMatrixCopy[i][j] = adjMatrix[i][j];
+            }
+        }
+        return adjMatrixCopy;
+    }
+
     /**
      * Creates a spanning tree, then add several random connections to it (may with existing ones)
      * @param numNewEdges is the number of new connections introduced to the spanning tree.
@@ -258,35 +276,6 @@ public class Graph<T> implements Serializable {
             }
         }
         return false;
-    }
-
-//    public Graph<T> clone() {
-//        boolean[][] adjMatrixCopy = new boolean[size()][size()];
-//        for (int i = 0; i < size(); i++) {
-//            for (int j = 0; j < size(); j++) {
-//                adjMatrixCopy[i][j] = adjMatrix[i][j];
-//            }
-//        }
-//        ArrayList<T> cloneList = new ArrayList<T>(vertices.size());
-//        for (T item : vertices) cloneList.add(T.clone());
-//        return new Graph<T>(new ArrayList<T>(vertices), adjMatrixCopy);
-//    }
-
-
-    public boolean[][] cloneAdj() {
-        boolean[][] adjMatrixCopy = new boolean[size()][size()];
-        for (int i = 0; i < size(); i++) {
-            for (int j = 0; j < size(); j++) {
-                adjMatrixCopy[i][j] = adjMatrix[i][j];
-            }
-        }
-
-        return adjMatrixCopy;
-
-    }
-
-    public List<T> getList(){
-        return this.vertices;
     }
 
     /*
