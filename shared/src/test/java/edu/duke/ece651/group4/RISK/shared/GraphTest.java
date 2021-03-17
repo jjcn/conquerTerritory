@@ -3,6 +3,7 @@ package edu.duke.ece651.group4.RISK.shared;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestFactory;
 
 //import edu.duke.ece651.group4.RISK.shared.Graph.GraphIterator;
 
@@ -58,7 +59,16 @@ public class GraphTest {
         boolean[][] mat = {{true, false}, {true, true}};
         boolean[][] copy = Arrays.copyOf(mat, size);
 
-        assertEquals(mat, copy);
+        assertNotEquals(mat, copy);
+    }
+
+    @Test
+    public void testArrayCopyConstructor() {
+        List<Integer> list = new ArrayList<>(Arrays.asList(0, 1, 2));
+        List<Integer> copy = new ArrayList<>(list);
+        list.set(0, 5);
+
+        assertEquals(0, copy.get(0));
     }
 
     /**
@@ -74,6 +84,17 @@ public class GraphTest {
         }
     }
 
+    public boolean isDiagonalSymmetric(boolean[][] mat) {
+        for (int i = 0; i < mat.length; i++) {
+            for (int j = 0; j < mat[0].length; j++) {
+                if (mat[i][j] != mat[j][i]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     @Test
     public void testAddRandomEdges() {
         Graph<Integer> intGraph = new Graph<>();
@@ -83,6 +104,7 @@ public class GraphTest {
         }
         intGraph.addRandomEdges(intGraph.size(), new Random(0));
         print2dArray(intGraph.adjMatrix);
+        assertTrue(isDiagonalSymmetric(intGraph.adjMatrix));
     }
 
     @Test
