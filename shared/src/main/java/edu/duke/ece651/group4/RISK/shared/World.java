@@ -51,7 +51,7 @@ public class World implements Serializable {
      * @param terrs is the number of territories.
      * @param random is the random seed.
      */
-    public World(Graph<Territory> terrs, Random random){
+    public World(Graph<Territory> terrs, Random random) {
         territories = terrs;
         basicOrderChecker = new OrderChecker();
         rand = random;
@@ -82,6 +82,14 @@ public class World implements Serializable {
      */
     public World(int numTerrs) {
         this(numTerrs, new Random());
+    }
+
+    /**
+     * Get a clone of a world object.
+     * @return a clone of the world object.
+     */
+    public World clone() {
+        return new World(this.territories, this.rand);
     }
 
     /**
@@ -343,7 +351,7 @@ public class World implements Serializable {
     }
 
     /**
-     * Get the name of winner of the game.
+     * Get the name of the game winner.
      * @return winner's the name, if the game has ended.
      *         null, if there is no winner yet.
      */
