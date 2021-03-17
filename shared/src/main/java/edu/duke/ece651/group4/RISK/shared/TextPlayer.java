@@ -9,8 +9,9 @@ public class TextPlayer implements Player, Serializable {
     final private BufferedReader inputReader;
     final private HashMap<Character, String> actionTypes;
     final private Random rnd;
+    final private boolean testMode;
 
-    public TextPlayer(PrintStream out, Reader inputReader, String playerName, Random rnd) {
+    public TextPlayer(PrintStream out, Reader inputReader, String playerName, Random rnd,boolean mode) {
         this.playerName = playerName;
         this.inputReader = (BufferedReader) inputReader;
         this.out = out;
@@ -19,10 +20,11 @@ public class TextPlayer implements Player, Serializable {
         actionTypes.put('M', "(M)ove");
         actionTypes.put('A', "(A)ttack");
         this.rnd = rnd;
+        this.testMode=mode;
     }
 
     public TextPlayer(PrintStream out, Reader inputReader, String playerName) {
-        this(out, inputReader, playerName, new Random());
+        this(out, inputReader, playerName, new Random(),false);
     }
 
     public TextPlayer(String playerName) {
@@ -31,6 +33,7 @@ public class TextPlayer implements Player, Serializable {
         this.out = null;
         this.actionTypes = new HashMap<>();
         this.rnd = null;
+        this.testMode=false;
     }
 
     /**
@@ -103,7 +106,8 @@ public class TextPlayer implements Player, Serializable {
             String src = readInput("Please input the territory name you would like to send out troop from:");
             String des = readInput("Please input the territory name you would like to send troop to:");
             int pop = readInteger("Please input the number of soldiers you would like to send:");
-            Troop troop = new Troop(pop, this, this.rnd);
+
+            Troop troop = testMode?new Troop(pop, this, this.rnd):new Troop(pop, this,new Random());
             return new BasicOrder(src, des, troop, actionName);
         }
     }

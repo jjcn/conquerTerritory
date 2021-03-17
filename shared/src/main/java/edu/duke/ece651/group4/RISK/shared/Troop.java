@@ -20,7 +20,12 @@ public class Troop implements Serializable {
     }
 
     public Troop(int number, Player owner) {
-        this(number, owner, new Random());
+        this.owner = owner;
+        this.population = new ArrayList<>();
+        this.owner=new TextPlayer(owner.getName());
+        for (int i = 0; i < number; i++) {
+            population.add(new Soldier(new Random()));
+        }
     }
 
     public Troop(ArrayList<Unit> subTroop, Player owner){
@@ -94,3 +99,4 @@ public class Troop implements Serializable {
     }
 
 }
+
