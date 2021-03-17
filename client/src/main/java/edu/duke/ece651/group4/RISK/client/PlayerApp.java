@@ -79,7 +79,7 @@ public class PlayerApp {
         if(this.theWorld.checkLost(this.myPlayer.getName())) {
             System.out.println("You lost");
         }
-        if(this.theWorld.isGameEnd()){
+        if(this.theWorld.isGameEnd()) {
             System.out.println("Winner is "+this.theWorld.getWinner());
             return;
         }
@@ -89,7 +89,7 @@ public class PlayerApp {
             exit= this.myPlayer.checkExit();
             World newWorld=null;
             this.theWorld=(World) receiveInfo(newWorld,this.playerClient);
-            if(this.theWorld.isGameEnd()){
+            if(this.theWorld.isGameEnd()) {
                 System.out.println("Winner is "+this.theWorld.getWinner());
                 return;
             }
@@ -98,32 +98,39 @@ public class PlayerApp {
     }
 
     public void doActionPhase() throws IOException, ClassNotFoundException {
-        boolean turnEnd=false;
+        boolean turnEnd = false;
 
-        while(!turnEnd){
-            boolean received=false;
+        while(!turnEnd) {
+            boolean received = false;
             BasicOrder receiveMessage = null;
             while(!received) {
 
                 try {
-                    receiveMessage=this.myPlayer.doOneAction();
-                    BasicOrder m=receiveMessage;
-                    if(receiveMessage.getActionName()!='D') {
-                        m = new BasicOrder(new String(receiveMessage.getSrcName()), new String(receiveMessage.getDesName()), receiveMessage.getActTroop().clone(), receiveMessage.getActionName());
+                    receiveMessage = this.myPlayer.doOneAction();
+                    BasicOrder m = receiveMessage;
+                    if (receiveMessage.getActionName() != 'D') {
+                        m = new BasicOrder(new String(receiveMessage.getSrcName()), 
+                                           new String(receiveMessage.getDesName()), 
+                                           receiveMessage.getActTroop().clone(), 
+                                           receiveMessage.getActionName());
                     }
                     if (receiveMessage.getActionName() == 'M') {
-                        this.theWorld.moveTroop(theWorld.findTerritory(receiveMessage.getSrcName()), receiveMessage.getActTroop(), theWorld.findTerritory(receiveMessage.getDesName()));
+                        this.theWorld.moveTroop(theWorld.findTerritory(receiveMessage.getSrcName()), 
+                                                receiveMessage.getActTroop(), 
+                                                theWorld.findTerritory(receiveMessage.getDesName()));
                     } else if (receiveMessage.getActionName() == 'A') {
-                        this.theWorld.attackATerritory(theWorld.findTerritory(receiveMessage.getSrcName()), receiveMessage.getActTroop(), theWorld.findTerritory(receiveMessage.getDesName()));
+                        this.theWorld.attackATerritory(theWorld.findTerritory(receiveMessage.getSrcName()), 
+                                                       receiveMessage.getActTroop(), 
+                                                       theWorld.findTerritory(receiveMessage.getDesName()));
                     } else {
                         turnEnd = true;
                     }
 
-                    received=true;
+                    received = true;
                     System.out.println("Action updated");
                     System.out.println(this.myView.displayWorld(this.theWorld));
-                    sendInfo(m,this.playerClient);
-                }catch(Exception e) {
+                    sendInfo(m, this.playerClient);
+                } catch(Exception e) {
                     System.out.println("Please enter correct order!");
                 }
 
@@ -131,9 +138,9 @@ public class PlayerApp {
 
         }
 
-        World newWorld=null;
+        World newWorld = null;
 //        this.theWorld=(World) receiveInfo(newWorld,this.playerClient);
-        this.theWorld= (World) this.playerClient.recvObject();
+        this.theWorld = (World) this.playerClient.recvObject();
         System.out.println("Turn Ended");
         System.out.println(this.myView.displayWorld(this.theWorld));
     }
@@ -145,9 +152,9 @@ public class PlayerApp {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         String instruct1 = "Please enter the hostName";
         String instruct2 = "Please enter the port";
-        BufferedReader inRead=new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader inRead = new BufferedReader(new InputStreamReader(System.in));
 
-        Client myClient=null;
+        Client myClient = null;
         boolean setConnect = false;
 
         while (!setConnect) {
@@ -166,14 +173,14 @@ public class PlayerApp {
             }
         }
 
-        String name=null;
-        World gameWorld=null;
+        String name = null;
+        World gameWorld = null;
         System.out.println( "Wait for setup from the server.");
 //        name= (String) myClient.recvObject();
 
-        name=(String) receiveInfo(name,myClient);
+        name = (String) receiveInfo(name,myClient);
         System.out.println( "Get the name：" +name +"from the server.");
-        gameWorld=(World) receiveInfo(gameWorld,myClient);
+        gameWorld = (World) receiveInfo(gameWorld,myClient);
 //        gameWorld=(World) myClient.recvObject();
         System.out.println( "Get the world from the server.");
 

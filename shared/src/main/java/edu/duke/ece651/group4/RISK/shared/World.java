@@ -197,14 +197,21 @@ public class World implements Serializable {
      * @param troop is the troop to move.
      * @param end is the territory the troop ends in.
      */
+    // TODO: may reformat to take an Order object
     public void moveTroop(Territory start, Troop troop, Territory end) {
         if (start.checkPopulation() < troop.checkTroopSize()) {
             throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
         }
 
-        if(!start.getOwner().getName().equals(troop.getOwner().getName())||!start.getOwner().getName().equals(end.getOwner().getName())){
+        BasicOrder order = new BasicOrder(start.getName(), end.getName(), 
+                                          troop, 'M');
+        basicOrderChecker.checkOrder(order, this);
+        /*
+        if(!start.getOwner().getName().equals(troop.getOwner().getName())||
+           !start.getOwner().getName().equals(end.getOwner().getName())) {
             throw new IllegalArgumentException("Wrong attack");
         }
+        */
         start.sendOutTroop(troop);
         end.sendInTroop(troop);
     }
@@ -220,10 +227,15 @@ public class World implements Serializable {
         if (start.checkPopulation() < troop.checkTroopSize()) {
             throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
         }
-
-        if(!start.getOwner().getName().equals(troop.getOwner().getName())||start.getOwner().getName().equals(end.getOwner().getName())){
+        BasicOrder order = new BasicOrder(start.getName(), end.getName(), 
+                                          troop, 'A');
+        basicOrderChecker.checkOrder(order, this);
+        /*
+        if(!start.getOwner().getName().equals(troop.getOwner().getName()) ||
+           start.getOwner().getName().equals(end.getOwner().getName())) {
             throw new IllegalArgumentException("Wrong attack");
         }
+        */
         start.sendOutTroop(troop);
         end.sendInEnemyTroop(troop);
     }

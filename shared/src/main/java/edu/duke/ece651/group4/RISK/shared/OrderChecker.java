@@ -6,8 +6,8 @@ import java.io.Serializable;
  * Checks if a order is valid.
  */
 public class OrderChecker implements Serializable { // TODO: bad code design
-    AttackOrderChecker aoc;
-    MoveOrderChecker moc;
+    protected AttackOrderChecker aoc;
+    protected MoveOrderChecker moc;
 
     public OrderChecker() {
         aoc = new AttackOrderChecker();
