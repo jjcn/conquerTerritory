@@ -33,14 +33,14 @@ public class Territory implements Serializable {
     public Territory(String name) {
         this.name = name;
         this.enemyOnTerritory = new HashMap<>();
-        this.ownerTroop = new Troop(0, new TextPlayer(""), new Random()); // default Troop.owner == null, cannot call equals()
+        this.ownerTroop = new Troop(0, new TextPlayer("")); // default Troop.owner == null, cannot call equals()
         this.rnd = new Random();
     }
 
     public Territory(String name,Random rnd) {
         this.name = name;
         this.enemyOnTerritory = new HashMap<>();
-        this.ownerTroop = new Troop(0, new TextPlayer(""), new Random()); // default Troop.owner == null, cannot call equals()
+        this.ownerTroop = new Troop(0, new TextPlayer(""), rnd); // default Troop.owner == null, cannot call equals()
         this.rnd = rnd;
     }
 
@@ -75,15 +75,20 @@ public class Territory implements Serializable {
     }
 
     public void initializeTerritory(int num, Player owner){
-        this.ownerTroop=new Troop(num,owner);
+        this.ownerTroop=new Troop(num,owner,this.rnd);
     }
 
     public int checkPopulation(){
         return this.ownerTroop.checkTroopSize();
     }
 
-    public void doBattles(){
-        if(this.enemyOnTerritory.size()==0) return;
+    public String doBattles(){
+
+        StringBuilder report=new StringBuilder();
+
+        if(this.enemyOnTerritory.size()==0){
+            return "no war on Territory "+this.getName();
+        }
 
         ArrayList<String> enemyPlayers = new ArrayList<String>(this.enemyOnTerritory.keySet());
         Collections.sort(enemyPlayers);
@@ -92,12 +97,14 @@ public class Territory implements Serializable {
             int diceResult=randInt(0,enemyPlayers.size()-1);
 
             String enemy=enemyPlayers.get(diceResult);
-
+            report.append("Enemy "+enemy+" fight with "+this.getOwner().getName()+" on "+this.getName()+" \n");
             Troop enemyTroop=this.enemyOnTerritory.get(enemy);
             doOneBattle(enemyTroop);
             enemyPlayers.remove(diceResult);
+            report.append(this.getOwner().getName()+" wins the fight and owns "+this.getName()+" \n");
         }
         this.enemyOnTerritory.clear();
+        return report.toString();
     }
 
 
@@ -132,3 +139,10 @@ public class Territory implements Serializable {
     }
 
 }
+
+
+
+
+
+
+

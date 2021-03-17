@@ -39,5 +39,6 @@ class WorldTextViewTest {
                 "1 units in terr3 (next to: terr2, terr4)\n" +
                 "4 units in terr4 (next to: terr3)\n\n";
         assertEquals(expected, display.displayWorld());
+        assertEquals(expected, display.displayWorld(world));
     }
 }

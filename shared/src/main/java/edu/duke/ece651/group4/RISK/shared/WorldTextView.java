@@ -51,12 +51,7 @@ public class WorldTextView implements WorldView<String>, Serializable {
     @Override
     public String displayWorld(World world) {
         this.toDisplay = world;
-        StringBuilder display = new StringBuilder();
-        HashMap<String, List<Territory>> w = getPlayerToTerr();
-        for (Map.Entry player : w.entrySet()) {
-            display.append(displayOnePlayer((String) player.getKey(), (List<Territory>) player.getValue()));
-        }
-        return display.toString();
+        return this.displayWorld();
     }
 
     private HashMap<String, List<Territory>> getPlayerToTerr() {
