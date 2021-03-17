@@ -216,6 +216,20 @@ public class World implements Serializable {
         end.sendInTroop(troop);
     }
 
+    public void moveTroop(BasicOrder order) {
+        Territory start = findTerritory(order.getSrcName());
+        Territory end = findTerritory(order.getDesName());
+        Troop troop = order.getActTroop();
+
+        if (start.checkPopulation() < troop.checkTroopSize()) {
+            throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
+        }
+        basicOrderChecker.checkOrder(order, this);
+        
+        start.sendOutTroop(troop);
+        end.sendInTroop(troop);
+    }
+
     /**
      * Send a troop to a territory with different owner, in order to engage in battle.
      * Also checks if the troop is valid to send from the starting territory.
@@ -238,6 +252,20 @@ public class World implements Serializable {
         */
         start.sendOutTroop(troop);
         end.sendInEnemyTroop(troop);
+    }
+
+    public void attackATerritory(BasicOrder order) {
+        Territory start = findTerritory(order.getSrcName());
+        Territory end = findTerritory(order.getDesName());
+        Troop troop = order.getActTroop();
+        
+        if (start.checkPopulation() < troop.checkTroopSize()) {
+            throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
+        }
+        basicOrderChecker.checkOrder(order, this);
+        
+        start.sendOutTroop(troop);
+        end.sendInTroop(troop);
     }
 
     /**
