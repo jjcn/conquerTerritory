@@ -49,6 +49,10 @@ public class PlayerApp {
         while(orders==null) {
             try {
                 orders = this.myPlayer.doPlacement(myGroup, this.totalPopulation);
+                for(Order p:orders) {
+                    PlaceOrder newOrder=(PlaceOrder) p;
+                    this.theWorld.findTerritory(newOrder.getDesName());
+                }
             }catch(Exception e){
                 System.out.println("Wrong placement");
             }
@@ -57,11 +61,10 @@ public class PlayerApp {
             this.playerClient.sendObject((PlaceOrder)p);
 //            sendInfo((PlaceOrder)p,this.playerClient);
         }
-//        this.theWorld
-//        World tempWorld   =(World) receiveInfo(theWorld,this.playerClient);
-        World tempWorld   =(World) this.playerClient.recvObject();
+
+        this.theWorld   =(World) this.playerClient.recvObject();
         System.out.println("All placement are done");
-        System.out.println(this.myView.displayWorld(tempWorld));
+        System.out.println(this.myView.displayWorld( this.theWorld ));
 
         if(!this.theWorld.checkLost(this.myPlayer.getName())){
             System.out.println("To " + this.myPlayer.getName() + ", world did not update the units ");
@@ -70,17 +73,26 @@ public class PlayerApp {
 
     public void runGame() throws IOException, ClassNotFoundException {
         System.out.println(this.myView.displayWorld(this.theWorld));
-        while(this.theWorld.checkLost(this.myPlayer.getName())) {
+        while(!this.theWorld.checkLost(this.myPlayer.getName()) && !this.theWorld.isGameEnd()) {
             doActionPhase();
         }
-        System.out.println("You lost");
+        if(this.theWorld.checkLost(this.myPlayer.getName())) {
+            System.out.println("You lost");
+        }
+        if(this.theWorld.isGameEnd()){
+            System.out.println("Winner is "+this.theWorld.getWinner());
+            return;
+        }
 
         boolean exit=false;
         while(!exit){
             exit= this.myPlayer.checkExit();
-
             World newWorld=null;
             this.theWorld=(World) receiveInfo(newWorld,this.playerClient);
+            if(this.theWorld.isGameEnd()){
+                System.out.println("Winner is "+this.theWorld.getWinner());
+                return;
+            }
         }
 
     }
@@ -95,20 +107,26 @@ public class PlayerApp {
 
                 try {
                     receiveMessage=this.myPlayer.doOneAction();
-                    if (receiveMessage.getActionName() == 'A') {
+                    BasicOrder m=receiveMessage;
+                    if(receiveMessage.getActionName()!='D') {
+                        m = new BasicOrder(new String(receiveMessage.getSrcName()), new String(receiveMessage.getDesName()), receiveMessage.getActTroop().clone(), receiveMessage.getActionName());
+                    }
+                    if (receiveMessage.getActionName() == 'M') {
                         this.theWorld.moveTroop(theWorld.findTerritory(receiveMessage.getSrcName()), receiveMessage.getActTroop(), theWorld.findTerritory(receiveMessage.getDesName()));
-                    } else if (receiveMessage.getActionName() == 'M') {
+                    } else if (receiveMessage.getActionName() == 'A') {
                         this.theWorld.attackATerritory(theWorld.findTerritory(receiveMessage.getSrcName()), receiveMessage.getActTroop(), theWorld.findTerritory(receiveMessage.getDesName()));
                     } else {
                         turnEnd = true;
                     }
+
                     received=true;
+                    System.out.println("Action updated");
+                    System.out.println(this.myView.displayWorld(this.theWorld));
+                    sendInfo(m,this.playerClient);
                 }catch(Exception e) {
                     System.out.println("Please enter correct order!");
                 }
-                System.out.println("Action updated");
-                System.out.println(this.myView.displayWorld(this.theWorld));
-                sendInfo(receiveMessage,this.playerClient);
+
             }
 
         }
@@ -134,11 +152,11 @@ public class PlayerApp {
 
         while (!setConnect) {
             try {
-//                System.out.println(instruct1);
-//                String hostName = inRead.readLine();
+                System.out.println(instruct1);
+                String hostName = inRead.readLine();
 //                System.out.println(instruct2);
 //                String port = inRead.readLine();
-                String hostName = "localhost";
+//                String hostName = "Alexs-MacBook-Pro.local";
                 String port = "9999";
                 myClient = new Client(hostName, port);
                 setConnect = true;

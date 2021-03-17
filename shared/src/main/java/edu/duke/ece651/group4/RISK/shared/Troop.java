@@ -85,4 +85,12 @@ public class Troop implements Serializable {
         return this.owner;
     }
 
+    public Troop clone(){
+        ArrayList<Unit> cloneList = new ArrayList<Unit>(population.size());
+        for (Unit item : population) cloneList.add(item.clone());
+        Troop clone=new Troop(cloneList,new TextPlayer(new String(this.owner.getName())));
+
+        return clone;
+    }
+
 }

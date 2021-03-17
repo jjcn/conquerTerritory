@@ -89,7 +89,7 @@ public class TextPlayer implements Player, Serializable {
      */
     @Override
     public BasicOrder doOneAction() throws IOException {
-        StringBuilder instr = new StringBuilder("what would you like to do?\n");
+        StringBuilder instr = new StringBuilder(this.playerName+" what would you like to do?\n");
         for (String act : actionTypes.values()) {
             if (act != "(D)one") {
                 instr.append(act + "\n");

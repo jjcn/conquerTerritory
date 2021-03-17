@@ -23,6 +23,13 @@ public class Territory implements Serializable {
         this.rnd = rnd;
     }
 
+    public Territory(String name, Troop ownerTroop,HashMap<String,Troop> enemyOnTerritory,Random rnd){
+        this.name = name;
+        this.enemyOnTerritory = enemyOnTerritory;
+        this.ownerTroop = ownerTroop;
+        this.rnd = rnd;
+    }
+
     public Territory(String name) {
         this.name = name;
         this.enemyOnTerritory = new HashMap<>();
@@ -113,6 +120,15 @@ public class Territory implements Serializable {
 
     public void setRandom(Random seed){
         this.rnd=seed;
+    }
+
+    public Territory clone(){
+        HashMap<String,Troop> cpy=new HashMap<>();
+        for(String s:this.enemyOnTerritory.keySet()){
+            cpy.put(new String(s),this.enemyOnTerritory.get(s).clone());
+        }
+        Territory clone= new Territory(new String(this.name),ownerTroop.clone(),cpy,this.rnd);
+        return clone;
     }
 
 }
