@@ -22,10 +22,14 @@ public class WorldTest {
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
     final String NOT_POSITIVE_MSG = "Number of groups should be positive.";
-
+    // move checker
     private final String NOT_SAME_OWNER_MSG = "Cannot move troop to a territory with different owner.";
     private final String NOT_MOVE_ORDER_MSG = "This is not a move order.";
     private final String NOT_REACHABLE_MSG = "There is not a path of territories that all belongs to you.";
+    // attack checker
+    private final String SAME_OWNER_MSG = "Cannot attack a territory with the same owner.";
+    private final String NOT_ATTACK_ORDER_MSG = "This is not an attack order.";
+    private final String NOT_ADJACENT_MSG = "The attack should be performed on adjacent territories.";
 
     /**
      * Creates a world for test. 
@@ -209,13 +213,60 @@ public class WorldTest {
 
     @Test
     public void testMoveTroopNotSameOwner() {
-        World world = createWorld(troopsSeparated);// Not same owner
+        World world = createWorld(troopsSeparated);
+        // Not same owner
         BasicOrder move6 = new BasicOrder("Elantris", "Gondor", new Troop(3, blue), 'M');
         BasicOrder move7 = new BasicOrder("Gondor", "Oz", new Troop(3, blue), 'M');
         assertThrows(IllegalArgumentException.class, () -> world.moveTroop(move6), NOT_SAME_OWNER_MSG);
         assertThrows(IllegalArgumentException.class, () -> world.moveTroop(move7), NOT_SAME_OWNER_MSG);
     }
 
+    @Test
+    public void testMoveTroopNotReachable() {
+        World world = createWorld(troopsSeparated);
+        // Not reachable
+        BasicOrder move1 = new BasicOrder("Narnia", "Oz", new Troop(3, blue), 'M');
+        BasicOrder move2 = new BasicOrder("Oz", "Hogwarts", new Troop(3, blue), 'M');
+        assertThrows(IllegalArgumentException.class, () -> world.moveTroop(move1), NOT_REACHABLE_MSG);
+        assertThrows(IllegalArgumentException.class, () -> world.moveTroop(move2), NOT_REACHABLE_MSG);
+    }
+
+    @Test
+    public void testAttackValid() {
+        World world = createWorld(troopsSeparated);
+        BasicOrder atk1 = new BasicOrder("Gondor", "Oz", new Troop(13, red), 'a');
+        BasicOrder atk2 = new BasicOrder("Narnia", "Elantris", new Troop(6, green), 'A');
+        assertDoesNotThrow(() -> world.moveTroop(atk1));
+        assertDoesNotThrow(() -> world.moveTroop(atk2));
+    }
+
+    @Test
+    public void testAttackNonExistTerritory() {
+        World world = createWorld(troopsSeparated);
+        BasicOrder atk1 = new BasicOrder("Gondor", "No", new Troop(13, red), 'a');
+        BasicOrder atk2 = new BasicOrder("No", "Elantris", new Troop(6, green), 'A');
+        assertThrows(NoSuchElementException.class, () -> world.moveTroop(atk1), TERRITORY_NOT_FOUND_MSG);
+        assertThrows(NoSuchElementException.class, () -> world.moveTroop(atk2), TERRITORY_NOT_FOUND_MSG);   
+    }
+
+    @Test
+    public void testAttackSameOwner() {
+        World world = createWorld(troopsSeparated);
+        BasicOrder atk1 = new BasicOrder("Elantris", "Scadrial", new Troop(1, blue), 'A');
+        BasicOrder atk2 = new BasicOrder("Gondor", "Mordor", new Troop(6, red), 'A');
+        assertThrows(IllegalArgumentException.class, () -> world.moveTroop(atk1), SAME_OWNER_MSG);
+        assertThrows(IllegalArgumentException.class, () -> world.moveTroop(atk2), SAME_OWNER_MSG);   
+    }
+
+    @Test
+    public void testAttackNotAdjacent() {
+        World world = createWorld(troopsSeparated);
+        BasicOrder atk1 = new BasicOrder("Elantris", "Oz", new Troop(1, blue), 'A');
+        BasicOrder atk2 = new BasicOrder("Gondor", "Roshar", new Troop(6, red), 'A');
+        assertThrows(IllegalArgumentException.class, () -> world.moveTroop(atk1), NOT_ADJACENT_MSG);
+        assertThrows(IllegalArgumentException.class, () -> world.moveTroop(atk2), NOT_ADJACENT_MSG);   
+    }    
+    
     @Test
     public void testGetAllTerritories() {
         World world = createWorld();

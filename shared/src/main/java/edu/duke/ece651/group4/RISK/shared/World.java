@@ -23,7 +23,7 @@ public class World implements Serializable {
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
     final String NOT_POSITIVE_MSG = "Number of groups should be positive.";
-
+    
     /**
      * All territories in the world. Implemented with a graph structure.
      */
