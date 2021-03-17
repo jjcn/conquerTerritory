@@ -305,4 +305,23 @@ public class Graph<T> implements Serializable {
     }
     */
 
+    @Override
+    public boolean equals(Object other) {
+        if (other != null && other.getClass().equals(getClass())) {
+            Graph<T> otherGraph = (Graph<T>)other;
+            boolean adjMatrixEquals = true;
+            for (int i = 0; i < size(); i++) {
+                for (int j = 0; j < size(); j++) {
+                    if (otherGraph.adjMatrix[i][j] != adjMatrix[i][j]) {
+                        adjMatrixEquals = false;
+                    }
+                }
+            }
+            return otherGraph.vertices.equals(vertices) &&
+                    adjMatrixEquals;
+        }
+        else {
+            return false;
+        }
+    }
 }

@@ -3,7 +3,6 @@ package edu.duke.ece651.group4.RISK.shared;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestFactory;
 
 //import edu.duke.ece651.group4.RISK.shared.Graph.GraphIterator;
 
@@ -301,5 +300,26 @@ public class GraphTest {
         graphNotFullyConnected.addEdge(1, 3);
         assertTrue(graphNotFullyConnected.hasPath(2, 3));
         assertFalse(graphNotFullyConnected.hasPath(2, 4));
+    }
+
+    @Test
+    public void testEquals() {
+        assertEquals(new Graph<Integer>(), new Graph<Integer>());
+        // assertNotEquals(new Graph<String>(), new Graph<Integer>());
+
+        assertEquals(createGraphFantasy(), createGraphFantasy());
+
+        List<Integer> list1 = new ArrayList<>(Arrays.asList(1, 2, 3));
+        List<Integer> list2 = new ArrayList<>(Arrays.asList(5, 6, 7));
+        boolean[][] adjMatrix1 = new boolean[3][3];
+        adjMatrix1[1][2] = true; adjMatrix1[2][1] = true;
+        boolean[][] adjMatrix2 = new boolean[3][3];
+        adjMatrix1[0][1] = true; adjMatrix1[1][0] = true;
+
+        Graph<Integer> g11 = new Graph<>(list1, adjMatrix1);
+        Graph<Integer> g12 = new Graph<>(list1, adjMatrix2);
+        Graph<Integer> g21 = new Graph<>(list2, adjMatrix1);
+        assertNotEquals(g11, g12);
+        assertNotEquals(g21, g12);
     }
 }
