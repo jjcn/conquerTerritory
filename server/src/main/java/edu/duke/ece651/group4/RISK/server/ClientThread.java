@@ -44,11 +44,11 @@ public class ClientThread extends Thread{
         this.theClient.sendObject(sendWorld);
     }
 
-    public void sendTerritoryToClient() throws IOException {
-
-        Territory test=this.theWorld.findTerritory("4").clone();
-        this.theClient.sendObject(test);
-    }
+//    public void sendTerritoryToClient() throws IOException {
+//
+//        Territory test=this.theWorld.findTerritory("4").clone();
+//        this.theClient.sendObject(test);
+//    }
 
     /*
      * This send init territory to each player.
