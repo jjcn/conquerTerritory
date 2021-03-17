@@ -92,7 +92,7 @@ public class TextPlayer implements Player, Serializable {
      */
     @Override
     public BasicOrder doOneAction() throws IOException {
-        StringBuilder instr = new StringBuilder(this.playerName+" what would you like to do?\n");
+        StringBuilder instr = new StringBuilder(this.playerName + " what would you like to do?\n");
         for (String act : actionTypes.values()) {
             if (act != "(D)one") {
                 instr.append(act + "\n");
@@ -133,15 +133,14 @@ public class TextPlayer implements Player, Serializable {
     }
 
     private char getInChar(String instr) throws IOException {
-        char inChar = 0;
-        String inStr = readInput(instr);
-        inStr = inStr.trim();
-        try {
-            inChar = inStr.charAt(0);
-        } catch (Exception e) {
-            System.out.println(e.toString());
-            System.out.println(e.getMessage());
+        char inChar = ' ';
+        String Str = "";
+        while(Str.length() == 0){
+            Str = readInput(instr);
+            Str = Str.trim();
+            instr = "Nothing input, Please input again:";
         }
+        inChar = Str.charAt(0);
         return inChar;
     }
 
@@ -176,7 +175,7 @@ public class TextPlayer implements Player, Serializable {
     }
 
     /**
-     * Asks the user to re-input their placement if
+     * Asks the user to re-input the total number of soldiers are not equal to the number they have.
      *
      * @param terrs that player own
      * @param total number of soldiers player can place.
@@ -184,16 +183,14 @@ public class TextPlayer implements Player, Serializable {
      */
     public List<Order> doPlacement(List<Territory> terrs, int total) throws IOException {
         List<Order> orders = tryPlacement(terrs, total);
-        while (orders.equals(null)) {
-            out.print("Your have placed wrong number of total soldiers.Please input again.\n");
+        while (orders == null) {
+            out.print("Please input again.\n");
             orders = tryPlacement(terrs, total);
         }
         return orders;
     }
 
     /**
-     * Automatically assign rest territories with 0 soldier if
-     *
      * @param terrs
      * @param total
      * @return List<Order> if total of soldiers are place; null if exceeded or not enough soldier are placed.
@@ -201,22 +198,20 @@ public class TextPlayer implements Player, Serializable {
      */
     private List<Order> tryPlacement(List<Territory> terrs, int total) throws IOException {
         List<Order> orders = new ArrayList<Order>();
-        int currSum = 0;
-        while (currSum < total && !terrs.isEmpty()) {
-            Territory terr = terrs.remove(0);
+        int remain = total;
+        for (Territory terr : terrs) {
             String name = terr.getName();
-            int add = readInteger("Please input the number of soldiers you want to place in " + name + ":");
-            currSum += add;
-            Troop troop = testMode?new Troop(add, this, this.rnd):new Troop(add, this,new Random());
-            orders.add(new PlaceOrder(name, troop));
-        }
-        if (currSum == total) {
-            for (Territory terr : terrs) {
-                out.print("You have used up soldiers, remaining territories automatically have 0.");
-                Troop troop = testMode?new Troop(0, this, this.rnd):new Troop(0, this,new Random());
-                orders.add(new PlaceOrder(terr.getName(), troop));
+            int add = readInteger("You have "+remain+" more soldiers to place.\n" +
+                    "Please input the number of soldiers you want to place in " + name + ":");
+            remain -= add;
+            if (remain < 0) {
+                out.print("You have placed more soldier than you have.\n");
+                return null;
             }
-        } else {
+            orders.add(new PlaceOrder(name, new Troop(add, this, this.rnd)));
+        }
+        if (remain > 0) {
+            out.print("You have not use up all your soldiers. Don't be too confident you will win!!\n");
             return null;
         }
         return orders;
@@ -269,6 +264,7 @@ public class TextPlayer implements Player, Serializable {
 
     /**
      * asks the user if he want to exit the game. valid choices: string starts with Y/y or N/n.
+     *
      * @return true if receive input start with 'Y' or 'y', false if recieve 'N' or 'n'
      * @throws IOException
      */
