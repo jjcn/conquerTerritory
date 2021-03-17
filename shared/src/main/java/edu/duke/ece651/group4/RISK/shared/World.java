@@ -88,14 +88,7 @@ public class World implements Serializable {
      * Get a deep copy of a world object.
      * @return a deep copy of the world object.
      */
-    public World clone() {
-        boolean[][] adjMatrixCopy = territories.cloneAdj();
-        List<Territory> terrsCopy = new ArrayList<>();
-        for (Territory terr : getAllTerritories()) {
-            terrsCopy.add(terr.clone());
-        }
-        return new World(new Graph<Territory>(terrsCopy, adjMatrixCopy));
-    }
+   
 
     /**
      * Get all the territories in the world.
