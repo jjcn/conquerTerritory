@@ -88,8 +88,8 @@ public class World implements Serializable {
      * Get a deep copy of a world object.
      * @return a deep copy of the world object.
      */
-    public World clone(World world) {
-        this(new Graph(), this.rnd);
+    public World clone() {
+        return new World(territories.clone(), this.rnd);
     }
 
     /**

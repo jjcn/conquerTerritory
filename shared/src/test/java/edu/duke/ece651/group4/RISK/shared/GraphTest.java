@@ -52,6 +52,15 @@ public class GraphTest {
         Graph<Character> charGraph = new Graph<>(vertices, adjMatrix);
     }
 
+    @Test
+    public void testArrayCopyOf() {
+        int size = 2;
+        boolean[][] mat = {{true, false}, {true, true}};
+        boolean[][] copy = Arrays.copyOf(mat, size);
+
+        assertEquals(mat, copy);
+    }
+
     /**
      * Helper function that prints out adjacent matrix as 0's and 1's.
      * @param matrix is a boolean adjacent matrix

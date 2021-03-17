@@ -3,6 +3,7 @@ package edu.duke.ece651.group4.RISK.shared;
 import java.util.List;
 import java.util.Queue;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
@@ -38,7 +39,13 @@ public class Graph<T> implements Serializable {
     }
 
     public Graph<T> clone() {
-        
+        boolean[][] adjMatrixCopy = new boolean[size()][size()];
+        for (int i = 0; i < size(); i++) {
+            for (int j = 0; j < size(); j++) {
+                adjMatrixCopy[i][j] = adjMatrix[i][j];
+            }
+        }
+        return new Graph<T>(new ArrayList<T>(vertices), adjMatrixCopy);
     }
 
     /**
