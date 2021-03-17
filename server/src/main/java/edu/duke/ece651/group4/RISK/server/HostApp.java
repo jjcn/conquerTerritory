@@ -58,7 +58,6 @@ public class HostApp implements Runnable {
         String instruct1 = "Please enter the Player Number";
         BufferedReader inRead = new BufferedReader(new InputStreamReader(System.in));
 
-
         int playerNum = 0;
         while (playerNum == 0) {
             try {

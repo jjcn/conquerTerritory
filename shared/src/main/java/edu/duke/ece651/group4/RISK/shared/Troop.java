@@ -13,6 +13,7 @@ public class Troop implements Serializable {
     public Troop(int number, Player owner, Random rand) {
         this.owner = owner;
         this.population = new ArrayList<>();
+        this.owner=new TextPlayer(owner.getName());
         for (int i = 0; i < number; i++) {
             population.add(new Soldier(rand));
         }
@@ -83,6 +84,5 @@ public class Troop implements Serializable {
 
         return this.owner;
     }
-    
-}
 
+}

@@ -25,6 +25,14 @@ public class TextPlayer implements Player, Serializable {
         this(out, inputReader, playerName, new Random());
     }
 
+    public TextPlayer(String playerName) {
+        this.playerName = playerName;
+        this.inputReader = null;
+        this.out = null;
+        this.actionTypes = new HashMap<>();
+        this.rnd = null;
+    }
+
     /**
      * This asks the user to input their name for this game and then constructs the Player. Output:
      * <p>
@@ -73,7 +81,7 @@ public class TextPlayer implements Player, Serializable {
      * If input is not an integer, ask the user to input again until receive a valid number:
      * <p>
      * Please choose a valid action type:\n
-     * </p>
+     * </p >
      *
      * @return an Order containing the information of the action; null if the user has done their actions in this turn.
      * Order information for move and attack includes source, destination and action name.
