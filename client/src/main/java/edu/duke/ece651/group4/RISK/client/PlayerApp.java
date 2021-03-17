@@ -21,9 +21,9 @@ public class PlayerApp {
     private Random rnd;
     private WorldTextView myView;
 
-    public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader,World theWorld,int num,Random rnd) {
+    public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader,World theWorld,int num,Random rnd,boolean mode) {
         this.playerClient=myClient;
-        this.myPlayer=new TextPlayer(out,inputReader, name,rnd);
+        this.myPlayer=new TextPlayer(out,inputReader, name,rnd,mode);
         this.theWorld=theWorld;
         this.totalPopulation=num;
         this.rnd=rnd;
@@ -31,7 +31,7 @@ public class PlayerApp {
     }
 
     public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader,World theWorld,int num) {
-        this(myClient,name,out,inputReader,theWorld,num,new Random());
+        this(myClient,name,out,inputReader,theWorld,num,new Random(),false);
     }
 
 
