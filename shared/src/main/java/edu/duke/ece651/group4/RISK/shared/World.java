@@ -29,7 +29,7 @@ public class World implements Serializable {
      */
     public Graph<Territory> territories;
     private final OrderChecker basicOrderChecker;
-    final Random rand;
+    final Random rnd;
 
     /**
      * Construct a default world with an empty graph.
@@ -54,7 +54,7 @@ public class World implements Serializable {
     public World(Graph<Territory> terrs, Random random) {
         territories = terrs;
         basicOrderChecker = new OrderChecker();
-        rand = random;
+        rnd = random;
     }
     
 
@@ -85,11 +85,11 @@ public class World implements Serializable {
     }
 
     /**
-     * Get a clone of a world object.
-     * @return a clone of the world object.
+     * Get a deep copy of a world object.
+     * @return a deep copy of the world object.
      */
-    public World clone() {
-        return new World(this.territories, this.rand);
+    public World clone(World world) {
+        this(new Graph(), this.rnd);
     }
 
     /**
@@ -374,9 +374,10 @@ public class World implements Serializable {
     }
 
     @Override
-    public String toString() {
-        // TODO: change placeholder
-        return "World.toString placeholder";
+    public String toString() { // TODO: change placeholder
+        return territories.toString() + 
+               basicOrderChecker.toString() +
+               rnd.toString();
     }
 
     @Override

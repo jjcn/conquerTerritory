@@ -102,6 +102,18 @@ public class WorldTest {
     }
 
     @Test
+    public void testClone() {
+        World world = createWorldSimple();
+        World worldClone = world.clone();
+
+        assertEquals(world, worldClone);
+        assertEquals(worldClone.getAllTerritories(), 
+            new ArrayList<Territory>(Arrays.asList(new Territory("1"), new Territory("2"))));
+        assertEquals(worldClone.getAdjacents("1"), 
+            new ArrayList<Territory>(Arrays.asList(new Territory("2"))));
+    }
+
+    @Test
     public void testAddTerritory() {
         World world = new World();
         List<Territory> expected = new ArrayList<>();

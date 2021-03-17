@@ -37,6 +37,10 @@ public class Graph<T> implements Serializable {
         this.adjMatrix = adjMatrix;
     }
 
+    public Graph<T> clone() {
+        
+    }
+
     /**
      * Creates a spanning tree, and add several random connections to it
      * @param numNewEdges is the number of new connections introduced to the spanning tree.
