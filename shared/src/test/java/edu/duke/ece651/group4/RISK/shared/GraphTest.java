@@ -52,6 +52,24 @@ public class GraphTest {
         Graph<Character> charGraph = new Graph<>(vertices, adjMatrix);
     }
 
+    @Test
+    public void testArrayCopyOf() {
+        int size = 2;
+        boolean[][] mat = {{true, false}, {true, true}};
+        boolean[][] copy = Arrays.copyOf(mat, size);
+
+        assertNotEquals(mat, copy);
+    }
+
+    @Test
+    public void testArrayCopyConstructor() {
+        List<Integer> list = new ArrayList<>(Arrays.asList(0, 1, 2));
+        List<Integer> copy = new ArrayList<>(list);
+        list.set(0, 5);
+
+        assertEquals(0, copy.get(0));
+    }
+
     /**
      * Helper function that prints out adjacent matrix as 0's and 1's.
      * @param matrix is a boolean adjacent matrix
@@ -65,15 +83,38 @@ public class GraphTest {
         }
     }
 
+    public boolean isDiagonalSymmetric(boolean[][] mat) {
+        for (int i = 0; i < mat.length; i++) {
+            for (int j = 0; j < mat[0].length; j++) {
+                if (mat[i][j] != mat[j][i]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isDiagonalTrue(boolean[][] mat) {
+        for (int i = 0; i < mat.length; i++) {
+            if (mat[i][i] == true) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Test
     public void testAddRandomEdges() {
         Graph<Integer> intGraph = new Graph<>();
         intGraph.addRandomEdges(intGraph.size(), new Random(0));
+
         for (int i = 1; i <= 9; i++) {
             intGraph.addVertex(i);
         }
         intGraph.addRandomEdges(intGraph.size(), new Random(0));
         print2dArray(intGraph.adjMatrix);
+        assertTrue(isDiagonalSymmetric(intGraph.adjMatrix));
+        assertFalse(isDiagonalTrue(intGraph.adjMatrix));
     }
 
     @Test
@@ -259,5 +300,26 @@ public class GraphTest {
         graphNotFullyConnected.addEdge(1, 3);
         assertTrue(graphNotFullyConnected.hasPath(2, 3));
         assertFalse(graphNotFullyConnected.hasPath(2, 4));
+    }
+
+    @Test
+    public void testEquals() {
+        assertEquals(new Graph<Integer>(), new Graph<Integer>());
+        // assertNotEquals(new Graph<String>(), new Graph<Integer>());
+
+        assertEquals(createGraphFantasy(), createGraphFantasy());
+
+        List<Integer> list1 = new ArrayList<>(Arrays.asList(1, 2, 3));
+        List<Integer> list2 = new ArrayList<>(Arrays.asList(5, 6, 7));
+        boolean[][] adjMatrix1 = new boolean[3][3];
+        adjMatrix1[1][2] = true; adjMatrix1[2][1] = true;
+        boolean[][] adjMatrix2 = new boolean[3][3];
+        adjMatrix1[0][1] = true; adjMatrix1[1][0] = true;
+
+        Graph<Integer> g11 = new Graph<>(list1, adjMatrix1);
+        Graph<Integer> g12 = new Graph<>(list1, adjMatrix2);
+        Graph<Integer> g21 = new Graph<>(list2, adjMatrix1);
+        assertNotEquals(g11, g12);
+        assertNotEquals(g21, g12);
     }
 }

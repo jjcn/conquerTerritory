@@ -23,13 +23,13 @@ public class World implements Serializable {
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
     final String NOT_POSITIVE_MSG = "Number of groups should be positive.";
-
+    
     /**
      * All territories in the world. Implemented with a graph structure.
      */
     public Graph<Territory> territories;
     private final OrderChecker basicOrderChecker;
-    final Random rand;
+    final Random rnd;
 
     /**
      * Construct a default world with an empty graph.
@@ -51,10 +51,10 @@ public class World implements Serializable {
      * @param terrs is the number of territories.
      * @param random is the random seed.
      */
-    public World(Graph<Territory> terrs, Random random){
+    public World(Graph<Territory> terrs, Random random) {
         territories = terrs;
         basicOrderChecker = new OrderChecker();
-        rand = random;
+        rnd = random;
     }
 
 
@@ -87,6 +87,20 @@ public class World implements Serializable {
             addTerritory(new Territory(String.format("%d", i)));
         }
         territories.addRandomEdges(numTerrs, new Random());
+    }
+ 
+    /**
+     * Get a deep copy of a world object.
+     * @return a deep copy of the world object.
+     */
+    public World clone() {
+        boolean[][] adjMatrixCopy = territories.cloneAdj();
+        ArrayList<Territory> old = (ArrayList<Territory>)territories.getList();
+        ArrayList<Territory> cpy=new ArrayList<>();
+        for (Territory item : old) {
+            cpy.add(item.clone());
+        }
+        return new World(new Graph<>(cpy,adjMatrixCopy), this.rnd);
     }
 
     /**
@@ -183,40 +197,70 @@ public class World implements Serializable {
 
     /**
      * Move a troop to a different a territory. Owner of the troop is not checked.
-     * Also checks if the troop is valid to send from the starting territory.
-     * @param start is the territory the troop starts from.
-     * @param troop is the troop to move.
-     * @param end is the territory the troop ends in.
+     * Also checks if the troop size is valid to send from the starting territory.
+     * @param order
      */
-    public void moveTroop(Territory start, Troop troop, Territory end) {
+    public void moveTroop(BasicOrder order) {
+        Territory start = findTerritory(order.getSrcName());
+        Territory end = findTerritory(order.getDesName());
+        Troop troop = order.getActTroop();
+
         if (start.checkPopulation() < troop.checkTroopSize()) {
             throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
         }
-
-        if(!start.getOwner().getName().equals(troop.getOwner().getName())||!start.getOwner().getName().equals(end.getOwner().getName())){
-            throw new IllegalArgumentException("Wrong attack");
+        String errorMsg = basicOrderChecker.checkOrder(order, this);
+        if (errorMsg != null) {
+            throw new IllegalArgumentException(errorMsg);
         }
+        
         start.sendOutTroop(troop);
         end.sendInTroop(troop);
     }
 
     /**
+     * Overload
+     * @param start is the territory the troop starts from.
+     * @param troop is the troop to move.
+     * @param end is the territory the troop ends in.
+     */
+    public void moveTroop(Territory start, Troop troop, Territory end) {
+        BasicOrder order = new BasicOrder(start.getName(), end.getName(), 
+                                            troop, 'M');
+        moveTroop(order);
+    }
+
+    /**
      * Send a troop to a territory with different owner, in order to engage in battle.
-     * Also checks if the troop is valid to send from the starting territory.
+     * Also checks if the troop size is valid to send from the starting territory.
+     * @param order is the attack order
+     */
+    public void attackATerritory(BasicOrder order) {
+        Territory start = findTerritory(order.getSrcName());
+        Territory end = findTerritory(order.getDesName());
+        Troop troop = order.getActTroop();
+        
+        if (start.checkPopulation() < troop.checkTroopSize()) {
+            throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
+        }
+        String errorMsg = basicOrderChecker.checkOrder(order, this);
+        if (errorMsg != null) {
+            throw new IllegalArgumentException(errorMsg);
+        }
+        
+        start.sendOutTroop(troop);
+        end.sendInTroop(troop);
+    }
+
+    /**
+     * Overload
      * @param start is the territory the troop starts from.
      * @param troop is the troop to send.
      * @param end is the territory the troop ends in.
      */
     public void attackATerritory(Territory start, Troop troop, Territory end) {
-        if (start.checkPopulation() < troop.checkTroopSize()) {
-            throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
-        }
-
-        if(!start.getOwner().getName().equals(troop.getOwner().getName())||start.getOwner().getName().equals(end.getOwner().getName())){
-            throw new IllegalArgumentException("Wrong attack");
-        }
-        start.sendOutTroop(troop);
-        end.sendInEnemyTroop(troop);
+        BasicOrder order = new BasicOrder(start.getName(), end.getName(), 
+                                          troop, 'A');
+        attackATerritory(order);
     }
 
     /**
@@ -224,9 +268,23 @@ public class World implements Serializable {
      */
     public void doAllBattles() {
         for (Territory terr : territories.getVertices()) {
-            terr.doBattles(); // FIXIT: doOneBattle requires a Troop argument
+            terr.doBattles(); 
         }
     }
+
+    /**
+     * Iterate over all territories around the world, and do battles on them.
+     * @return A summary of battle info on all territories.
+     */
+    /* // A newer version
+    public String doAllBattles() {
+        StringBuilder ans = new StringBuilder();
+        for (Territory terr : territories.getVertices()) {
+            ans.append(terr.doBattles()); 
+        }
+        return ans.toString();
+    }
+    */
 
     /**
      * Check if two territories are adjacent to each other
@@ -288,7 +346,7 @@ public class World implements Serializable {
             randomInds[i] = i;
         }
         // shuffle indices to create random groups
-        Shuffler shuffler = new Shuffler(this.rand);
+        Shuffler shuffler = new Shuffler(this.rnd);
         shuffler.shuffle(randomInds);
         // divide
         List<Territory> terrList = territories.getVertices();
@@ -326,7 +384,7 @@ public class World implements Serializable {
     }
 
     /**
-     * Checks if a player has lost the game ny losing all his territories.
+     * Checks if a player has lost the game by losing all his territories.
      * @param playerName is the player's name.
      * @return true, if player has lost.
      *         false, if not.
@@ -357,7 +415,7 @@ public class World implements Serializable {
     }
 
     /**
-     * Get the name of winner of the game.
+     * Get the name of the game winner.
      * @return winner's the name, if the game has ended.
      *         null, if there is no winner yet.
      */
@@ -380,28 +438,15 @@ public class World implements Serializable {
     }
 
     @Override
-    public String toString() {
-        // TODO: change placeholder
-        return "World.toString placeholder";
+    public String toString() { // TODO: change placeholder
+        return territories.toString() + 
+               basicOrderChecker.toString() +
+               rnd.toString();
     }
 
     @Override
     public int hashCode() {
         return toString().hashCode();
-    }
-
-    /**
-     * Get a deep copy of a world object.
-     * @return a deep copy of the world object.
-     */
-    public World clone() {
-        boolean[][] adjMatrixCopy=territories.cloneAdj();
-        ArrayList<Territory> old=(ArrayList<Territory>)territories.getList();
-        ArrayList<Territory> cpy=new ArrayList<>();
-        for (Territory item : old) cpy.add(item.clone());
-        Graph<Territory> newG=new Graph<>(cpy,adjMatrixCopy);
-        return new World(newG, this.rand);
-//        return new World(territories.clone(), this.rand);
     }
 
 }
