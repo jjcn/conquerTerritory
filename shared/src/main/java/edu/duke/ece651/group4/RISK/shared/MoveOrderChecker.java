@@ -37,16 +37,16 @@ public class MoveOrderChecker implements Serializable {
      *         a String indicating the problem, if not.
      */
     protected String checkMyOrder(BasicOrder order, World world) {
-        if (order.getActionName() == 'M') {
+        if (Character.toUpperCase(order.getActionName()) == 'M') {
             Territory start = world.findTerritory(order.getSrcName());
             Territory end = world.findTerritory(order.getDesName());
             Player owner = start.getOwner();
             // if the start and end do not have the same owner
             if (!start.getOwner().equals(end.getOwner())) {
                 return NOT_SAME_OWNER_MSG;
-            }  
+            }
             // if not linked
-            // FIXIT: this has bugs
+            // TODO: this has bugs
             Queue<Territory> queue = new LinkedList<>();
             Set<Territory> visited = new HashSet<>();
             

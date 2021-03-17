@@ -3,6 +3,7 @@ package edu.duke.ece651.group4.RISK.shared;
 import java.util.List;
 import java.util.Queue;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
@@ -36,9 +37,27 @@ public class Graph<T> implements Serializable {
         this.vertices = vertices;
         this.adjMatrix = adjMatrix;
     }
+    
+    public List<T> getList(){
+        return this.vertices;
+    }
 
     /**
-     * Creates a spanning tree, and add several random connections to it
+     * Get a deep copy of adjacency matrix.
+     * @return a deep copy of adjacency matrix.s
+     */
+    public boolean[][] cloneAdj() {
+        boolean[][] adjMatrixCopy = new boolean[size()][size()];
+        for (int i = 0; i < size(); i++) {
+            for (int j = 0; j < size(); j++) {
+                adjMatrixCopy[i][j] = adjMatrix[i][j];
+            }
+        }
+        return adjMatrixCopy;
+    }
+
+    /**
+     * Creates a spanning tree, then add several random connections to it (may with existing ones)
      * @param numNewEdges is the number of new connections introduced to the spanning tree.
      * @param rand is the Random object.
      */
@@ -259,35 +278,6 @@ public class Graph<T> implements Serializable {
         return false;
     }
 
-//    public Graph<T> clone() {
-//        boolean[][] adjMatrixCopy = new boolean[size()][size()];
-//        for (int i = 0; i < size(); i++) {
-//            for (int j = 0; j < size(); j++) {
-//                adjMatrixCopy[i][j] = adjMatrix[i][j];
-//            }
-//        }
-//        ArrayList<T> cloneList = new ArrayList<T>(vertices.size());
-//        for (T item : vertices) cloneList.add(T.clone());
-//        return new Graph<T>(new ArrayList<T>(vertices), adjMatrixCopy);
-//    }
-
-
-    public boolean[][] cloneAdj() {
-        boolean[][] adjMatrixCopy = new boolean[size()][size()];
-        for (int i = 0; i < size(); i++) {
-            for (int j = 0; j < size(); j++) {
-                adjMatrixCopy[i][j] = adjMatrix[i][j];
-            }
-        }
-
-        return adjMatrixCopy;
-
-    }
-
-    public List<T> getList(){
-        return this.vertices;
-    }
-
     /*
     @Override
     public Iterator<T> iterator() {
@@ -315,4 +305,23 @@ public class Graph<T> implements Serializable {
     }
     */
 
+    @Override
+    public boolean equals(Object other) {
+        if (other != null && other.getClass().equals(getClass())) {
+            Graph<T> otherGraph = (Graph<T>)other;
+            boolean adjMatrixEquals = true;
+            for (int i = 0; i < size(); i++) {
+                for (int j = 0; j < size(); j++) {
+                    if (otherGraph.adjMatrix[i][j] != adjMatrix[i][j]) {
+                        adjMatrixEquals = false;
+                    }
+                }
+            }
+            return otherGraph.vertices.equals(vertices) &&
+                    adjMatrixEquals;
+        }
+        else {
+            return false;
+        }
+    }
 }
