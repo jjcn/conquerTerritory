@@ -197,18 +197,9 @@ public class World implements Serializable {
 
     /**
      * Move a troop to a different a territory. Owner of the troop is not checked.
-     * Also checks if the troop is valid to send from the starting territory.
-     * @param start is the territory the troop starts from.
-     * @param troop is the troop to move.
-     * @param end is the territory the troop ends in.
+     * Also checks if the troop size is valid to send from the starting territory.
+     * @param order
      */
-    // TODO: may reformat to take an Order object
-    public void moveTroop(Territory start, Troop troop, Territory end) {
-        BasicOrder order = new BasicOrder(start.getName(), end.getName(), 
-                                            troop, 'M');
-        moveTroop(order);
-    }
-
     public void moveTroop(BasicOrder order) {
         Territory start = findTerritory(order.getSrcName());
         Territory end = findTerritory(order.getDesName());
@@ -227,18 +218,22 @@ public class World implements Serializable {
     }
 
     /**
-     * Send a troop to a territory with different owner, in order to engage in battle.
-     * Also checks if the troop is valid to send from the starting territory.
+     * Overload
      * @param start is the territory the troop starts from.
-     * @param troop is the troop to send.
+     * @param troop is the troop to move.
      * @param end is the territory the troop ends in.
      */
-    public void attackATerritory(Territory start, Troop troop, Territory end) {
+    public void moveTroop(Territory start, Troop troop, Territory end) {
         BasicOrder order = new BasicOrder(start.getName(), end.getName(), 
-                                          troop, 'A');
-        attackATerritory(order);
+                                            troop, 'M');
+        moveTroop(order);
     }
 
+    /**
+     * Send a troop to a territory with different owner, in order to engage in battle.
+     * Also checks if the troop size is valid to send from the starting territory.
+     * @param order is the attack order
+     */
     public void attackATerritory(BasicOrder order) {
         Territory start = findTerritory(order.getSrcName());
         Territory end = findTerritory(order.getDesName());
@@ -254,6 +249,18 @@ public class World implements Serializable {
         
         start.sendOutTroop(troop);
         end.sendInTroop(troop);
+    }
+
+    /**
+     * Overload
+     * @param start is the territory the troop starts from.
+     * @param troop is the troop to send.
+     * @param end is the territory the troop ends in.
+     */
+    public void attackATerritory(Territory start, Troop troop, Territory end) {
+        BasicOrder order = new BasicOrder(start.getName(), end.getName(), 
+                                          troop, 'A');
+        attackATerritory(order);
     }
 
     /**
