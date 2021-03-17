@@ -242,11 +242,14 @@ public class World implements Serializable {
 
     /**
      * Iterate over all territories around the world, and do battles on them.
+     * @return A summary of battle info on all territories.
      */
-    public void doAllBattles() {
+    public String doAllBattles() {
+        StringBuilder ans = new StringBuilder();
         for (Territory terr : territories.getVertices()) {
-            terr.doBattles(); // FIXIT: doOneBattle requires a Troop argument
+            ans.append(terr.doBattles()); 
         }
+        return ans.toString();
     }
 
     /**
