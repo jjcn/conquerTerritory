@@ -208,7 +208,8 @@ public class TextPlayer implements Player, Serializable {
                 out.print("You have placed more soldier than you have.\n");
                 return null;
             }
-            orders.add(new PlaceOrder(name, new Troop(add, this, this.rnd)));
+            Troop troop = testMode?new Troop(add, this, this.rnd):new Troop(add, this,new Random());
+            orders.add(new PlaceOrder(name, troop));
         }
         if (remain > 0) {
             out.print("You have not use up all your soldiers. Don't be too confident you will win!!\n");
