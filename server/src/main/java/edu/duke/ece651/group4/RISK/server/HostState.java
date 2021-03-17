@@ -33,7 +33,7 @@ public class HostState{
                 return false;
             }
         }
-        return false;
+        return true;
     }
 
     /*

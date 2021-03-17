@@ -1,4 +1,3 @@
-
 package edu.duke.ece651.group4.RISK.shared;
 
 import java.io.Serializable;
@@ -34,8 +33,13 @@ public class Soldier implements Unit, Serializable {
 
   private int randInt(int min, int max) {
     int randomNum = dice.nextInt((max - min) + 1) + min;
-    
+
     return randomNum;
   }
-  
+
+  public Soldier clone(){
+    Soldier clone= new Soldier(this.dice);
+    return clone;
+  }
+
 }
