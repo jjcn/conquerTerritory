@@ -1,5 +1,6 @@
 package edu.duke.ece651.group4.RISK.shared;
 
+import java.io.Serializable;
 import java.util.Set;
 import java.util.Stack;
 import java.util.HashSet;
@@ -19,7 +20,7 @@ import java.util.Queue;
  * Also checks if the order is a move order.
  * 
  */
-public class MoveOrderChecker {
+public class MoveOrderChecker implements Serializable {
     private final String NOT_SAME_OWNER_MSG = "Cannot move troop to a territory with different owner.";
     private final String NOT_MOVE_ORDER_MSG = "This is not a move order.";
     private final String NOT_REACHABLE_MSG = "There is not a path of territories that all belongs to you.";

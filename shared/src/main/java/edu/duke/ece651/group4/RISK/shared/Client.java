@@ -12,7 +12,7 @@ import java.net.Socket;
 * Warning: You need to create the ObjectOutputStream before the ObjectInputStream,
 * at both ends, for reasons described in the Javadoc concerning the object stream header.
 */
-public class Client {
+public class Client  {
     Socket socket;
     ObjectOutputStream out;
     ObjectInputStream in;

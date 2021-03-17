@@ -2,7 +2,8 @@ package edu.duke.ece651.group4.RISK.server;
 
 import edu.duke.ece651.group4.RISK.shared.*;
 
-import java.util.HashMap;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CyclicBarrier;
 
@@ -30,16 +31,21 @@ public class ClientThread extends Thread{
     /*
      *  This sends a player info to each Client.
      * */
-    private void sendPlayerNameToClient(){
-        sendInfo(this.playerName,this.theClient);
+    private void sendPlayerNameToClient() throws IOException {
+        this.theClient.sendObject(this.playerName);
     }
 
     /*
      *  This send the newest worldMap to the Client
      * */
-    private void sendWorldToClient(){
-        sendInfo(this.theWorld,this.theClient);
+    private void sendWorldToClient() throws IOException {
+        this.theClient.sendObject(this.theWorld);
     }
+
+    /*
+    * This send init territory to each player.
+    * */
+    private void sendInitTerritory() throws IOException {this.theClient.sendObject(this.initTerritory); }
 
     /*
      * This is to select territory for each player.
@@ -49,7 +55,6 @@ public class ClientThread extends Thread{
         while(orderNum>0) {
             PlaceOrder newOrder = null;
             newOrder = (PlaceOrder) receiveInfo(newOrder, this.theClient);
-
             this.theWorld.stationTroop(newOrder.getDesName(),newOrder.getActTroop());
             orderNum--;
         }
@@ -60,12 +65,12 @@ public class ClientThread extends Thread{
      * This handles all orders from the Client
      * */
     private void doActionPhase(){
-
-        while( !playerState.isFinishOneAction()) {
+        while( !playerState.isDoneOneTurn()) {
             BasicOrder newOrder = null;
             newOrder = (BasicOrder) receiveInfo(newOrder, this.theClient);
             updateActionOnWorld(newOrder);
         }
+
     }
 
     /*
@@ -80,7 +85,7 @@ public class ClientThread extends Thread{
         } else if (receiveMessage.getActionName() == 'M') {
             this.theWorld.attackATerritory(theWorld.findTerritory(receiveMessage.getSrcName()), receiveMessage.getActTroop(), theWorld.findTerritory(receiveMessage.getDesName()));
         } else {
-            playerState.changeStateTo("E");
+            playerState.changeStateTo("EndOneTurn");
         }
 
     }
@@ -89,31 +94,97 @@ public class ClientThread extends Thread{
     /*
      * This is a function to check if  the player in this clientThread lost the game
      * It will iterate all territories in the world to see if there is a terr that belongs to this Player
+     * If a player lose, we will change the playerState to Lose
      * */
-
     public boolean isPlayerLost(){
-        return false;
+        return this.theWorld.checkLost(this.playerName);
     }
 
 
-    //    /*
-//    *
-//    * */
-//
-    private boolean isPlayerWin(){
-        return false;
+    /*
+    * This is to check if there is only one winner in the world after the world
+    * is updated by the host
+    * */
+    private boolean isGameEnd(){
+        return this.theWorld.isGameEnd();
     }
 
     /*
-     *  This message to Winner to let him or her know
+    *  This function is to get name of winner and will send it to all clients
+    * */
+    private String getWinnerName(){
+        return this.theWorld.getWinner();
+    }
+
+    /*
+     *  This message to Winner Name to everyone.
      * */
     private void sendWinnerMessage(){
+        sendInfo(getWinnerName() + " is the winner!",this.theClient);
+    }
 
+
+    @Override
+    public void run(){
+        System.out.println( this.playerName + " gets connected with the server.");
+        System.out.println( "Please wait for other player to get connected.");
+        try {
+            barrier.await();
+            sendPlayerNameToClient();
+//            this.theClient.sendObject(this.playerName);
+            System.out.println("To " + this.playerName + ", send the name" );
+            sendWorldToClient();
+//            this.theClient.sendObject(this.theWorld);
+            System.out.println("To " + this.playerName + ", send the world" );
+            sendInitTerritory();
+            System.out.println("To " + this.playerName + ", send territories" );
+            barrier.await();
+            selectUnits();
+            System.out.println("To " + this.playerName + ", update select Units ");
+            barrier.await();
+            sendWorldToClient();
+            System.out.println("To " + this.playerName + ", send the first complete world.");
+            /*
+             * keep receiving message from the Client to do action
+             * */
+            while(true) {
+                doActionPhase();
+                System.out.println(this.playerName + "finish this turn of moving and attacking.");
+                barrier.await(); // Wait everyone to finish their actions
+
+                while (!hostState.isFinishUpdate()) {} // wait hostState to update the world
+                sendWorldToClient();
+                barrier.await();
+
+                //check If the game ends, send message to all players and quit
+                if(isGameEnd()){
+                    playerState.changeStateTo("Quit");
+                    sendWinnerMessage();
+                    System.out.println(this.playerName + "quit the game.");
+                    break;
+                }
+                //Everyone need to change their state after this
+                if (isPlayerLost()) {
+                    playerState.changeStateTo("Lose");
+                    System.out.println(this.playerName + "lose the game now.");
+                }
+                else{
+                    playerState.changeStateTo("Ready");
+                }
+
+                barrier.await();
+                hostState.changeStateTo("WaitForUpdateWorld");
+            }
+
+//            sendWinnerMessage(); // If we find winner, this thread will close
+            // if we find a winner, and hostState will be endGame. Every thread should close
+        }catch (Exception ignored){
+
+        }
     }
 
     private Object receiveInfo(Object o, Client c){
         while(o==null) {
-
             try {
                 o = c.recvObject();
             } catch (Exception e) {
@@ -125,7 +196,6 @@ public class ClientThread extends Thread{
 
     private void sendInfo(Object o, Client c){
         while(o==null) {
-
             try {
                 c.sendObject(o);
             } catch (Exception e) {
@@ -134,54 +204,5 @@ public class ClientThread extends Thread{
         }
 
     }
-
-    @Override
-    public void run(){
-        try {
-            sendPlayerNameToClient();
-            barrier.await();
-            sendWorldToClient();
-            selectUnits();
-            barrier.await();
-            sendWorldToClient();
-
-            /*
-             * keep receiving message from the Client to do action
-             * */
-            while(!hostState.isEndGame()) {
-
-                doActionPhase();
-
-                barrier.await();
-                while (!hostState.isFinishUpdate()) {
-
-                }
-                sendWorldToClient();
-                // After send all worlds to each player,
-                // we need to change the hostState to "ReadyToNext"
-                barrier.await();
-                hostState.changeStateTo("ReadyToNext");//?playerstate=readytonext
-                //if state=lose do not change to ready to next
-
-//                if (this.theWorld.checkLost(this.playerName)) {
-//                    playerState.changeStateTo("Lose");
-//                }
-//                else{
-//                    playerState.changeStateTo("ReadyToNextTurn");
-//                }
-
-            }
-
-            sendWinnerMessage(); // If we find winner, this thread will close
-            // if we find a winner, and hostState will be endGame. Every thread should close
-//            if(hostState.isEndGame()){
-//                playerState.changeStateTo("Quit");
-//                break;
-//            }
-        }catch (Exception ignored){
-
-        }
-    }
-
 }
 
