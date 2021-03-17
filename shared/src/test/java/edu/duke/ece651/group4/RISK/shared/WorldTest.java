@@ -18,9 +18,14 @@ public class WorldTest {
     /**
      * Error messages
      */
+    final String NOT_ENOUGH_TROOP_MSG = "The troop size you want is larger than that on this territory.";
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
-    final String NON_POSITIVE_MSG = "Number of groups should be positive.";
+    final String NOT_POSITIVE_MSG = "Number of groups should be positive.";
+
+    private final String NOT_SAME_OWNER_MSG = "Cannot move troop to a territory with different owner.";
+    private final String NOT_MOVE_ORDER_MSG = "This is not a move order.";
+    private final String NOT_REACHABLE_MSG = "There is not a path of territories that all belongs to you.";
 
     /**
      * Creates a world for test. 
@@ -175,8 +180,40 @@ public class WorldTest {
     }
 
     @Test
-    public void testMoveTroop() {
+    public void testMoveTroopValid() {
         World world = createWorld(troopsSeparated);
+        // Valid
+        BasicOrder move1 = new BasicOrder("Gondor", "Mordor", new Troop(13, red), 'm');
+        BasicOrder move2 = new BasicOrder("Elantris", "Scadrial", new Troop(6, blue), 'M');
+        assertDoesNotThrow(() -> world.moveTroop(move1));
+        assertDoesNotThrow(() -> world.moveTroop(move2));
+    }
+
+    @Test
+    public void testMoveTroopSize() {
+        World world = createWorld(troopsSeparated);
+        // Troop size 
+        BasicOrder move3 = new BasicOrder("Elantris", "Scadrial", new Troop(8, blue), 'M');
+        assertThrows(IllegalArgumentException.class, () -> world.moveTroop(move3), NOT_ENOUGH_TROOP_MSG);
+    }
+
+    @Test
+    public void testMoveTroopNonExistTerritory() {
+        World world = createWorld(troopsSeparated);
+        // Territory name does not exist
+        BasicOrder move4 = new BasicOrder("No", "Scadrial", new Troop(3, blue), 'M');
+        BasicOrder move5 = new BasicOrder("Elantris", "No", new Troop(3, blue), 'M');
+        assertThrows(NoSuchElementException.class, () -> world.moveTroop(move4), TERRITORY_NOT_FOUND_MSG);
+        assertThrows(NoSuchElementException.class, () -> world.moveTroop(move5), TERRITORY_NOT_FOUND_MSG);   
+    } 
+
+    @Test
+    public void testMoveTroopNotSameOwner() {
+        World world = createWorld(troopsSeparated);// Not same owner
+        BasicOrder move6 = new BasicOrder("Elantris", "Gondor", new Troop(3, blue), 'M');
+        BasicOrder move7 = new BasicOrder("Gondor", "Oz", new Troop(3, blue), 'M');
+        assertThrows(IllegalArgumentException.class, () -> world.moveTroop(move6), NOT_SAME_OWNER_MSG);
+        assertThrows(IllegalArgumentException.class, () -> world.moveTroop(move7), NOT_SAME_OWNER_MSG);
     }
 
     @Test
@@ -218,8 +255,8 @@ public class WorldTest {
         
         World world = createWorld(); // evolution 1 example world, has 9 territories
         
-        assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(-1), NON_POSITIVE_MSG);
-        assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(0), NON_POSITIVE_MSG);
+        assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(-1), NOT_POSITIVE_MSG);
+        assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(0), NOT_POSITIVE_MSG);
         assertDoesNotThrow(() -> world.divideTerritories(1));
         assertThrows(IllegalArgumentException.class, () -> world.divideTerritories(2), INDIVISIBLE_MSG);
         assertDoesNotThrow(() -> world.divideTerritories(3));

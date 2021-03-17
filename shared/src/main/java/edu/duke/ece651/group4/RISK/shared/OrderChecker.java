@@ -22,12 +22,13 @@ public class OrderChecker implements Serializable { // TODO: bad code design
      *         a String indicating the problem, if not.
      */
     public String checkOrder(BasicOrder order, World world) { 
-        if (order.getActionName() == 'A') { 
-            aoc.checkMyOrder(order, world);
+        char orderType = Character.toUpperCase(order.getActionName());
+        if (orderType == 'A') { 
+            return aoc.checkMyOrder(order, world);
         }
-        else if (order.getActionName() == 'M') {   
-            moc.checkMyOrder(order, world);
+        else if (orderType == 'M') {   
+            return moc.checkMyOrder(order, world);
         }
-        return "Not a valid basic order type."; // that is, not Attack or Move
+        return String.format("'%c' is not a valid basic order type.", orderType); // that is, not Attack or Move
     }
 }

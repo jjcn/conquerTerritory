@@ -199,21 +199,9 @@ public class World implements Serializable {
      */
     // TODO: may reformat to take an Order object
     public void moveTroop(Territory start, Troop troop, Territory end) {
-        if (start.checkPopulation() < troop.checkTroopSize()) {
-            throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
-        }
-
         BasicOrder order = new BasicOrder(start.getName(), end.getName(), 
-                                          troop, 'M');
-        basicOrderChecker.checkOrder(order, this);
-        /*
-        if(!start.getOwner().getName().equals(troop.getOwner().getName())||
-           !start.getOwner().getName().equals(end.getOwner().getName())) {
-            throw new IllegalArgumentException("Wrong attack");
-        }
-        */
-        start.sendOutTroop(troop);
-        end.sendInTroop(troop);
+                                            troop, 'M');
+        moveTroop(order);
     }
 
     public void moveTroop(BasicOrder order) {
@@ -224,7 +212,10 @@ public class World implements Serializable {
         if (start.checkPopulation() < troop.checkTroopSize()) {
             throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
         }
-        basicOrderChecker.checkOrder(order, this);
+        String errorMsg = basicOrderChecker.checkOrder(order, this);
+        if (errorMsg != null) {
+            throw new IllegalArgumentException(errorMsg);
+        }
         
         start.sendOutTroop(troop);
         end.sendInTroop(troop);
@@ -238,20 +229,9 @@ public class World implements Serializable {
      * @param end is the territory the troop ends in.
      */
     public void attackATerritory(Territory start, Troop troop, Territory end) {
-        if (start.checkPopulation() < troop.checkTroopSize()) {
-            throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
-        }
         BasicOrder order = new BasicOrder(start.getName(), end.getName(), 
                                           troop, 'A');
-        basicOrderChecker.checkOrder(order, this);
-        /*
-        if(!start.getOwner().getName().equals(troop.getOwner().getName()) ||
-           start.getOwner().getName().equals(end.getOwner().getName())) {
-            throw new IllegalArgumentException("Wrong attack");
-        }
-        */
-        start.sendOutTroop(troop);
-        end.sendInEnemyTroop(troop);
+        attackATerritory(order);
     }
 
     public void attackATerritory(BasicOrder order) {
@@ -262,7 +242,10 @@ public class World implements Serializable {
         if (start.checkPopulation() < troop.checkTroopSize()) {
             throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
         }
-        basicOrderChecker.checkOrder(order, this);
+        String errorMsg = basicOrderChecker.checkOrder(order, this);
+        if (errorMsg != null) {
+            throw new IllegalArgumentException(errorMsg);
+        }
         
         start.sendOutTroop(troop);
         end.sendInTroop(troop);

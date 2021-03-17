@@ -31,7 +31,7 @@ public class AttackOrderChecker implements Serializable {
      *         a String indicating the problem, if not.
      */
     protected String checkMyOrder(BasicOrder order, World world) {
-        if (order.getActionName() == 'A') {
+        if (Character.toUpperCase(order.getActionName()) == 'A') {
             Territory start = world.findTerritory(order.getSrcName());
             Territory end = world.findTerritory(order.getDesName());
             // if the start and end have the same owner
