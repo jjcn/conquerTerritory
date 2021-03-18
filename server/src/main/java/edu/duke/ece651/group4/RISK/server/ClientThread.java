@@ -32,6 +32,7 @@ public class ClientThread extends Thread{
      *  This sends a player info to each Client.
      * */
     protected void sendPlayerNameToClient() throws IOException {
+
         this.theClient.sendObject(this.playerName);
     }
 
@@ -64,12 +65,16 @@ public class ClientThread extends Thread{
     /*
      * This is to select territory for each player.
      * */
-    protected void selectUnits(){
+    protected void selectUnits() throws IOException, ClassNotFoundException {
         int orderNum=this.initTerritory.size();
+        System.out.println("To " + this.playerName + ", orderNum: "+ orderNum );
         while(orderNum>0) {
             PlaceOrder newOrder = null;
-            newOrder = (PlaceOrder) receiveInfo(newOrder, this.theClient);
+            newOrder = (PlaceOrder)  this.theClient.recvObject();
+//            newOrder = (PlaceOrder) receiveInfo(newOrder, this.theClient);
+            System.out .println("thread: start update selectunits");
             this.theWorld.stationTroop(newOrder.getDesName(),newOrder.getActTroop());
+            System.out .println("thread: finish update selectunits");
             orderNum--;
         }
 
@@ -217,4 +222,14 @@ public class ClientThread extends Thread{
         return o;
     }
 
+    protected void sendInfo(Object o, Client c) throws IOException {
+
+        try {
+            c.sendObject(o);
+        } catch (Exception e) {
+            System.out.println("Socket send object problem!");
+        }
+
+
+    }
 }

@@ -58,6 +58,7 @@ class PlayerAppTest {
                     testWorld.stationTroop(newOrder.getDesName(), newOrder.getActTroop());
                 }
                 theClient.sendObject(testWorld.clone());
+                theClient.close();
             } catch (Exception e) {
             }
         }).start();
@@ -117,6 +118,7 @@ class PlayerAppTest {
                 String message=testWorld.doAllBattles();
                 theClient.sendObject(testWorld.clone());
                 theClient.sendObject(new String(message));
+                theClient.close();
             } catch (Exception e) {
             }
         }).start();
@@ -162,6 +164,7 @@ class PlayerAppTest {
                 theClient.sendObject(new String(message));
                 theClient.sendObject(testWorld.clone());
                 theClient.sendObject(new String(message));
+                theClient.close();
             } catch (Exception e) {
             }
         }).start();
