@@ -40,8 +40,14 @@ public class ClientThread extends Thread{
      * */
     public void sendWorldToClient() throws IOException {
         World sendWorld=this.theWorld.clone();
-
         this.theClient.sendObject(sendWorld);
+
+    }
+    /*
+     *  This send the newest WarReport to the Client
+     * */
+    public void sendWarReportToClient() throws IOException {
+        this.theClient.sendObject(this.hostState.getWarReport());
     }
 
 //    public void sendTerritoryToClient() throws IOException {
@@ -124,19 +130,19 @@ public class ClientThread extends Thread{
         return this.theWorld.isGameEnd();
     }
 
-    /*
-     *  This function is to get name of winner and will send it to all clients
-     * */
-    private String getWinnerName(){
-        return this.theWorld.getWinner();
-    }
-
-    /*
-     *  This message to Winner Name to everyone.
-     * */
-    private void sendWinnerMessage(){
-        sendInfo(getWinnerName() + " is the winner!",this.theClient);
-    }
+//    /*
+//     *  This function is to get name of winner and will send it to all clients
+//     * */
+//    private String getWinnerName(){
+//        return this.theWorld.getWinner();
+//    }
+//
+//    /*
+//     *  This message to Winner Name to everyone.
+//     * */
+//    private void sendWinnerMessage(){
+//        sendInfo(getWinnerName() + " is the winner!",this.theClient);
+//    }
 
 
     @Override
@@ -156,11 +162,7 @@ public class ClientThread extends Thread{
             barrier.await();
             selectUnits();
             System.out.println("To " + this.playerName + ", update select Units ");
-//            if(!this.theWorld.checkLost(this.playerName)){
-//                System.out.println("To " + this.playerName + ", world did not update the units ");
-//            }
             barrier.await();
-//            sendTerritoryToClient();
             sendWorldToClient();
             System.out.println("To " + this.playerName + ", send the first complete world.");
             /*
@@ -173,15 +175,9 @@ public class ClientThread extends Thread{
 
                 while (!hostState.isFinishUpdate()) {} // wait hostState to update the world
                 sendWorldToClient();
+                sendWarReportToClient();
                 barrier.await();
 
-                //check If the game ends, send message to all players and quit
-                if(isGameEnd()){
-                    playerState.changeStateTo("Quit");
-                    sendWinnerMessage();
-                    System.out.println(this.playerName + "quit the game.");
-                    break;
-                }
                 //Everyone need to change their state after this
                 if (isPlayerLost()) {
                     playerState.changeStateTo("Lose");
@@ -189,6 +185,13 @@ public class ClientThread extends Thread{
                 }
                 else{
                     playerState.changeStateTo("Ready");
+                }
+                //check If the game ends, send message to all players and quit
+                if(isGameEnd()){
+                    playerState.changeStateTo("Quit");
+//                    sendWinnerMessage();
+                    System.out.println(this.playerName + "quit the game.");
+                    break;
                 }
 
                 barrier.await();
