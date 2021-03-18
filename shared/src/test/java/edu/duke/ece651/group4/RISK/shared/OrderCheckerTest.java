@@ -12,7 +12,7 @@ public class OrderCheckerTest {
     private final String SAME_OWNER_MSG = "Cannot attack a territory with the same owner.";
     private final String NOT_ATTACK_ORDER_MSG = "This is not an attack order.";
     private final String NOT_ADJACENT_MSG = "The attack should be performed on adjacent territories.";
-    protected final String NOT_YOUR_TROOP_MSG = "Error: You try to move troops on other's territory";
+    protected final String NOT_YOUR_TROOP_MSG = "Error: You try to move troops on another player's territory";
 
     PrintStream out = null;
     Reader inputReader = null;

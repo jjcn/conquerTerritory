@@ -9,7 +9,8 @@ public class OrderChecker implements Serializable { // TODO: bad design of Order
     /**
      * Error Message
      */
-    protected final String NOT_YOUR_TROOP_MSG = "Error: You try to move troops on other's territory";
+    protected final String NOT_YOUR_TROOP_MSG = "Error: You try to move troops on another player's territory";
+    protected final String UNKNOWN_BASIC_ORDER_TYPE = "'%c' is not a valid basic order type.";
 
     protected AttackOrderChecker aoc;
     protected MoveOrderChecker moc;
@@ -38,6 +39,7 @@ public class OrderChecker implements Serializable { // TODO: bad design of Order
         else if (orderType == 'M') {   
             return moc.checkMyOrder(order, world);
         }
-        return String.format("'%c' is not a valid basic order type.", orderType); // that is, not Attack or Move
+        // not Attack or Move
+        return String.format(String.format(UNKNOWN_BASIC_ORDER_TYPE, orderType));
     }
 }
