@@ -22,9 +22,7 @@ public class AttackOrderChecker implements Serializable {
     protected final String SAME_OWNER_MSG = "Cannot attack a territory with the same owner.";
     protected final String NOT_ADJACENT_MSG = "The attack should be performed on adjacent territories.";
 
-    public AttackOrderChecker() {
-        super();
-    }
+    public AttackOrderChecker() {}
 
     /**
      * Checks if an attack order is legal.
