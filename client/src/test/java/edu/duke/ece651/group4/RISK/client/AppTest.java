@@ -6,6 +6,9 @@ package edu.duke.ece651.group4.RISK.client;
 import edu.duke.ece651.group4.RISK.shared.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.ResourceAccessMode;
+import org.junit.jupiter.api.parallel.ResourceLock;
+import org.junit.jupiter.api.parallel.Resources;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -189,6 +192,49 @@ class PlayerAppTest {
 
         assertEquals(testApp.getTheWorld().checkLost("p2"),true);
         assertEquals(testApp.getTheWorld().isGameEnd(),false);
+
+    }
+
+    @Test
+    @ResourceLock(value = Resources.SYSTEM_OUT, mode = ResourceAccessMode.READ_WRITE)
+    public void testMain() throws IOException, ClassNotFoundException, InterruptedException {
+        new Thread(() -> {
+            try {
+                Socket socket = server.accept();
+                Client theClient = new Client(socket);
+                World testWorld = simpleWorld();
+                theClient.sendObject("p5");
+                theClient.sendObject(testWorld.clone());
+                List<Territory> list = new ArrayList<>();
+                list.add(testWorld.findTerritory("terr1"));
+                list.add(testWorld.findTerritory("terr2"));
+                list.add(testWorld.findTerritory("terr3"));
+                theClient.sendObject(list);
+
+                theClient.recvObject();
+                theClient.recvObject();
+                theClient.recvObject();
+
+                theClient.sendObject(testWorld.clone());
+                theClient.sendObject(testWorld.clone());
+                theClient.sendObject(new String("message"));
+            } catch (Exception e) {
+            }
+        }).start();
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(bytes, true);
+        String inputData = "localhost\n8888\n5\n5\n5\nY\n";
+
+        ByteArrayInputStream s = new ByteArrayInputStream(inputData.getBytes());
+        System.setIn(s);
+        PlayerApp.main(new String[0]);
+
+
+
+
+
+
 
     }
 
