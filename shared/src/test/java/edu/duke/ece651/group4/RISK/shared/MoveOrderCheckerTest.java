@@ -106,7 +106,7 @@ public class MoveOrderCheckerTest {
     public void testMoveOrderCheckerNotLinked() {
         World world = createWorld(troopsSeparated);
 
-        // This test fails
+        // TODO: This test fails
         /*
         BasicOrder order1 = new BasicOrder("Roshar", "Hogwarts", new Troop(3, green), 'M');
         assertEquals(null, moc.checkMyOrder(order1, world));
