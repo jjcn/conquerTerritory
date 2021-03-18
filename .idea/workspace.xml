@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="dc3521d2-3c1f-4c20-971c-aae893e32c0e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/shared/src/test/java/edu/duke/ece651/group4/RISK/shared/ClientTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/test/java/edu/duke/ece651/group4/RISK/shared/ClientTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/duke/ece651/group4/RISK/server/ClientThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/duke/ece651/group4/RISK/server/ClientThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/duke/ece651/group4/RISK/server/HostApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/duke/ece651/group4/RISK/server/HostApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/java/edu/duke/ece651/group4/RISK/server/ClientThreadTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/edu/duke/ece651/group4/RISK/server/ClientThreadTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +64,7 @@
       <recent name="edu.duke.ece651.group4.RISK.client" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.ClientTest">
+  <component name="RunManager" selected="Gradle.ClientThreadTest">
     <configuration name="PlayerApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="edu.duke.ece651.group4.RISK.client.PlayerApp" />
       <module name="RISK.client.main" />
@@ -173,11 +175,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.ClientThreadTest" />
         <item itemvalue="Gradle.ClientTest" />
         <item itemvalue="Gradle.PlayerAppTest" />
         <item itemvalue="Gradle.HostAppTest" />
         <item itemvalue="Application.PlayerApp" />
-        <item itemvalue="Gradle.ClientThreadTest" />
       </list>
     </recent_temporary>
   </component>
@@ -203,7 +205,7 @@
       <workItem from="1616013946108" duration="24167000" />
       <workItem from="1616089863185" duration="653000" />
       <workItem from="1616093944373" duration="1177000" />
-      <workItem from="1616096388670" duration="3873000" />
+      <workItem from="1616096388670" duration="5599000" />
     </task>
     <servers />
   </component>
@@ -230,6 +232,10 @@
           <line>19</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="org.opentest4j.AssertionFailedError" package="org.opentest4j" />
+          <option name="timeStamp" value="7" />
+        </breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
