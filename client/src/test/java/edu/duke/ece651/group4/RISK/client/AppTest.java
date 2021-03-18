@@ -146,6 +146,53 @@ class PlayerAppTest {
         assertEquals(testApp.getTheWorld().findTerritory("terr4").checkPopulation(), 1);
     }
 
+    @Test
+    public void testRun() throws IOException, ClassNotFoundException, InterruptedException {
+        new Thread(() -> {
+            try {
+                Socket socket = server.accept();
+                Client theClient = new Client(socket);
+                World testWorld = simpleWorld();
+                BasicOrder newOrder1 = (BasicOrder ) theClient.recvObject();
+                testWorld.moveTroop(newOrder1);
+                BasicOrder newOrder2 = (BasicOrder ) theClient.recvObject();
+                testWorld.attackATerritory(newOrder2);
+                BasicOrder newOrder3 = (BasicOrder ) theClient.recvObject();
+                String message=testWorld.doAllBattles();
+                theClient.sendObject(testWorld.clone());
+                theClient.sendObject(new String(message));
+            } catch (Exception e) {
+            }
+        }).start();
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        PrintStream output = new PrintStream(bytes, true);
+        String inputData = "M\nterr1\nterr3\n5\nM\nterr1\nterr2\n1\nA\nterr3\nterr4\n1\nD\n";
+        PlayerApp testApp = null;
+        try {
+            testApp = simpleApp(inputData, output);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            testApp.runGame();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+        assertEquals(testApp.getTheWorld().findTerritory("terr1").checkPopulation(), 0);
+        assertEquals(testApp.getTheWorld().findTerritory("terr2").checkPopulation(), 2);
+        assertEquals(testApp.getTheWorld().findTerritory("terr3").checkPopulation(), 0);
+        assertEquals(testApp.getTheWorld().findTerritory("terr4").checkPopulation(), 1);
+        assertEquals(testApp.getTheWorld().checkLost("p2"),true);
+        assertEquals(testApp.getTheWorld().isGameEnd(),true);
+        assertEquals(testApp.getTheWorld().getWinner(),"p1");
+    }
+
 
 }
 
