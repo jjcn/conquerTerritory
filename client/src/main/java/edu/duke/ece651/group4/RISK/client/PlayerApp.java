@@ -52,7 +52,7 @@ public class PlayerApp {
         while(orders==null) {
             try {
                 orders = this.myPlayer.doPlacement(myGroup, this.totalPopulation);
-                out.println("finish1");
+
                 for(Order p:orders) {
                     PlaceOrder newOrder=(PlaceOrder) p;
 
@@ -64,7 +64,7 @@ public class PlayerApp {
         }
 
         for(Order p:orders){
-            out.println("send1");
+
             this.playerClient.sendObject((PlaceOrder)p);
 //            sendInfo((PlaceOrder)p,this.playerClient);
         }
