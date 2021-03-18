@@ -191,6 +191,7 @@ public class ClientThread extends Thread{
                     playerState.changeStateTo("Quit");
 //                    sendWinnerMessage();
                     System.out.println(this.playerName + "quit the game.");
+                    this.theClient.close();
                     break;
                 }
 
