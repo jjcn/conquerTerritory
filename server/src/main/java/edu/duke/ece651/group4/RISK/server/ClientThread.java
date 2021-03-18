@@ -104,11 +104,11 @@ public class ClientThread extends Thread{
 //            System.out.println(this.playerName + " ActTroop: " + receiveMessage.getActTroop().checkTroopSize());
 //            System.out.println(this.playerName + " ActTroop: " + receiveMessage.getSrcName());
 //            System.out.println(this.playerName + " Des: " +receiveMessage.getDesName());
-            this.theWorld.moveTroop(theWorld.findTerritory(receiveMessage.getSrcName()), receiveMessage.getActTroop(), theWorld.findTerritory(receiveMessage.getDesName()));
+            this.theWorld.moveTroop(receiveMessage);
 //            System.out.println(this.playerName + " finish move");
         } else if (receiveMessage.getActionName() == 'A') {
 //            System.out.println(this.playerName +  " start to attack");
-            this.theWorld.attackATerritory(theWorld.findTerritory(receiveMessage.getSrcName()), receiveMessage.getActTroop(), theWorld.findTerritory(receiveMessage.getDesName()));
+            this.theWorld.attackATerritory(receiveMessage);
         } else {
 //            System.out.println(this.playerName +  " Done game");
             playerState.changeStateTo("EndOneTurn");

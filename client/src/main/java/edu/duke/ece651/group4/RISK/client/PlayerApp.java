@@ -92,7 +92,6 @@ public class PlayerApp {
         }
         if(this.theWorld.isGameEnd()) {
             this.out.println("Winner is "+this.theWorld.getWinner());
-            this.playerClient.close();
             return;
         }
 
@@ -108,7 +107,6 @@ public class PlayerApp {
 
             if(this.theWorld.isGameEnd()) {
                 this.out.println("Winner is "+this.theWorld.getWinner());
-                this.playerClient.close();
                 return;
             }
         }

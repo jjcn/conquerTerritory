@@ -104,8 +104,10 @@ public class HostApp implements Runnable {
                 PlayerState playerState = new PlayerState("Ready");
                 playerNames.add( "Player" + PlayerID);
                 hostState.addOnePlayerState(playerState);
-                ClientThread theThread = new ClientThread(theWorld, playerNames.get(PlayerID), PlayerID, barrier, playerState,
-                        theClient, hostState,this.groups.get(PlayerID));
+                ClientThread theThread = new ClientThread(theWorld, playerNames.get(PlayerID), 
+                                                          PlayerID, barrier, playerState,
+                                                          theClient, hostState,
+                                                          this.groups.get(PlayerID));
                 theThread.start();
                 PlayerID += 1;
             }
