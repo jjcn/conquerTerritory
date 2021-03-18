@@ -222,6 +222,7 @@ public class World implements Serializable {
      * @param troop is the troop to move.
      * @param end is the territory the troop ends in.
      */
+    @Deprecated
     public void moveTroop(Territory start, Troop troop, Territory end) {
         BasicOrder order = new BasicOrder(start.getName(), end.getName(), 
                                             troop, 'M');
@@ -254,6 +255,7 @@ public class World implements Serializable {
      * @param troop is the troop to send.
      * @param end is the territory the troop ends in.
      */
+    @Deprecated
     public void attackATerritory(Territory start, Troop troop, Territory end) {
         BasicOrder order = new BasicOrder(start.getName(), end.getName(), 
                                           troop, 'A');
