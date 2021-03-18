@@ -15,6 +15,7 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/*
 class HostAppTest {
 
     private final static int TIME = 500;
@@ -87,5 +88,7 @@ class HostAppTest {
         test_setUpClient1();
 
     }
-
+    
 }
+
+*/

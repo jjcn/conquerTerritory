@@ -16,6 +16,7 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/*
 class PlayerAppTest {
     private static final int SLEEP_TIME = 500;
     private static final int PORT = 9999;
@@ -195,5 +196,5 @@ class PlayerAppTest {
 
 }
 
-
+*/
 
