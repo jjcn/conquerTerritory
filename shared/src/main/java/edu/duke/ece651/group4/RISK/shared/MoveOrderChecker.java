@@ -19,9 +19,11 @@ import java.util.Queue;
  * Also checks if the order is a move order.
  */
 public class MoveOrderChecker implements Serializable {
-    private final String NOT_SAME_OWNER_MSG = "Cannot move troop to a territory with different owner.";
-    private final String NOT_MOVE_ORDER_MSG = "This is not a move order.";
-    private final String NOT_REACHABLE_MSG = "There is not a path of territories that all belongs to you.";
+    protected final String NOT_MOVE_ORDER_MSG = "This is not a move order.";
+    protected final String NOT_SAME_OWNER_MSG = 
+        "Cannot move troop to another player's territory.";
+    protected final String NOT_REACHABLE_MSG = 
+        "Cannot reach from %s to %s. Other players' territories are blocking the way.";
 
     public MoveOrderChecker() {}
 
@@ -61,7 +63,7 @@ public class MoveOrderChecker implements Serializable {
                         }
                 }
             }
-            return NOT_REACHABLE_MSG;
+            return String.format(NOT_REACHABLE_MSG, start.getName(), end.getName());
         }
         // if not move order
         return NOT_MOVE_ORDER_MSG;

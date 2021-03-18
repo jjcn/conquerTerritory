@@ -6,10 +6,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.*;
 
 public class OrderCheckerTest {
-
-    protected final String NOT_YOUR_TROOP_MSG = "Error: You try to move troops on another player's territory";
-    protected final String UNKNOWN_BASIC_ORDER_TYPE = "'%c' is not a valid basic order type.";
-    protected final String NOT_ENOUGH_TROOP_MSG = "The troop size you want is larger than that on this territory.";
+    /**
+     * Error Messages
+     */
+    protected final String NOT_YOUR_TROOP_MSG = 
+        "Error: You tried to move troops on %s, which belongs to another player: %s";
+    protected final String UNKNOWN_BASIC_ORDER_TYPE = 
+        "'%c' is not a valid basic order type.";
+    protected final String NOT_ENOUGH_TROOP_MSG = 
+        "Cannot move out a troop of size larger than %d on %s, " +
+        "but you entered a troop of size %d.";
 
     PrintStream out = null;
     Reader inputReader = null;
@@ -98,13 +104,17 @@ public class OrderCheckerTest {
 
         BasicOrder order1_red = new BasicOrder("Narnia", "Midkemia", new Troop(3, red), 'M');
         BasicOrder order1_blue = new BasicOrder("Narnia", "Midkemia", new Troop(3, blue), 'M');
-        assertEquals(NOT_YOUR_TROOP_MSG, oc.checkOrder(order1_red, world));
-        assertEquals(NOT_YOUR_TROOP_MSG, oc.checkOrder(order1_blue, world));
+        assertEquals(String.format(NOT_YOUR_TROOP_MSG, "Narnia", "green"),
+                        oc.checkOrder(order1_red, world));
+        assertEquals(String.format(NOT_YOUR_TROOP_MSG, "Narnia", "green"), 
+                        oc.checkOrder(order1_blue, world));
 
         BasicOrder order2_red = new BasicOrder("Scadrial", "Mordor", new Troop(3, red), 'A');
         BasicOrder order2_green = new BasicOrder("Scadrial", "Mordor", new Troop(3, green), 'A');
-        assertEquals(NOT_YOUR_TROOP_MSG, oc.checkOrder(order2_red, world));
-        assertEquals(NOT_YOUR_TROOP_MSG, oc.checkOrder(order2_green, world));
+        assertEquals(String.format(NOT_YOUR_TROOP_MSG, "Scadrial", "blue"), 
+                        oc.checkOrder(order2_red, world));
+        assertEquals(String.format(NOT_YOUR_TROOP_MSG, "Scadrial", "blue"), 
+                        oc.checkOrder(order2_green, world));
     }
 
     @Test
@@ -112,10 +122,16 @@ public class OrderCheckerTest {
         World world = createWorld(troopsConnected);
 
         BasicOrder order1 = new BasicOrder("Narnia", "Midkemia", new Troop(11, green), 'M');
-        assertEquals(NOT_ENOUGH_TROOP_MSG, oc.checkOrder(order1, world));
+        assertEquals(String.format(NOT_ENOUGH_TROOP_MSG, 
+                                    world.findTerritory("Narnia").checkPopulation(), 
+                                    "Narnia", 11), 
+                    oc.checkOrder(order1, world));
 
         BasicOrder order2 = new BasicOrder("Scadrial", "Mordor", new Troop(6, blue), 'A');
-        assertEquals(NOT_ENOUGH_TROOP_MSG, oc.checkOrder(order2, world));
+        assertEquals(String.format(NOT_ENOUGH_TROOP_MSG, 
+                                    world.findTerritory("Scadrial").checkPopulation(), 
+                                    "Scadrial", 6), 
+                    oc.checkOrder(order2, world));
     }
 
     @Test
@@ -123,9 +139,11 @@ public class OrderCheckerTest {
         World world = createWorld(troopsConnected);
 
         BasicOrder order1 = new BasicOrder("Narnia", "Midkemia", new Troop(3, green), 'J');
-        assertEquals(String.format(UNKNOWN_BASIC_ORDER_TYPE, 'J'), oc.checkOrder(order1, world));
+        assertEquals(String.format(UNKNOWN_BASIC_ORDER_TYPE, 'J'), 
+                        oc.checkOrder(order1, world));
 
         BasicOrder order2 = new BasicOrder("Narnia", "Midkemia", new Troop(3, green), 'q');
-        assertEquals(String.format(UNKNOWN_BASIC_ORDER_TYPE, 'q'), oc.checkOrder(order2, world));
+        assertEquals(String.format(UNKNOWN_BASIC_ORDER_TYPE, 'q'), 
+                        oc.checkOrder(order2, world));
     }
 }
