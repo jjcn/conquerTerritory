@@ -30,6 +30,8 @@ public class HostApp implements Runnable {
 
     /*
      * This constructs the hostApp
+     * @param hostSocket is the instance of ServerSocket
+     * @param num is the number of territories assigned to each player
      * */
     HostApp(ServerSocket hostSocket,int num){
         this.hostSocket = hostSocket;
@@ -94,7 +96,6 @@ public class HostApp implements Runnable {
      * Will assign a PlayerID to each thread we are creating
      *
      *  */
-
     protected void setUpClients() {
         int PlayerID = 0;
         try {
@@ -104,8 +105,10 @@ public class HostApp implements Runnable {
                 PlayerState playerState = new PlayerState("Ready");
                 playerNames.add( "Player" + PlayerID);
                 hostState.addOnePlayerState(playerState);
-                ClientThread theThread = new ClientThread(theWorld, playerNames.get(PlayerID), PlayerID, barrier, playerState,
-                        theClient, hostState,this.groups.get(PlayerID));
+                ClientThread theThread = new ClientThread(theWorld, playerNames.get(PlayerID), 
+                                                          PlayerID, barrier, playerState,
+                                                          theClient, hostState,
+                                                          this.groups.get(PlayerID));
                 theThread.start();
                 PlayerID += 1;
             }
