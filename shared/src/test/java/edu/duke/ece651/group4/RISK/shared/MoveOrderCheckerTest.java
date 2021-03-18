@@ -47,7 +47,6 @@ public class MoveOrderCheckerTest {
             world.addTerritory(new Territory(name));
         }
         world.addConnection("Narnia", "Midkemia");
-        world.addConnection("Narnia", "Midkemia");
         world.addConnection("Narnia", "Elantris");
         world.addConnection("Midkemia", "Elantris");
         world.addConnection("Midkemia", "Scadrial");
@@ -62,6 +61,7 @@ public class MoveOrderCheckerTest {
         world.addConnection("Scadrial", "Hogwarts");
         world.addConnection("Scadrial", "Mordor");
         world.addConnection("Mordor", "Hogwarts");
+        world.addConnection("Roshar", "Hogwarts");
 
         for (int i = 0; i < troops.length; i++) {
             world.stationTroop(names[i], troops[i]);
@@ -105,13 +105,17 @@ public class MoveOrderCheckerTest {
     @Test
     public void testMoveOrderCheckerNotLinked() {
         World world = createWorld(troopsSeparated);
-
-        // TODO: This test fails
-        /*
+        
         BasicOrder order1 = new BasicOrder("Roshar", "Hogwarts", new Troop(3, green), 'M');
         assertEquals(null, moc.checkMyOrder(order1, world));
-        */
+        
         BasicOrder order2 = new BasicOrder("Roshar", "Oz", new Troop(3, green), 'M');
         assertEquals(NOT_REACHABLE_MSG, moc.checkMyOrder(order2, world));
+
+        BasicOrder order3 = new BasicOrder("Gondor", "Mordor", new Troop(3, red), 'M');
+        assertEquals(null, moc.checkMyOrder(order3, world));
+
+        BasicOrder order4 = new BasicOrder("Midkemia", "Mordor", new Troop(3, red), 'M');
+        assertEquals(NOT_REACHABLE_MSG, moc.checkMyOrder(order4, world));
     }
 }

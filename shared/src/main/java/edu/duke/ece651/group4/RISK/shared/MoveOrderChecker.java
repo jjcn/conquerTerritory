@@ -44,11 +44,9 @@ public class MoveOrderChecker implements Serializable {
             if (!start.getOwner().equals(end.getOwner())) {
                 return NOT_SAME_OWNER_MSG;
             }
-            // if not linked
-            // TODO: this has bugs!!!
+            // if not reachable
             Queue<Territory> queue = new LinkedList<>();
             Set<Territory> visited = new HashSet<>();
-            
             queue.add(start);
             visited.add(start);
             while (queue.size() != 0) {
