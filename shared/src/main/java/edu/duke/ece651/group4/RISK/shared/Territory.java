@@ -87,7 +87,7 @@ public class Territory implements Serializable {
         StringBuilder report=new StringBuilder();
 
         if(this.enemyOnTerritory.size()==0){
-            return "no war on Territory "+this.getName();
+            return "no war on Territory "+this.getName()+"\n";
         }
 
         ArrayList<String> enemyPlayers = new ArrayList<String>(this.enemyOnTerritory.keySet());

@@ -4,10 +4,38 @@
 package edu.duke.ece651.group4.RISK.client;
 
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class PlayerAppTest {
     @Test void appHasAGreeting() {
 
     }
+
+//    @Test
+//    public void test_hostApp() throws IOException, InterruptedException {
+//        ServerSocket hostSocket = new ServerSocket(9999);
+////        HostApp hostApp = new HostApp(hostSocket,3);
+////        new Thread( ()-> {
+////            hostApp.run();
+////        }).start();
+//        Thread.sleep(1000);
+//
+//        /*
+//         * Run client1
+//         * */
+//        new Thread(()-> {
+//
+//        }).start();
+//        /*
+//         * Run client2
+//         * */
+//        new Thread(()-> {
+//
+//        }).start();
+//    }
+
 }

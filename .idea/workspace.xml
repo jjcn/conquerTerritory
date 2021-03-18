@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="dc3521d2-3c1f-4c20-971c-aae893e32c0e" name="Default Changelist" comment="" />
+    <list default="true" id="dc3521d2-3c1f-4c20-971c-aae893e32c0e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/test/java/edu/duke/ece651/group4/RISK/client/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/java/edu/duke/ece651/group4/RISK/client/AppTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/Territory.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/main/java/edu/duke/ece651/group4/RISK/shared/Territory.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,7 +47,26 @@
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
+  <component name="RecentsManager">
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="" />
+    </key>
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="edu.duke.ece651.group4.RISK.client" />
+    </key>
+  </component>
   <component name="RunManager">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ClientTest.setUpAServerSocket" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -90,7 +113,7 @@
       <workItem from="1615872678088" duration="774000" />
       <workItem from="1615914180060" duration="13362000" />
       <workItem from="1615934681610" duration="29366000" />
-      <workItem from="1616013946108" duration="8269000" />
+      <workItem from="1616013946108" duration="10138000" />
     </task>
     <servers />
   </component>
