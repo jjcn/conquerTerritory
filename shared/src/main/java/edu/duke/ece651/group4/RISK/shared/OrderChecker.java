@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class OrderChecker implements Serializable { // TODO: bad design of OrderCheckers
     /**
-     * Error Message
+     * Error Messages
      */
     protected final String NOT_YOUR_TROOP_MSG = "Error: You try to move troops on another player's territory";
     protected final String UNKNOWN_BASIC_ORDER_TYPE = "'%c' is not a valid basic order type.";
@@ -40,6 +40,6 @@ public class OrderChecker implements Serializable { // TODO: bad design of Order
             return moc.checkMyOrder(order, world);
         }
         // not Attack or Move
-        return String.format(String.format(UNKNOWN_BASIC_ORDER_TYPE, orderType));
+        return String.format(UNKNOWN_BASIC_ORDER_TYPE, order.getActionName());
     }
 }

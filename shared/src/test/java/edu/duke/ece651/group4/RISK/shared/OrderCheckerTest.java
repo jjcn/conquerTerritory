@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.*;
 
 public class OrderCheckerTest {
+
     private final String NOT_SAME_OWNER_MSG = "Cannot move troop to a territory with different owner.";
     private final String NOT_MOVE_ORDER_MSG = "This is not a move order.";
     private final String NOT_REACHABLE_MSG = "There is not a path of territories that all belongs to you.";
@@ -13,6 +14,7 @@ public class OrderCheckerTest {
     private final String NOT_ATTACK_ORDER_MSG = "This is not an attack order.";
     private final String NOT_ADJACENT_MSG = "The attack should be performed on adjacent territories.";
     protected final String NOT_YOUR_TROOP_MSG = "Error: You try to move troops on another player's territory";
+    protected final String UNKNOWN_BASIC_ORDER_TYPE = "'%c' is not a valid basic order type.";
 
     PrintStream out = null;
     Reader inputReader = null;
@@ -153,5 +155,16 @@ public class OrderCheckerTest {
         BasicOrder order2_green = new BasicOrder("Scadrial", "Mordor", new Troop(3, green), 'A');
         assertEquals(NOT_YOUR_TROOP_MSG, oc.checkOrder(order2_red, world));
         assertEquals(NOT_YOUR_TROOP_MSG, oc.checkOrder(order2_green, world));
+    }
+
+    @Test
+    public void testOrderNotBasicOrderType() {
+        World world = createWorld(troopsConnected);
+
+        BasicOrder order1 = new BasicOrder("Narnia", "Midkemia", new Troop(3, green), 'J');
+        assertEquals(String.format(UNKNOWN_BASIC_ORDER_TYPE, 'J'), oc.checkOrder(order1, world));
+
+        BasicOrder order2 = new BasicOrder("Narnia", "Midkemia", new Troop(3, green), 'q');
+        assertEquals(String.format(UNKNOWN_BASIC_ORDER_TYPE, 'q'), oc.checkOrder(order2, world));
     }
 }
