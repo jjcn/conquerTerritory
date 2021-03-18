@@ -178,6 +178,7 @@
         <item itemvalue="Application.PlayerApp" />
         <item itemvalue="Gradle.ClientThreadTest" />
         <item itemvalue="Gradle.PlayerAppTest" />
+        <item itemvalue="Gradle.PlayerAppTest.testMain" />
         <item itemvalue="Gradle.PlayerAppTest.testRun" />
       </list>
     </recent_temporary>
