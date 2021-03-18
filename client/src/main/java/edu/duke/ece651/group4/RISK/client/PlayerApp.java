@@ -112,7 +112,7 @@ public class PlayerApp {
                 return;
             }
         }
-
+        this.playerClient.close();
     }
 
     public void doActionPhase() throws IOException, ClassNotFoundException {
