@@ -6,7 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="dc3521d2-3c1f-4c20-971c-aae893e32c0e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/test/java/edu/duke/ece651/group4/RISK/client/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/test/java/edu/duke/ece651/group4/RISK/client/AppTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/edu/duke/ece651/group4/RISK/server/ClientThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/edu/duke/ece651/group4/RISK/server/ClientThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/java/edu/duke/ece651/group4/RISK/server/ClientThreadTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/edu/duke/ece651/group4/RISK/server/ClientThreadTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/test/java/edu/duke/ece651/group4/RISK/server/HostAppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/test/java/edu/duke/ece651/group4/RISK/server/HostAppTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +63,20 @@
       <recent name="edu.duke.ece651.group4.RISK.client" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.PlayerAppTest">
+  <component name="RunManager" selected="Gradle.HostAppTest">
+    <configuration name="PlayerApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="edu.duke.ece651.group4.RISK.client.PlayerApp" />
+      <module name="RISK.client.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="edu.duke.ece651.group4.RISK.client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -136,27 +151,6 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="PlayerAppTest.testAction" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="--tests &quot;edu.duke.ece651.group4.RISK.client.PlayerAppTest.testAction&quot;" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":client:test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <method v="2" />
-    </configuration>
     <configuration name="PlayerAppTest.testRun" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -180,11 +174,12 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.PlayerAppTest" />
         <item itemvalue="Gradle.HostAppTest" />
+        <item itemvalue="Application.PlayerApp" />
         <item itemvalue="Gradle.ClientThreadTest" />
+        <item itemvalue="Gradle.PlayerAppTest" />
+        <item itemvalue="Gradle.PlayerAppTest.testMain" />
         <item itemvalue="Gradle.PlayerAppTest.testRun" />
-        <item itemvalue="Gradle.PlayerAppTest.testAction" />
       </list>
     </recent_temporary>
   </component>
@@ -209,6 +204,8 @@
       <workItem from="1615934681610" duration="29366000" />
       <workItem from="1616013946108" duration="24167000" />
       <workItem from="1616089863185" duration="653000" />
+      <workItem from="1616093944373" duration="1177000" />
+      <workItem from="1616096388670" duration="1362000" />
     </task>
     <servers />
   </component>

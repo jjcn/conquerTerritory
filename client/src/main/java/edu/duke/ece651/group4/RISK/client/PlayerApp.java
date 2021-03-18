@@ -110,7 +110,7 @@ public class PlayerApp {
                 return;
             }
         }
-
+        this.playerClient.close();
     }
 
     public void doActionPhase() throws IOException, ClassNotFoundException {
@@ -193,10 +193,12 @@ public class PlayerApp {
             try {
                 System.out.println(instruct1);
                 String hostName = inRead.readLine();
-//                System.out.println(instruct2);
-//                String port = inRead.readLine();
+                System.out.println(hostName);
+                System.out.println(instruct2);
+                String port = inRead.readLine();
+                System.out.println(port);
 //                String hostName = "Alexs-MacBook-Pro.local";
-                String port = "9999";
+//                String port = "9999";
                 myClient = new Client(hostName, port);
                 setConnect = true;
             } catch (Exception e) {
