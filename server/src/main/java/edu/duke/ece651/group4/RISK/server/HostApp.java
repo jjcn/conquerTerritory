@@ -53,7 +53,7 @@ public class HostApp implements Runnable {
      *  We need to make sure all variables related world and players are initialized
      * */
 
-    private void setUpWorld() {
+    protected void setUpWorld() {
         String instruct1 = "Please enter the Player Number";
         BufferedReader inRead = new BufferedReader(new InputStreamReader(System.in));
 
@@ -76,7 +76,7 @@ public class HostApp implements Runnable {
         this.groups=(HashMap<Integer, List<Territory>>) this.theWorld.divideTerritories(playerNum);
     }
 
-    public boolean isNumeric(String strNum) {
+    protected boolean isNumeric(String strNum) {
         if (strNum == null) {
             return false;
         }
@@ -95,7 +95,7 @@ public class HostApp implements Runnable {
      *
      *  */
 
-    private void setUpClients() {
+    protected void setUpClients() {
         int PlayerID = 0;
         try {
             while(PlayerID < numOfPlayers) {
@@ -120,7 +120,7 @@ public class HostApp implements Runnable {
      * If some players are not done with one turn, skip
      * */
 
-    private void finishBattlesOneTurn() {
+    protected void finishBattlesOneTurn() {
         if(!hostState.isFinishUpdate()) {
             String warReport = theWorld.doAllBattles();
             hostState.updateWarReport(warReport);
