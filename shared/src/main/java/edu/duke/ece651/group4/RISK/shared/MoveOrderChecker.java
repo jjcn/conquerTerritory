@@ -21,7 +21,7 @@ import java.util.Queue;
 public class MoveOrderChecker implements Serializable {
     protected final String NOT_MOVE_ORDER_MSG = "This is not a move order.";
     protected final String NOT_SAME_OWNER_MSG = 
-        "Cannot move troop to another player's territory.";
+        "Cannot move troop to %s, which belongs to another player.";
     protected final String NOT_REACHABLE_MSG = 
         "Cannot reach from %s to %s. " +
         "Other players' territories are blocking the way.";

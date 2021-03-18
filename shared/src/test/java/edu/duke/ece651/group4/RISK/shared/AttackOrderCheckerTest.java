@@ -12,7 +12,7 @@ public class AttackOrderCheckerTest {
         "Cannot attack %s, which belongs to you.";
     protected final String NOT_ADJACENT_MSG = 
         "You tried to attack from %s to %s, which are not adjacent territories. %n" +
-        "The attack should be performed on adjacent territories.";
+        "An attack should be performed on adjacent territories.";
 
     PrintStream out = null;
     Reader inputReader = null;
@@ -83,11 +83,11 @@ public class AttackOrderCheckerTest {
         World world = createWorld(names, troopsConnected);   
 
         BasicOrder order1 = new BasicOrder("Narnia", "Midkemia", new Troop(3, green), 'A');
-        assertEquals(String.format(SAME_OWNER_MSG, "green"), 
+        assertEquals(String.format(SAME_OWNER_MSG, "Midkemia"), 
                     aoc.checkMyOrder(order1, world));
 
         BasicOrder order2 = new BasicOrder("Gondor", "Mordor", new Troop(3, red), 'A');
-        assertEquals(String.format(SAME_OWNER_MSG, "red"), 
+        assertEquals(String.format(SAME_OWNER_MSG, "Mordor"), 
                     aoc.checkMyOrder(order2, world));
     }
 

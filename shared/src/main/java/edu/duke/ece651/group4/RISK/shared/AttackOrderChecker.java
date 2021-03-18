@@ -23,7 +23,7 @@ public class AttackOrderChecker implements Serializable {
         "Cannot attack %s, which belongs to you.";
     protected final String NOT_ADJACENT_MSG = 
         "You tried to attack from %s to %s, which are not adjacent territories. %n" +
-        "The attack should be performed on adjacent territories.";
+        "An attack should be performed on adjacent territories.";
 
     public AttackOrderChecker() {}
 
@@ -41,7 +41,7 @@ public class AttackOrderChecker implements Serializable {
             // if the start and end have the same owner
             if (start.getOwner().equals(end.getOwner())) {
                 return String.format(SAME_OWNER_MSG, 
-                                    end.getOwner().getName());
+                                    end.getName());
             }
             // if not adjacent
             if (!world.getAdjacents(start).contains(end)) {
