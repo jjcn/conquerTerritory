@@ -23,7 +23,8 @@ public class MoveOrderChecker implements Serializable {
     protected final String NOT_SAME_OWNER_MSG = 
         "Cannot move troop to another player's territory.";
     protected final String NOT_REACHABLE_MSG = 
-        "Cannot reach from %s to %s. Other players' territories are blocking the way.";
+        "Cannot reach from %s to %s. " +
+        "Other players' territories are blocking the way.";
 
     public MoveOrderChecker() {}
 

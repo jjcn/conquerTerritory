@@ -19,8 +19,11 @@ public class AttackOrderChecker implements Serializable {
      * Error messages
      */
     protected final String NOT_ATTACK_ORDER_MSG = "This is not an attack order.";
-    protected final String SAME_OWNER_MSG = "Cannot attack a territory with the same owner.";
-    protected final String NOT_ADJACENT_MSG = "The attack should be performed on adjacent territories.";
+    protected final String SAME_OWNER_MSG = 
+        "Cannot attack %s, which belongs to you.";
+    protected final String NOT_ADJACENT_MSG = 
+        "You tried to attack from %s to %s, which are not adjacent territories. %n" +
+        "The attack should be performed on adjacent territories.";
 
     public AttackOrderChecker() {}
 
@@ -37,11 +40,14 @@ public class AttackOrderChecker implements Serializable {
             Territory end = world.findTerritory(order.getDesName());
             // if the start and end have the same owner
             if (start.getOwner().equals(end.getOwner())) {
-                return SAME_OWNER_MSG;
+                return String.format(SAME_OWNER_MSG, 
+                                    end.getOwner().getName());
             }
             // if not adjacent
             if (!world.getAdjacents(start).contains(end)) {
-                return NOT_ADJACENT_MSG;
+                return String.format(NOT_ADJACENT_MSG,
+                                    start.getName(), 
+                                    end.getName());
             }
             return null;
         }
