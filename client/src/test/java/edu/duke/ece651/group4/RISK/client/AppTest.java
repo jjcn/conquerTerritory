@@ -75,6 +75,7 @@ class PlayerAppTest {
         assertEquals(testApp.getTheWorld().findTerritory("terr1").checkPopulation(), 5);
         assertEquals(testApp.getTheWorld().findTerritory("terr2").checkPopulation(), 5);
         assertEquals(testApp.getTheWorld().findTerritory("terr3").checkPopulation(), 5);
+        assertEquals(testApp.getMyPlayer().getName(),"p1");
     }
 
     private World simpleWorld() {

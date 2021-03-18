@@ -71,7 +71,13 @@ class TerritoryTest {
 
         assertEquals(test.equals(test2),true);
         assertEquals(test.equals(test3),false);
+        assertEquals(test.equals(p1),false);
         assertEquals(test,test2);
+        Territory test4=test3.clone();
+        assertEquals(test3.equals(test4),true);
+        test4.setRandom(new Random(0));
+        assertEquals(test3.equals(test4),true);
+
     }
 
 

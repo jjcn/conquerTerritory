@@ -3,7 +3,6 @@
  */
 package edu.duke.ece651.group4.RISK.client;
 
-
 import edu.duke.ece651.group4.RISK.shared.*;
 
 import java.io.*;
@@ -23,13 +22,13 @@ public class PlayerApp {
     private PrintStream out;
 
     public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader,World theWorld,int num,Random rnd,boolean mode) {
-        this.playerClient=myClient;
-        this.myPlayer=new TextPlayer(out,inputReader, name,rnd,mode);
-        this.theWorld=theWorld;
-        this.totalPopulation=num;
-        this.rnd=rnd;
-        this.myView=new WorldTextView(theWorld);
-        this.out=out;
+        this.playerClient = myClient;
+        this.myPlayer = new TextPlayer(out,inputReader, name,rnd,mode);
+        this.theWorld = theWorld;
+        this.totalPopulation = num;
+        this.rnd = rnd;
+        this.myView = new WorldTextView(theWorld);
+        this.out = out;
     }
 
     public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader,World theWorld,int num) {
@@ -37,19 +36,20 @@ public class PlayerApp {
 
     }
 
-
-
     public TextPlayer getMyPlayer() {
         return myPlayer;
     }
 
+    /**
+     * Do placement phase which place units on the board before game start
+     */
     public void doPlacementPhase() throws IOException, ClassNotFoundException {
         this.out.println(this.myView.displayWorld(this.theWorld));
-        List<Territory> myGroup =null;
-        myGroup=(List<Territory>) receiveInfo(myGroup,this.playerClient);
+        List<Territory> myGroup = null;
+        myGroup = (List<Territory>) receiveInfo(myGroup,this.playerClient);
         this.out.println("Finish all setup and let's start the game!");
         List<Order> orders = null;
-        while(orders==null) {
+        while (orders == null) {
             try {
                 orders = this.myPlayer.doPlacement(myGroup, this.totalPopulation);
 
@@ -58,12 +58,12 @@ public class PlayerApp {
 
                     this.theWorld.findTerritory(newOrder.getDesName());
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 this.out.println("Wrong placement Assignment");
             }
         }
 
-        for(Order p:orders){
+        for(Order p : orders){
 
             this.playerClient.sendObject((PlaceOrder)p);
 //            sendInfo((PlaceOrder)p,this.playerClient);
@@ -78,10 +78,13 @@ public class PlayerApp {
         }
     }
 
-    public World getTheWorld(){
+    public World getTheWorld() {
         return this.theWorld;
     }
 
+    /**
+     * Run the game and stop when the player loss then check exit or not
+     */
     public void runGame() throws IOException, ClassNotFoundException {
         this.out.println(this.myView.displayWorld(this.theWorld));
         while(!this.theWorld.checkLost(this.myPlayer.getName()) && !this.theWorld.isGameEnd()) {
@@ -91,28 +94,31 @@ public class PlayerApp {
             this.out.println("You lost");
         }
         if(this.theWorld.isGameEnd()) {
-            this.out.println("Winner is "+this.theWorld.getWinner());
+            this.out.println("Winner is " + this.theWorld.getWinner());
             return;
         }
 
-        boolean exit=false;
+        boolean exit = false;
         while(!exit){
-            exit= this.myPlayer.checkExit();
-            World newWorld=null;
-            this.theWorld=(World) receiveInfo(newWorld,this.playerClient);
+            exit = this.myPlayer.checkExit();
+            World newWorld = null;
+            this.theWorld = (World) receiveInfo(newWorld,this.playerClient);
             this.out.println(this.myView.displayWorld( this.theWorld ));
-            String report=(String) this.playerClient.recvObject();
+            String report = (String) this.playerClient.recvObject();
             this.out.println("Turn Ended");
             this.out.println(report);
 
             if(this.theWorld.isGameEnd()) {
-                this.out.println("Winner is "+this.theWorld.getWinner());
+                this.out.println("Winner is " + this.theWorld.getWinner());
                 return;
             }
         }
         this.playerClient.close();
     }
 
+    /**
+     * Check the action of player and send to host, exit when turn end
+     */
     public void doActionPhase() throws IOException, ClassNotFoundException {
         boolean turnEnd = false;
 
@@ -166,6 +172,9 @@ public class PlayerApp {
         this.out.println(this.myView.displayWorld(this.theWorld));
     }
 
+    /**
+     * Update an order on the map
+     */
     private void executeOrder(BasicOrder receiveMessage){
         if (receiveMessage.getActionName() == 'M') {
              this.theWorld.moveTroop(receiveMessage);
@@ -213,7 +222,7 @@ public class PlayerApp {
 //        name= (String) myClient.recvObject();
 
         name = (String) receiveInfo(name,myClient);
-        System.out.println( "Get the name：" +name +"from the server.");
+        System.out.println( "Get the name: " +name +"from the server.");
         gameWorld = (World) receiveInfo(gameWorld,myClient);
 //        gameWorld=(World) myClient.recvObject();
         System.out.println( "Get the world from the server.");
