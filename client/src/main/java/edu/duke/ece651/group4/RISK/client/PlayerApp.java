@@ -43,6 +43,9 @@ public class PlayerApp {
         return myPlayer;
     }
 
+    /**
+     * Do placement phase which place units on the board before game start
+     */
     public void doPlacementPhase() throws IOException, ClassNotFoundException {
         this.out.println(this.myView.displayWorld(this.theWorld));
         List<Territory> myGroup =null;
@@ -82,6 +85,9 @@ public class PlayerApp {
         return this.theWorld;
     }
 
+    /**
+     * Run the game and stop when the player loss then check exit or not
+     */
     public void runGame() throws IOException, ClassNotFoundException {
         this.out.println(this.myView.displayWorld(this.theWorld));
         while(!this.theWorld.checkLost(this.myPlayer.getName()) && !this.theWorld.isGameEnd()) {
@@ -113,6 +119,9 @@ public class PlayerApp {
         this.playerClient.close();
     }
 
+    /**
+     * Check the action of player and send to host, exit when turn end
+     */
     public void doActionPhase() throws IOException, ClassNotFoundException {
         boolean turnEnd = false;
 
@@ -166,6 +175,9 @@ public class PlayerApp {
         this.out.println(this.myView.displayWorld(this.theWorld));
     }
 
+    /**
+     * Update an order on the map
+     */
     private void executeOrder(BasicOrder receiveMessage){
         if (receiveMessage.getActionName() == 'M') {
              this.theWorld.moveTroop(receiveMessage);
@@ -213,7 +225,7 @@ public class PlayerApp {
 //        name= (String) myClient.recvObject();
 
         name = (String) receiveInfo(name,myClient);
-        System.out.println( "Get the name：" +name +"from the server.");
+        System.out.println( "Get the name: " +name +"from the server.");
         gameWorld = (World) receiveInfo(gameWorld,myClient);
 //        gameWorld=(World) myClient.recvObject();
         System.out.println( "Get the world from the server.");

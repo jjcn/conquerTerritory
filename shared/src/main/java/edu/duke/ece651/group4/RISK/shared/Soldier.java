@@ -13,11 +13,19 @@ public class Soldier implements Unit, Serializable {
     this.dice = new Random();
   }
 
+  /**
+   * Construct a soldier with specific seed
+   * @param rand is the random seed.
+   */
   public Soldier(Random rand) {
     this.jobName = "Soldier";
     this.dice = rand;
   }
 
+  /**
+   * Soldier fight with another unit by rolling a 20faced dice
+   * @param enemy is the enemy unit.
+   */
   @Override
   public boolean fight(Unit enemy) {
     int myRoll = 0, enemyRoll = 0;
@@ -31,6 +39,9 @@ public class Soldier implements Unit, Serializable {
     return myRoll > enemyRoll;
   }
 
+  /**
+   *return a random number
+   */
   private int randInt(int min, int max) {
     int randomNum = dice.nextInt((max - min) + 1) + min;
 

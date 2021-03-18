@@ -33,6 +33,7 @@ class HostAppTest {
                 InputStream input = new ByteArrayInputStream(str.getBytes("UTF-8"));
                 assertNotNull(input);
                 System.setIn(input);
+                assertEquals(false, hostApp.isNumeric(null));
                 hostApp.run();
             } catch (IOException ignored) {
             }
