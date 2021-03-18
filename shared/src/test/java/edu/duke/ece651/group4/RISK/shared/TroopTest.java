@@ -42,5 +42,13 @@ public class TroopTest {
         assertEquals(test.checkWin(),true);
     }
 
+    @Test
+    void Test_clone(){
+        Random rnd = new Random(0);
+        Troop test=new Troop(4,new TextPlayer("test"),rnd);
+        Troop clone=test.clone();
+        assertEquals(test.checkTroopSize(),clone.checkTroopSize());
+    }
+
 
 }

@@ -5,6 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dc3521d2-3c1f-4c20-971c-aae893e32c0e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/test/java/edu/duke/ece651/group4/RISK/shared/SoldierTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/test/java/edu/duke/ece651/group4/RISK/shared/SoldierTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/shared/src/test/java/edu/duke/ece651/group4/RISK/shared/TerritoryTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/test/java/edu/duke/ece651/group4/RISK/shared/TerritoryTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/shared/src/test/java/edu/duke/ece651/group4/RISK/shared/TroopTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/shared/src/test/java/edu/duke/ece651/group4/RISK/shared/TroopTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -50,7 +53,7 @@
       <recent name="edu.duke.ece651.group4.RISK.client" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.TroopTest">
+  <component name="RunManager" selected="Gradle.TerritoryTest">
     <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -68,6 +71,48 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
         <option name="scriptParameters" value="--tests &quot;edu.duke.ece651.group4.RISK.shared.ClientTest.setUpAServerSocket&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":shared:test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="SoldierTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;edu.duke.ece651.group4.RISK.shared.SoldierTest&quot;" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":shared:test" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="TerritoryTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="--tests &quot;edu.duke.ece651.group4.RISK.shared.TerritoryTest&quot;" />
         <option name="taskDescriptions">
           <list />
         </option>
@@ -106,7 +151,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.TerritoryTest" />
         <item itemvalue="Gradle.TroopTest" />
+        <item itemvalue="Gradle.SoldierTest" />
         <item itemvalue="Gradle.ClientTest.setUpAServerSocket" />
       </list>
     </recent_temporary>
@@ -130,7 +177,7 @@
       <workItem from="1615872678088" duration="774000" />
       <workItem from="1615914180060" duration="13362000" />
       <workItem from="1615934681610" duration="29366000" />
-      <workItem from="1616013946108" duration="11281000" />
+      <workItem from="1616013946108" duration="12187000" />
     </task>
     <servers />
   </component>
