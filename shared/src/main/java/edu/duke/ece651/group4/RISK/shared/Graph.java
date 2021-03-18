@@ -45,7 +45,7 @@ public class Graph<T> implements Serializable {
      * Get a deep copy of adjacency matrix.
      * @return a deep copy of adjacency matrix.s
      */
-    public boolean[][] cloneAdj() {
+    public boolean[][] cloneAdjMatrix() {
         boolean[][] adjMatrixCopy = new boolean[size()][size()];
         for (int i = 0; i < size(); i++) {
             for (int j = 0; j < size(); j++) {

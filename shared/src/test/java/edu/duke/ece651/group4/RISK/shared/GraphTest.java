@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-//import edu.duke.ece651.group4.RISK.shared.Graph.GraphIterator;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

@@ -94,7 +94,7 @@ public class World implements Serializable {
      * @return a deep copy of the world object.
      */
     public World clone() {
-        boolean[][] adjMatrixCopy = territories.cloneAdj();
+        boolean[][] adjMatrixCopy = territories.cloneAdjMatrix();
         ArrayList<Territory> old = (ArrayList<Territory>)territories.getList();
         ArrayList<Territory> cpy=new ArrayList<>();
         for (Territory item : old) {
