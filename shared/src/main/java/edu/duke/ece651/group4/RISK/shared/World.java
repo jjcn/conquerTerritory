@@ -19,7 +19,6 @@ public class World implements Serializable {
     /**
      * Error messages
      */
-    protected final String NOT_ENOUGH_TROOP_MSG = "The troop size you want is larger than that on this territory.";
     protected final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     protected final String NOT_POSITIVE_MSG = "Number should be positive.";
     protected final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
@@ -208,10 +207,6 @@ public class World implements Serializable {
         Territory end = findTerritory(order.getDesName());
         Troop troop = order.getActTroop();
 
-        if (start.checkPopulation() < troop.checkTroopSize()) {
-
-            throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
-        }
         String errorMsg = basicOrderChecker.checkOrder(order, this);
         if (errorMsg != null) {
             throw new IllegalArgumentException(errorMsg);
@@ -244,9 +239,6 @@ public class World implements Serializable {
         Territory end = findTerritory(order.getDesName());
         Troop troop = order.getActTroop();
         
-        if (start.checkPopulation() < troop.checkTroopSize()) {
-            throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
-        }
         String errorMsg = basicOrderChecker.checkOrder(order, this);
         if (errorMsg != null) {
             throw new IllegalArgumentException(errorMsg);
