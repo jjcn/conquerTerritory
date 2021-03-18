@@ -126,7 +126,7 @@ class PlayerAppTest {
             String inputData = "M\nterr1\nterr3\n5\nM\nterr1\nterr2\n1\nA\nterr3\nterr4\n1\nD\n";
             PlayerApp testApp = null;
             try {
-                testApp = simpleApp(inputData, output,"p1");
+                testApp = simpleApp(inputData, System.out,"p1");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -161,6 +161,7 @@ class PlayerAppTest {
                 theClient.sendObject(testWorld.clone());
                 theClient.sendObject(new String(message));
                 theClient.sendObject(testWorld.clone());
+                theClient.sendObject(new String(message));
             } catch (Exception e) {
             }
         }).start();
@@ -168,6 +169,7 @@ class PlayerAppTest {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(bytes, true);
         String inputData = "D\nY\n";
+
         PlayerApp testApp = null;
         try {
             testApp = simpleApp(inputData, output,"p2");

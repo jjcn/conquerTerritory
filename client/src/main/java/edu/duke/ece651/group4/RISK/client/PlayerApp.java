@@ -100,6 +100,11 @@ public class PlayerApp {
             exit= this.myPlayer.checkExit();
             World newWorld=null;
             this.theWorld=(World) receiveInfo(newWorld,this.playerClient);
+            this.out.println(this.myView.displayWorld( this.theWorld ));
+            String report=(String) this.playerClient.recvObject();
+            this.out.println("Turn Ended");
+            this.out.println(report);
+
             if(this.theWorld.isGameEnd()) {
                 this.out.println("Winner is "+this.theWorld.getWinner());
                 return;
