@@ -21,7 +21,7 @@ public class WorldTest {
     final String NOT_ENOUGH_TROOP_MSG = "The troop size you want is larger than that on this territory.";
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
-    final String NOT_POSITIVE_MSG = "Number of groups should be positive.";
+    final String NOT_POSITIVE_MSG = "Number should be positive.";
     // move checker
     private final String NOT_SAME_OWNER_MSG = "Cannot move troop to a territory with different owner.";
     private final String NOT_MOVE_ORDER_MSG = "This is not a move order.";
@@ -268,6 +268,12 @@ public class WorldTest {
     }    
     
     @Test
+    public void testDoAllBattles() {
+        World world = createWorld(troopsSeparated);
+        world.doAllBattles();
+    }
+
+    @Test
     public void testGetAllTerritories() {
         World world = createWorld();
 
@@ -336,6 +342,21 @@ public class WorldTest {
     }
 
     @Test
+    public void testAddUnitToAll() {
+        World world = createWorldSimple();
+        world.addUnitToAll(1);
+        assertEquals(1, world.findTerritory("1").checkPopulation());
+        assertEquals(1, world.findTerritory("2").checkPopulation());
+
+        World world2 = createWorld(troopsConnected);
+        world2.addUnitToAll(3);
+        assertEquals(13, world2.findTerritory("Narnia").checkPopulation());
+        assertEquals(6, world2.findTerritory("Roshar").checkPopulation());
+
+        assertThrows(IllegalArgumentException.class, () -> world2.addUnitToAll(-1), NOT_POSITIVE_MSG);
+    }
+
+    @Test
     public void testCheckLost() {
         World world1 = createWorld(troopsConnected);
         assertFalse(world1.checkLost("red"));
@@ -366,12 +387,31 @@ public class WorldTest {
         assertEquals("red", world2.getWinner());
     }
 
-    /*
     @Test
-    public void testEqualsRandom() { // can Random objects be equal?
-        Random r1 = new Random(0);
-        Random r2 = new Random(0);
-        assertEquals(r1, r2);
+    public void testEquals() {
+        World world1 = createWorld(troopsConnected);
+        World world2 = createWorld(troopsSamePlayer);
+        World world3 = createWorld(troopsSamePlayer);
+        World world4 = createWorldSimple();
+        assertEquals(world1, world2);
+        assertEquals(world1, world3);
+        assertEquals(world2, world3);
+        assertNotEquals(world1, world4);
+        assertNotEquals(world1, null);
+        assertNotEquals(world1, new Graph<Territory>());
     }
-    */
+
+    @Test
+    public void testToString() {
+        World world1 = createWorld(troopsConnected);
+        World world2 = createWorld(troopsSamePlayer);
+        assertNotEquals(world1.toString(), world2.toString());
+    } 
+
+    @Test
+    public void testHashcode() {
+        World world1 = createWorld(troopsConnected);
+        World world2 = createWorld(troopsSamePlayer);
+        assertNotEquals(world1.hashCode(), world2.hashCode());
+    }
 }

@@ -1,15 +1,20 @@
 package edu.duke.ece651.group4.RISK.shared;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.*;
 
-public class MoveOrderCheckerTest {
+public class OrderCheckerTest {
+
     private final String NOT_SAME_OWNER_MSG = "Cannot move troop to a territory with different owner.";
     private final String NOT_MOVE_ORDER_MSG = "This is not a move order.";
     private final String NOT_REACHABLE_MSG = "There is not a path of territories that all belongs to you.";
+    private final String SAME_OWNER_MSG = "Cannot attack a territory with the same owner.";
+    private final String NOT_ATTACK_ORDER_MSG = "This is not an attack order.";
+    private final String NOT_ADJACENT_MSG = "The attack should be performed on adjacent territories.";
+    protected final String NOT_YOUR_TROOP_MSG = "Error: You try to move troops on another player's territory";
+    protected final String UNKNOWN_BASIC_ORDER_TYPE = "'%c' is not a valid basic order type.";
 
     PrintStream out = null;
     Reader inputReader = null;
@@ -26,7 +31,7 @@ public class MoveOrderCheckerTest {
                         new Troop(13, red), new Troop(14, red), new Troop(3, green),
                         new Troop(5, blue), new Troop(6, blue), new Troop(3, green)};
 
-    MoveOrderChecker moc = new MoveOrderChecker();
+    OrderChecker oc = new OrderChecker();
 
     /**
      * Creates a world for test. 
@@ -43,7 +48,7 @@ public class MoveOrderCheckerTest {
      */
     public World createWorld(Troop... troops) {
         World world = new World();
-        for (String name: names) {
+        for (String name : names) {
             world.addTerritory(new Territory(name));
         }
         world.addConnection("Narnia", "Midkemia");
@@ -74,44 +79,47 @@ public class MoveOrderCheckerTest {
         World world = createWorld(troopsConnected);
 
         BasicOrder order1 = new BasicOrder("Narnia", "Midkemia", new Troop(3, green), 'M');
-        assertEquals(null, moc.checkMyOrder(order1, world));
+        assertEquals(null, oc.checkOrder(order1, world));
 
         BasicOrder order2 = new BasicOrder("Narnia", "Oz", new Troop(3, green), 'M');
-        assertEquals(null, moc.checkMyOrder(order2, world));
+        assertEquals(null, oc.checkOrder(order2, world));
     }
 
     @Test
-    public void testMoveOrderCheckerNotSameOwner() {
+    public void testAttackOrderCheckerValid() {
         World world = createWorld(troopsConnected);
 
-        BasicOrder order1 = new BasicOrder("Narnia", "Roshar", new Troop(3, green), 'M');
-        assertEquals(NOT_SAME_OWNER_MSG, moc.checkMyOrder(order1, world));
+        BasicOrder order1 = new BasicOrder("Narnia", "Elantris", new Troop(3, green), 'A');
+        assertEquals(null, oc.checkOrder(order1, world));
 
-        BasicOrder order2 = new BasicOrder("Oz", "Gondor", new Troop(3, green), 'M');
-        assertEquals(NOT_SAME_OWNER_MSG, moc.checkMyOrder(order2, world));
+        BasicOrder order2 = new BasicOrder("Scadrial", "Mordor", new Troop(3, blue), 'A');
+        assertEquals(null, oc.checkOrder(order2, world));
     }
 
+
     @Test
-    public void testMoveOrderCheckerNotMoveOrder() {
+    public void testOrderNotYourTroop() {
         World world = createWorld(troopsConnected);
 
-        BasicOrder order1 = new BasicOrder("Narnia", "Midkemia", new Troop(3, green), 'A');
-        assertEquals(NOT_MOVE_ORDER_MSG, moc.checkMyOrder(order1, world));
+        BasicOrder order1_red = new BasicOrder("Narnia", "Midkemia", new Troop(3, red), 'M');
+        BasicOrder order1_blue = new BasicOrder("Narnia", "Midkemia", new Troop(3, blue), 'M');
+        assertEquals(NOT_YOUR_TROOP_MSG, oc.checkOrder(order1_red, world));
+        assertEquals(NOT_YOUR_TROOP_MSG, oc.checkOrder(order1_blue, world));
 
-        BasicOrder order2 = new BasicOrder("Narnia", "Oz", new Troop(3, green), 'D');
-        assertEquals(NOT_MOVE_ORDER_MSG, moc.checkMyOrder(order2, world));
+        BasicOrder order2_red = new BasicOrder("Scadrial", "Mordor", new Troop(3, red), 'A');
+        BasicOrder order2_green = new BasicOrder("Scadrial", "Mordor", new Troop(3, green), 'A');
+        assertEquals(NOT_YOUR_TROOP_MSG, oc.checkOrder(order2_red, world));
+        assertEquals(NOT_YOUR_TROOP_MSG, oc.checkOrder(order2_green, world));
     }
 
     @Test
-    public void testMoveOrderCheckerNotLinked() {
-        World world = createWorld(troopsSeparated);
+    public void testOrderNotBasicOrderType() {
+        World world = createWorld(troopsConnected);
 
-        // TODO: This test fails
-        /*
-        BasicOrder order1 = new BasicOrder("Roshar", "Hogwarts", new Troop(3, green), 'M');
-        assertEquals(null, moc.checkMyOrder(order1, world));
-        */
-        BasicOrder order2 = new BasicOrder("Roshar", "Oz", new Troop(3, green), 'M');
-        assertEquals(NOT_REACHABLE_MSG, moc.checkMyOrder(order2, world));
+        BasicOrder order1 = new BasicOrder("Narnia", "Midkemia", new Troop(3, green), 'J');
+        assertEquals(String.format(UNKNOWN_BASIC_ORDER_TYPE, 'J'), oc.checkOrder(order1, world));
+
+        BasicOrder order2 = new BasicOrder("Narnia", "Midkemia", new Troop(3, green), 'q');
+        assertEquals(String.format(UNKNOWN_BASIC_ORDER_TYPE, 'q'), oc.checkOrder(order2, world));
     }
 }

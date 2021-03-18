@@ -2,7 +2,6 @@ package edu.duke.ece651.group4.RISK.shared;
 
 import java.io.Serializable;
 import java.util.Set;
-import java.util.Stack;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,7 +45,7 @@ public class MoveOrderChecker implements Serializable {
                 return NOT_SAME_OWNER_MSG;
             }
             // if not linked
-            // TODO: this has bugs
+            // TODO: this has bugs!!!
             Queue<Territory> queue = new LinkedList<>();
             Set<Territory> visited = new HashSet<>();
             

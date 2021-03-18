@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-//import edu.duke.ece651.group4.RISK.shared.Graph.GraphIterator;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -305,7 +303,7 @@ public class GraphTest {
     @Test
     public void testEquals() {
         assertEquals(new Graph<Integer>(), new Graph<Integer>());
-        // assertNotEquals(new Graph<String>(), new Graph<Integer>());
+        assertNotEquals(new Graph<String>(), null);
 
         assertEquals(createGraphFantasy(), createGraphFantasy());
 
@@ -322,4 +320,19 @@ public class GraphTest {
         assertNotEquals(g11, g12);
         assertNotEquals(g21, g12);
     }
+
+    @Test
+    public void testToString() {
+        Graph<String> graph1 = createGraphFantasy();
+        Graph<String> graph2 = new Graph<>();
+        assertNotEquals(graph1.toString(), graph2.toString());
+    } 
+
+    @Test
+    public void testHashcode() {
+        Graph<String> graph1 = createGraphFantasy();
+        Graph<String> graph2 = new Graph<>();
+        assertNotEquals(graph1.hashCode(), graph2.hashCode());
+    }
+
 }
