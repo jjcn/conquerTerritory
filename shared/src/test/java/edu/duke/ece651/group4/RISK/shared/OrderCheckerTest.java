@@ -12,6 +12,7 @@ public class OrderCheckerTest {
     private final String SAME_OWNER_MSG = "Cannot attack a territory with the same owner.";
     private final String NOT_ATTACK_ORDER_MSG = "This is not an attack order.";
     private final String NOT_ADJACENT_MSG = "The attack should be performed on adjacent territories.";
+    protected final String NOT_YOUR_TROOP_MSG = "Error: You try to move troops on other's territory";
 
     PrintStream out = null;
     Reader inputReader = null;
@@ -137,5 +138,20 @@ public class OrderCheckerTest {
 
         BasicOrder order2 = new BasicOrder("Scadrial", "Gondor", new Troop(3, blue), 'A');
         assertEquals(NOT_ADJACENT_MSG, oc.checkOrder(order2, world));
+    }
+
+    @Test
+    public void testOrderNotYourTroop() {
+        World world = createWorld(troopsConnected);
+
+        BasicOrder order1_red = new BasicOrder("Narnia", "Midkemia", new Troop(3, red), 'M');
+        BasicOrder order1_blue = new BasicOrder("Narnia", "Midkemia", new Troop(3, blue), 'M');
+        assertEquals(NOT_YOUR_TROOP_MSG, oc.checkOrder(order1_red, world));
+        assertEquals(NOT_YOUR_TROOP_MSG, oc.checkOrder(order1_blue, world));
+
+        BasicOrder order2_red = new BasicOrder("Scadrial", "Mordor", new Troop(3, red), 'A');
+        BasicOrder order2_green = new BasicOrder("Scadrial", "Mordor", new Troop(3, green), 'A');
+        assertEquals(NOT_YOUR_TROOP_MSG, oc.checkOrder(order2_red, world));
+        assertEquals(NOT_YOUR_TROOP_MSG, oc.checkOrder(order2_green, world));
     }
 }

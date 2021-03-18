@@ -18,8 +18,8 @@ public class AttackOrderChecker implements Serializable {
     /**
      * Error messages
      */
-    protected final String SAME_OWNER_MSG = "Cannot attack a territory with the same owner.";
     protected final String NOT_ATTACK_ORDER_MSG = "This is not an attack order.";
+    protected final String SAME_OWNER_MSG = "Cannot attack a territory with the same owner.";
     protected final String NOT_ADJACENT_MSG = "The attack should be performed on adjacent territories.";
 
     public AttackOrderChecker() {

@@ -6,6 +6,11 @@ import java.io.Serializable;
  * This class checks if a basic order (Move & Attack) is valid.
  */
 public class OrderChecker implements Serializable { // TODO: bad design of OrderCheckers
+    /**
+     * Error Message
+     */
+    protected final String NOT_YOUR_TROOP_MSG = "Error: You try to move troops on other's territory";
+
     protected AttackOrderChecker aoc;
     protected MoveOrderChecker moc;
 
@@ -22,6 +27,10 @@ public class OrderChecker implements Serializable { // TODO: bad design of Order
      *         a String indicating the problem, if not.
      */
     public String checkOrder(BasicOrder order, World world) { 
+        Territory start = world.findTerritory(order.getSrcName());
+        if (!start.getOwner().equals(order.getActTroop().getOwner())) {
+            return NOT_YOUR_TROOP_MSG;
+        }
         char orderType = Character.toUpperCase(order.getActionName());
         if (orderType == 'A') { 
             return aoc.checkMyOrder(order, world);
