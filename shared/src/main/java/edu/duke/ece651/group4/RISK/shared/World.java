@@ -185,7 +185,6 @@ public class World implements Serializable {
      * @param troop is a Troop object.
      */
     public void stationTroop(String terrName, Troop troop) {
-        findTerritory(terrName);
         Territory terr = findTerritory(terrName);
         terr.initializeTerritory(troop.checkTroopSize(), troop.getOwner());
     }
