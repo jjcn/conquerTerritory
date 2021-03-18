@@ -66,7 +66,7 @@ class PlayerAppTest {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(bytes, true);
         String inputData = "5\n5\n6\n5\n5\n5\n";
-        PlayerApp testApp = simpleApp(inputData, output);
+        PlayerApp testApp = simpleApp(inputData, output,"p1");
         testApp.doPlacementPhase();
         assertEquals(testApp.getTheWorld().findTerritory("terr1").checkPopulation(), 5);
         assertEquals(testApp.getTheWorld().findTerritory("terr2").checkPopulation(), 5);
@@ -92,13 +92,13 @@ class PlayerAppTest {
         return world;
     }
 
-    private PlayerApp simpleApp(String data, PrintStream output) throws IOException {
+    private PlayerApp simpleApp(String data, PrintStream output,String name) throws IOException {
         Client testClient = new Client("localhost", "9999");
         World testWorld = simpleWorld();
         Random rnd = new Random(0);
         String inputData = data;
         BufferedReader input = new BufferedReader(new StringReader(inputData));
-        PlayerApp testApp = new PlayerApp(testClient, "p1", output, input, testWorld, 15, rnd, true);
+        PlayerApp testApp = new PlayerApp(testClient, name, output, input, testWorld, 15, rnd, true);
         return testApp;
     }
 
@@ -126,7 +126,7 @@ class PlayerAppTest {
             String inputData = "M\nterr1\nterr3\n5\nM\nterr1\nterr2\n1\nA\nterr3\nterr4\n1\nD\n";
             PlayerApp testApp = null;
             try {
-                testApp = simpleApp(inputData, output);
+                testApp = simpleApp(inputData, output,"p1");
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -153,12 +153,11 @@ class PlayerAppTest {
                 Socket socket = server.accept();
                 Client theClient = new Client(socket);
                 World testWorld = simpleWorld();
-                BasicOrder newOrder1 = (BasicOrder ) theClient.recvObject();
-                testWorld.moveTroop(newOrder1);
-                BasicOrder newOrder2 = (BasicOrder ) theClient.recvObject();
-                testWorld.attackATerritory(newOrder2);
                 BasicOrder newOrder3 = (BasicOrder ) theClient.recvObject();
+                Troop t=new Troop(1,new TextPlayer("p1"),new Random(0));
+                testWorld.attackATerritory(new BasicOrder("terr3","terr4",t,'A'));
                 String message=testWorld.doAllBattles();
+
                 theClient.sendObject(testWorld.clone());
                 theClient.sendObject(new String(message));
             } catch (Exception e) {
@@ -167,10 +166,10 @@ class PlayerAppTest {
 
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         PrintStream output = new PrintStream(bytes, true);
-        String inputData = "M\nterr1\nterr3\n5\nM\nterr1\nterr2\n1\nA\nterr3\nterr4\n1\nD\n";
+        String inputData = "D\nY\n";
         PlayerApp testApp = null;
         try {
-            testApp = simpleApp(inputData, output);
+            testApp = simpleApp(inputData, output,"p2");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -184,10 +183,7 @@ class PlayerAppTest {
         }
 
 
-        assertEquals(testApp.getTheWorld().findTerritory("terr1").checkPopulation(), 0);
-        assertEquals(testApp.getTheWorld().findTerritory("terr2").checkPopulation(), 2);
-        assertEquals(testApp.getTheWorld().findTerritory("terr3").checkPopulation(), 0);
-        assertEquals(testApp.getTheWorld().findTerritory("terr4").checkPopulation(), 1);
+
         assertEquals(testApp.getTheWorld().checkLost("p2"),true);
         assertEquals(testApp.getTheWorld().isGameEnd(),true);
         assertEquals(testApp.getTheWorld().getWinner(),"p1");
