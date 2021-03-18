@@ -37,12 +37,13 @@ class ClientThreadTest {
 
     private World createWorld(){
         Player p1 = new TextPlayer("Player0");
-//        Player p2 = new TextPlayer("p2");
-        World world = new World(3);
+        Player p2 = new TextPlayer("p2");
+        World world = new World(4);
         world.stationTroop("1",new Troop(5,p1));
         world.stationTroop("2",new Troop(5,p1));
-        world.stationTroop("3",new Troop(5,p1));
-//        world.stationTroop("3",new Troop(5,p2));
+        world.stationTroop("3",new Troop(5,p2));
+        world.stationTroop("4",new Troop(5,p2));
+        world.addConnection("1","3");
 //        world.stationTroop("4",new Troop(5,p2));
 //        world.stationTroop("5",new Troop(5,p2));
         return world;
@@ -53,8 +54,6 @@ class ClientThreadTest {
         int PlayerID = 0;
         int playerNum = 1;
         HashMap<Integer, List<Territory>> groups=(HashMap<Integer, List<Territory>>) theWorld.divideTerritories(playerNum);
-//        Socket s = hostSocket.accept();
-//        Client theClient = new Client(s);
         PlayerState playerState = new PlayerState("Ready");
         HostState hostState = new HostState("ready");
         hostState.updateWarReport("warreport");
@@ -67,6 +66,12 @@ class ClientThreadTest {
         return theThread;
     }
 
+    private BasicOrder createBasicOrder(String src, String des, char act, Player p){
+        BasicOrder m = new BasicOrder(src,
+                des,new Troop(1,p),
+                act);
+        return m;
+    }
     @Test
     public void test_sendObjectsToClient() throws IOException, InterruptedException {
         new Thread(() -> {
@@ -94,14 +99,19 @@ class ClientThreadTest {
             }
         }).start();
         Thread.sleep(TIME);
-
+        //Test ClientThread send
         ClientThread clientThread = createAClientThread();
         clientThread.sendWorldToClient();
         clientThread.sendPlayerNameToClient();
         clientThread.sendWarReportToClient();
         clientThread.sendInitTerritory();
         assertEquals(clientThread.isPlayerLost(), false);
-        assertEquals(clientThread.isGameEnd(), true);
+        assertEquals(clientThread.isGameEnd(), false);
+        //Test ClientThread Update the world
+        clientThread.updateActionOnWorld(createBasicOrder("1","2",'M', new TextPlayer("Player0")));
+        System.out.println("ClientThreadTest : update the move");
+        clientThread.updateActionOnWorld(createBasicOrder("1","3",'A', new TextPlayer("Player0")));
+        System.out.println("ClientThreadTest : update the attack");
         theClient.close();
     }
 
