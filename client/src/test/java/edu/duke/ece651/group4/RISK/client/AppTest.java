@@ -154,12 +154,13 @@ class PlayerAppTest {
                 Client theClient = new Client(socket);
                 World testWorld = simpleWorld();
                 BasicOrder newOrder3 = (BasicOrder ) theClient.recvObject();
-                Troop t=new Troop(1,new TextPlayer("p1"),new Random(0));
+                Troop t=new Troop(1,new TextPlayer("p3"),new Random(0));
                 testWorld.attackATerritory(new BasicOrder("terr3","terr4",t,'A'));
                 String message=testWorld.doAllBattles();
 
                 theClient.sendObject(testWorld.clone());
                 theClient.sendObject(new String(message));
+                theClient.sendObject(testWorld.clone());
             } catch (Exception e) {
             }
         }).start();
@@ -185,8 +186,8 @@ class PlayerAppTest {
 
 
         assertEquals(testApp.getTheWorld().checkLost("p2"),true);
-        assertEquals(testApp.getTheWorld().isGameEnd(),true);
-        assertEquals(testApp.getTheWorld().getWinner(),"p1");
+        assertEquals(testApp.getTheWorld().isGameEnd(),false);
+
     }
 
 
