@@ -269,6 +269,12 @@ public class WorldTest {
     }    
     
     @Test
+    public void testDoAllBattles() {
+        World world = createWorld(troopsSeparated);
+        world.doAllBattles();
+    }
+
+    @Test
     public void testGetAllTerritories() {
         World world = createWorld();
 
