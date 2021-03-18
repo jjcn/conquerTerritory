@@ -107,7 +107,7 @@ class PlayerAppTest {
     }
 
     @Test
-    public void testAction() throws IOException, ClassNotFoundException, InterruptedException {
+    public void testAction() throws IOException, ClassNotFoundException {
         new Thread(() -> {
             try {
                 Socket socket = server.accept();
@@ -130,21 +130,8 @@ class PlayerAppTest {
         PrintStream output = new PrintStream(bytes, true);
         String inputData = "M\nterr1\nterr3\n5\nM\nterr1\nterr2\n1\nA\nterr3\nterr4\n1\nD\n";
         PlayerApp testApp = null;
-        try {
-            testApp = simpleApp(inputData, System.out,"p1");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            testApp.doActionPhase();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-
+        testApp = simpleApp(inputData, System.out,"p1");
+        testApp.doActionPhase();
         assertEquals(testApp.getTheWorld().findTerritory("terr1").checkPopulation(), 0);
         assertEquals(testApp.getTheWorld().findTerritory("terr2").checkPopulation(), 2);
         assertEquals(testApp.getTheWorld().findTerritory("terr3").checkPopulation(), 0);
@@ -177,19 +164,10 @@ class PlayerAppTest {
         String inputData = "D\nY\n";
 
         PlayerApp testApp = null;
-        try {
-            testApp = simpleApp(inputData, System.out,"p2");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
-        try {
-            testApp.runGame();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        testApp = simpleApp(inputData, System.out,"p2");
+
+        testApp.runGame();
 
 
 
