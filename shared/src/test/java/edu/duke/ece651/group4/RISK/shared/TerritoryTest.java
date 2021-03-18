@@ -55,6 +55,10 @@ class TerritoryTest {
 
         assertEquals(test.getOwner().getName(), "p1");
         assertEquals(test.checkPopulation(),2);
+        test.doBattles();
+        test.sendInEnemyTroop(new Troop(10, p3, new Random(0)));
+        test.doBattles();
+        assertEquals(test.getOwner().getName(), "p3");
 
     }
 
