@@ -69,7 +69,7 @@ public class PlayerApp {
 //            sendInfo((PlaceOrder)p,this.playerClient);
         }
 
-        this.theWorld   =(World) this.playerClient.recvObject();
+        this.theWorld = (World) this.playerClient.recvObject();
         this.out.println("All placement are done");
         this.out.println(this.myView.displayWorld( this.theWorld ));
 
@@ -92,6 +92,7 @@ public class PlayerApp {
         }
         if(this.theWorld.isGameEnd()) {
             this.out.println("Winner is "+this.theWorld.getWinner());
+            this.playerClient.close();
             return;
         }
 
@@ -107,6 +108,7 @@ public class PlayerApp {
 
             if(this.theWorld.isGameEnd()) {
                 this.out.println("Winner is "+this.theWorld.getWinner());
+                this.playerClient.close();
                 return;
             }
         }

@@ -147,6 +147,11 @@ public class HostApp implements Runnable {
             }
             if(hostState.isALlThreadsQuit()) {
                 System.out.println("The host quits after all threads quit.");
+                try {
+                    hostSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 break;  // we should decide to quit the game after all thread  quit.
             }
         }
