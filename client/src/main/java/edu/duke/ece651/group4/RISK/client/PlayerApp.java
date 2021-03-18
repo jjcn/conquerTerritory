@@ -69,7 +69,7 @@ public class PlayerApp {
 //            sendInfo((PlaceOrder)p,this.playerClient);
         }
 
-        this.theWorld   =(World) this.playerClient.recvObject();
+        this.theWorld = (World) this.playerClient.recvObject();
         this.out.println("All placement are done");
         this.out.println(this.myView.displayWorld( this.theWorld ));
 

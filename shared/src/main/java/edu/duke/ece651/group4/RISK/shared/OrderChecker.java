@@ -3,9 +3,15 @@ package edu.duke.ece651.group4.RISK.shared;
 import java.io.Serializable;
 
 /**
- * Checks if a order is valid.
+ * This class checks if a basic order (Move & Attack) is valid.
  */
-public class OrderChecker implements Serializable { // TODO: bad code design
+public class OrderChecker implements Serializable { // TODO: bad design of OrderCheckers
+    /**
+     * Error Messages
+     */
+    protected final String NOT_YOUR_TROOP_MSG = "Error: You try to move troops on another player's territory";
+    protected final String UNKNOWN_BASIC_ORDER_TYPE = "'%c' is not a valid basic order type.";
+
     protected AttackOrderChecker aoc;
     protected MoveOrderChecker moc;
 
@@ -22,6 +28,10 @@ public class OrderChecker implements Serializable { // TODO: bad code design
      *         a String indicating the problem, if not.
      */
     public String checkOrder(BasicOrder order, World world) { 
+        Territory start = world.findTerritory(order.getSrcName());
+        if (!start.getOwner().equals(order.getActTroop().getOwner())) {
+            return NOT_YOUR_TROOP_MSG;
+        }
         char orderType = Character.toUpperCase(order.getActionName());
         if (orderType == 'A') { 
             return aoc.checkMyOrder(order, world);
@@ -29,6 +39,7 @@ public class OrderChecker implements Serializable { // TODO: bad code design
         else if (orderType == 'M') {   
             return moc.checkMyOrder(order, world);
         }
-        return String.format("'%c' is not a valid basic order type.", orderType); // that is, not Attack or Move
+        // not Attack or Move
+        return String.format(UNKNOWN_BASIC_ORDER_TYPE, order.getActionName());
     }
 }

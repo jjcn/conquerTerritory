@@ -15,9 +15,12 @@ import java.io.Serializable;
  * 
  */
 public class AttackOrderChecker implements Serializable {
-    private final String SAME_OWNER_MSG = "Cannot attack a territory with the same owner.";
-    private final String NOT_ATTACK_ORDER_MSG = "This is not an attack order.";
-    private final String NOT_ADJACENT_MSG = "The attack should be performed on adjacent territories.";
+    /**
+     * Error messages
+     */
+    protected final String NOT_ATTACK_ORDER_MSG = "This is not an attack order.";
+    protected final String SAME_OWNER_MSG = "Cannot attack a territory with the same owner.";
+    protected final String NOT_ADJACENT_MSG = "The attack should be performed on adjacent territories.";
 
     public AttackOrderChecker() {
         super();
