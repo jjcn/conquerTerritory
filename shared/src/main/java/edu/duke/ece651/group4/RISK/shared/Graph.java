@@ -36,10 +36,6 @@ public class Graph<T> implements Serializable {
         this.vertices = vertices;
         this.adjMatrix = adjMatrix;
     }
-    
-    public List<T> getList(){
-        return this.vertices;
-    }
 
     /**
      * Get a deep copy of adjacency matrix.
@@ -137,9 +133,11 @@ public class Graph<T> implements Serializable {
      * @param key is the data in the vertex to move.
      */
 
+    /*
     public void removeVertex(T key) {
         // TODO: Not required in evol1
     }
+    */
 
     /**
      * Add edge between two vertices.
@@ -159,11 +157,11 @@ public class Graph<T> implements Serializable {
      * @param key1 is the data in one end of the edge.
      * @param key2 is the data in other end the edge.
      */
-
+    /*
     public void removeEdge(T key1,T key2) {
         // TODO: Not required in evol1
     }
-
+    */
 
     /**
      * Extract the data in a collection of vertices.
@@ -211,7 +209,7 @@ public class Graph<T> implements Serializable {
      * @return true, if the graph obeys the rules;
      *         false, if not.
      */
-    private boolean allHasAdjacents() {
+    protected boolean allHasAdjacents() {
         for (int i = 0; i < size(); i++) {
             boolean hasAdjacent = false;
             for (int j = 0; j < size(); j++) { // iterate over a line of adjacency matrix
@@ -231,7 +229,7 @@ public class Graph<T> implements Serializable {
      * @return true, if the graph obeys the rules;
      *         false, if not.
      */
-    private boolean isConnectedGraph() {
+    protected boolean isConnectedGraph() {
         if (size() == 0) {
             return true;
         }
@@ -251,7 +249,7 @@ public class Graph<T> implements Serializable {
      * @return true, if v2 is reachable from v1;
      *         false, if not.
      */
-    public boolean hasPath(T start, T end) {
+    protected boolean hasPath(T start, T end) {
         if (start.equals(end)) {
             return true;
         }

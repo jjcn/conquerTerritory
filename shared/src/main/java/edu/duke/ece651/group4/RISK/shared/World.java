@@ -19,17 +19,17 @@ public class World implements Serializable {
     /**
      * Error messages
      */
-    final String NOT_ENOUGH_TROOP_MSG = "The troop size you want is larger than that on this territory.";
-    final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
-    final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
-    final String NOT_POSITIVE_MSG = "Number should be positive.";
+    protected final String NOT_ENOUGH_TROOP_MSG = "The troop size you want is larger than that on this territory.";
+    protected final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
+    protected final String NOT_POSITIVE_MSG = "Number should be positive.";
+    protected final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
     
     /**
      * All territories in the world. Implemented with a graph structure.
      */
     public Graph<Territory> territories;
     private final OrderChecker basicOrderChecker;
-    final Random rnd;
+    private final Random rnd;
 
     /**
      * Construct a default world with an empty graph.
@@ -56,7 +56,6 @@ public class World implements Serializable {
         basicOrderChecker = new OrderChecker();
         rnd = random;
     }
-
 
     /**
      * Creates a world, specify a number of total territories and a random seed.
@@ -95,7 +94,7 @@ public class World implements Serializable {
      */
     public World clone() {
         boolean[][] adjMatrixCopy = territories.cloneAdjMatrix();
-        ArrayList<Territory> old = (ArrayList<Territory>)territories.getList();
+        ArrayList<Territory> old = (ArrayList<Territory>)territories.getVertices();
         ArrayList<Territory> cpy=new ArrayList<>();
         for (Territory item : old) {
             cpy.add(item.clone());

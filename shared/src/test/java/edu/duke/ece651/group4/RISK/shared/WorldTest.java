@@ -2,7 +2,6 @@ package edu.duke.ece651.group4.RISK.shared;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.apache.commons.math3.exception.NotPositiveException;
 import org.junit.jupiter.api.Test;
 
 import java.io.PrintStream;
