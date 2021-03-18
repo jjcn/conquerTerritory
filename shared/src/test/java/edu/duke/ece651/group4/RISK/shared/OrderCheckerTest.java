@@ -86,30 +86,6 @@ public class OrderCheckerTest {
     }
 
     @Test
-    public void testMoveOrderCheckerNotSameOwner() {
-        World world = createWorld(troopsConnected);
-
-        BasicOrder order1 = new BasicOrder("Narnia", "Roshar", new Troop(3, green), 'M');
-        assertEquals(NOT_SAME_OWNER_MSG, oc.checkOrder(order1, world));
-
-        BasicOrder order2 = new BasicOrder("Oz", "Gondor", new Troop(3, green), 'M');
-        assertEquals(NOT_SAME_OWNER_MSG, oc.checkOrder(order2, world));
-    }
-
-    @Test
-    public void testMoveOrderCheckerNotLinked() {
-        World world = createWorld(troopsSeparated);
-
-        // This test fails
-        /*
-        BasicOrder order1 = new BasicOrder("Roshar", "Hogwarts", new Troop(3, green), 'M');
-        assertEquals(null, moc.checkMyOrder(order1, world));
-        */
-        BasicOrder order2 = new BasicOrder("Roshar", "Oz", new Troop(3, green), 'M');
-        assertEquals(NOT_REACHABLE_MSG, oc.checkOrder(order2, world));
-    }
-
-    @Test
     public void testAttackOrderCheckerValid() {
         World world = createWorld(troopsConnected);
 
@@ -120,27 +96,6 @@ public class OrderCheckerTest {
         assertEquals(null, oc.checkOrder(order2, world));
     }
 
-    @Test
-    public void testAttackOrderCheckerSameOwner() {
-        World world = createWorld(troopsConnected);   
-
-        BasicOrder order1 = new BasicOrder("Narnia", "Midkemia", new Troop(3, green), 'A');
-        assertEquals(SAME_OWNER_MSG, oc.checkOrder(order1, world));
-
-        BasicOrder order2 = new BasicOrder("Gondor", "Mordor", new Troop(3, red), 'A');
-        assertEquals(SAME_OWNER_MSG, oc.checkOrder(order2, world));
-    }
-
-    @Test
-    public void testAttackOrderCheckerNotAdjacent() {
-        World world = createWorld(troopsConnected);
-
-        BasicOrder order1 = new BasicOrder("Narnia", "Scadrial", new Troop(3, green), 'A');
-        assertEquals(NOT_ADJACENT_MSG, oc.checkOrder(order1, world));
-
-        BasicOrder order2 = new BasicOrder("Scadrial", "Gondor", new Troop(3, blue), 'A');
-        assertEquals(NOT_ADJACENT_MSG, oc.checkOrder(order2, world));
-    }
 
     @Test
     public void testOrderNotYourTroop() {
