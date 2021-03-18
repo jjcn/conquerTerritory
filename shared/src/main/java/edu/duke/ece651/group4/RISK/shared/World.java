@@ -14,15 +14,21 @@ import java.io.Serializable;
 /**
  * This class models the world which constitutes
  * a certain number of territories connected with each other.
+ * 
+ * Maintains territories in a graph struture;
+ * an order checker that checks validity of basic orders;
+ * a random seed.
  */
 public class World implements Serializable {
     /**
      * Error messages
      */
-    protected final String NOT_ENOUGH_TROOP_MSG = "The troop size you want is larger than that on this territory.";
-    protected final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
-    protected final String NOT_POSITIVE_MSG = "Number should be positive.";
-    protected final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
+    protected final String INDIVISIBLE_MSG = 
+        "Number of territories is not divisible by number of groups.";
+    protected final String NOT_POSITIVE_MSG = 
+        "Number should be positive.";
+    protected final String TERRITORY_NOT_FOUND_MSG = 
+        "The territory specified by the name '%s' is not found.";
     
     /**
      * All territories in the world. Implemented with a graph structure.
@@ -208,10 +214,6 @@ public class World implements Serializable {
         Territory end = findTerritory(order.getDesName());
         Troop troop = order.getActTroop();
 
-        if (start.checkPopulation() < troop.checkTroopSize()) {
-
-            throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
-        }
         String errorMsg = basicOrderChecker.checkOrder(order, this);
         if (errorMsg != null) {
             throw new IllegalArgumentException(errorMsg);
@@ -227,6 +229,7 @@ public class World implements Serializable {
      * @param troop is the troop to move.
      * @param end is the territory the troop ends in.
      */
+    @Deprecated
     public void moveTroop(Territory start, Troop troop, Territory end) {
         BasicOrder order = new BasicOrder(start.getName(), end.getName(), 
                                             troop, 'M');
@@ -244,9 +247,6 @@ public class World implements Serializable {
         Territory end = findTerritory(order.getDesName());
         Troop troop = order.getActTroop();
         
-        if (start.checkPopulation() < troop.checkTroopSize()) {
-            throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
-        }
         String errorMsg = basicOrderChecker.checkOrder(order, this);
         if (errorMsg != null) {
             throw new IllegalArgumentException(errorMsg);
@@ -262,6 +262,7 @@ public class World implements Serializable {
      * @param troop is the troop to send.
      * @param end is the territory the troop ends in.
      */
+    @Deprecated
     public void attackATerritory(Territory start, Troop troop, Territory end) {
         BasicOrder order = new BasicOrder(start.getName(), end.getName(), 
                                           troop, 'A');
