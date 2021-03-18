@@ -31,14 +31,14 @@ public class ClientThread extends Thread{
     /*
      *  This sends a player info to each Client.
      * */
-    public void sendPlayerNameToClient() throws IOException {
+    protected void sendPlayerNameToClient() throws IOException {
         this.theClient.sendObject(this.playerName);
     }
 
     /*
      *  This send the newest worldMap to the Client
      * */
-    public void sendWorldToClient() throws IOException {
+    protected void sendWorldToClient() throws IOException {
         World sendWorld=this.theWorld.clone();
         this.theClient.sendObject(sendWorld);
 
@@ -46,7 +46,7 @@ public class ClientThread extends Thread{
     /*
      *  This send the newest WarReport to the Client
      * */
-    public void sendWarReportToClient() throws IOException {
+    protected void sendWarReportToClient() throws IOException {
         this.theClient.sendObject(this.hostState.getWarReport());
     }
 
@@ -59,12 +59,12 @@ public class ClientThread extends Thread{
     /*
      * This send init territory to each player.
      * */
-    public void sendInitTerritory() throws IOException {this.theClient.sendObject(this.initTerritory); }
+    protected void sendInitTerritory() throws IOException {this.theClient.sendObject(this.initTerritory); }
 
     /*
      * This is to select territory for each player.
      * */
-    public void selectUnits(){
+    protected void selectUnits(){
         int orderNum=this.initTerritory.size();
         while(orderNum>0) {
             PlaceOrder newOrder = null;
@@ -78,7 +78,7 @@ public class ClientThread extends Thread{
     /*
      * This handles all orders from the Client
      * */
-    private void doActionPhase(){
+    protected void doActionPhase(){
         while( !playerState.isDoneOneTurn()) {
             BasicOrder newOrder = null;
             newOrder = (BasicOrder) receiveInfo(newOrder, this.theClient);
@@ -92,7 +92,7 @@ public class ClientThread extends Thread{
      * This function has to be locked. This is because all players are sharing the
      * same world
      * */
-    synchronized private void updateActionOnWorld(BasicOrder receiveMessage){
+    synchronized protected void updateActionOnWorld(BasicOrder receiveMessage){
         System.out.println(this.playerName +  receiveMessage.getActionName());
         if (receiveMessage.getActionName() == 'M') {
 //            System.out.println(this.playerName + " start to move");
@@ -117,7 +117,7 @@ public class ClientThread extends Thread{
      * It will iterate all territories in the world to see if there is a terr that belongs to this Player
      * If a player lose, we will change the playerState to Lose
      * */
-    public boolean isPlayerLost(){
+    protected boolean isPlayerLost(){
         return this.theWorld.checkLost(this.playerName);
     }
 
@@ -126,7 +126,7 @@ public class ClientThread extends Thread{
      * This is to check if there is only one winner in the world after the world
      * is updated by the host
      * */
-    private boolean isGameEnd(){
+    protected boolean isGameEnd(){
         return this.theWorld.isGameEnd();
     }
 
@@ -205,7 +205,7 @@ public class ClientThread extends Thread{
         }
     }
 
-    private Object receiveInfo(Object o, Client c){
+    protected Object receiveInfo(Object o, Client c){
 
         try {
             o = c.recvObject();
@@ -216,14 +216,4 @@ public class ClientThread extends Thread{
         return o;
     }
 
-    private void sendInfo(Object o, Client c){
-
-        try {
-            c.sendObject(o);
-        } catch (Exception e) {
-            System.out.println("Socket problem!");
-        }
-
-
-    }
 }
