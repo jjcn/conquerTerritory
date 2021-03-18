@@ -14,6 +14,10 @@ import java.io.Serializable;
 /**
  * This class models the world which constitutes
  * a certain number of territories connected with each other.
+ * 
+ * Maintains territories in a graph struture;
+ * an order checker that checks validity of basic orders;
+ * a random seed.
  */
 public class World implements Serializable {
     /**
