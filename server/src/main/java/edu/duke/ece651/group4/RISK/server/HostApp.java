@@ -122,7 +122,8 @@ public class HostApp implements Runnable {
 
     private void finishBattlesOneTurn() {
         if(!hostState.isFinishUpdate()) {
-            theWorld.doAllBattles();
+            String warReport = theWorld.doAllBattles();
+            hostState.updateWarReport(warReport);
             this.theWorld.addUnitToAll(1);
             hostState.changeStateTo("finishUpdateWorld");
 

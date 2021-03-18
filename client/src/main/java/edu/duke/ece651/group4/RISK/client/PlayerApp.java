@@ -20,6 +20,7 @@ public class PlayerApp {
     private final int totalPopulation;
     private Random rnd;
     private WorldTextView myView;
+    private PrintStream out;
 
     public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader,World theWorld,int num,Random rnd,boolean mode) {
         this.playerClient=myClient;
@@ -28,10 +29,12 @@ public class PlayerApp {
         this.totalPopulation=num;
         this.rnd=rnd;
         this.myView=new WorldTextView(theWorld);
+        this.out=out;
     }
 
     public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader,World theWorld,int num) {
         this(myClient,name,out,inputReader,theWorld,num,new Random(),false);
+
     }
 
 
@@ -41,10 +44,10 @@ public class PlayerApp {
     }
 
     public void doPlacementPhase() throws IOException, ClassNotFoundException {
-        System.out.println(this.myView.displayWorld(this.theWorld));
+        this.out.println(this.myView.displayWorld(this.theWorld));
         List<Territory> myGroup =null;
         myGroup=(List<Territory>) receiveInfo(myGroup,this.playerClient);
-        System.out.println("Finish all setup and let's start the game!");
+        this.out.println("Finish all setup and let's start the game!");
         List<Order> orders = null;
         while(orders==null) {
             try {
@@ -54,7 +57,7 @@ public class PlayerApp {
                     this.theWorld.findTerritory(newOrder.getDesName());
                 }
             }catch(Exception e){
-                System.out.println("Wrong placement");
+                this.out.println("Wrong placement Assignment");
             }
         }
         for(Order p:orders){
@@ -63,24 +66,24 @@ public class PlayerApp {
         }
 
         this.theWorld   =(World) this.playerClient.recvObject();
-        System.out.println("All placement are done");
-        System.out.println(this.myView.displayWorld( this.theWorld ));
+        this.out.println("All placement are done");
+        this.out.println(this.myView.displayWorld( this.theWorld ));
 
         if(!this.theWorld.checkLost(this.myPlayer.getName())){
-            System.out.println("To " + this.myPlayer.getName() + ", world did not update the units ");
+            this.out.println("To " + this.myPlayer.getName() + ", world did not update the units ");
         }
     }
 
     public void runGame() throws IOException, ClassNotFoundException {
-        System.out.println(this.myView.displayWorld(this.theWorld));
+        this.out.println(this.myView.displayWorld(this.theWorld));
         while(!this.theWorld.checkLost(this.myPlayer.getName()) && !this.theWorld.isGameEnd()) {
             doActionPhase();
         }
         if(this.theWorld.checkLost(this.myPlayer.getName())) {
-            System.out.println("You lost");
+            this.out.println("You lost");
         }
         if(this.theWorld.isGameEnd()) {
-            System.out.println("Winner is "+this.theWorld.getWinner());
+            this.out.println("Winner is "+this.theWorld.getWinner());
             return;
         }
 
@@ -90,7 +93,7 @@ public class PlayerApp {
             World newWorld=null;
             this.theWorld=(World) receiveInfo(newWorld,this.playerClient);
             if(this.theWorld.isGameEnd()) {
-                System.out.println("Winner is "+this.theWorld.getWinner());
+                this.out.println("Winner is "+this.theWorld.getWinner());
                 return;
             }
         }
@@ -109,29 +112,28 @@ public class PlayerApp {
                     receiveMessage = this.myPlayer.doOneAction();
                     BasicOrder m = receiveMessage;
                     if (receiveMessage.getActionName() != 'D') {
-                        m = new BasicOrder(new String(receiveMessage.getSrcName()), 
-                                           new String(receiveMessage.getDesName()), 
-                                           receiveMessage.getActTroop().clone(), 
+                        m = new BasicOrder(new String(receiveMessage.getSrcName()),
+                                           new String(receiveMessage.getDesName()),
+                                           receiveMessage.getActTroop().clone(),
                                            receiveMessage.getActionName());
-                    }
-                    if (receiveMessage.getActionName() == 'M') {
-                        this.theWorld.moveTroop(theWorld.findTerritory(receiveMessage.getSrcName()), 
-                                                receiveMessage.getActTroop(), 
-                                                theWorld.findTerritory(receiveMessage.getDesName()));
-                    } else if (receiveMessage.getActionName() == 'A') {
-                        this.theWorld.attackATerritory(theWorld.findTerritory(receiveMessage.getSrcName()), 
-                                                       receiveMessage.getActTroop(), 
-                                                       theWorld.findTerritory(receiveMessage.getDesName()));
-                    } else {
-                        turnEnd = true;
+                    }else{
+                        turnEnd=true;
                     }
 
-                    received = true;
-                    System.out.println("Action updated");
-                    System.out.println(this.myView.displayWorld(this.theWorld));
+                    executeOrder(receiveMessage);
+//                    if(message==null){
+                        received = true;
+//                    }else{
+//                        out.println(message);
+//                        throw new IllegalArgumentException();
+//                    }
+
+                    this.out.println("Action updated");
+                    this.out.println(this.myView.displayWorld(this.theWorld));
                     sendInfo(m, this.playerClient);
                 } catch(Exception e) {
-                    System.out.println("Please enter correct order!");
+//                    this.out.println("Please enter exits territory!");
+                    this.out.println(e.getMessage());
                 }
 
             }
@@ -141,8 +143,22 @@ public class PlayerApp {
         World newWorld = null;
 //        this.theWorld=(World) receiveInfo(newWorld,this.playerClient);
         this.theWorld = (World) this.playerClient.recvObject();
-        System.out.println("Turn Ended");
-        System.out.println(this.myView.displayWorld(this.theWorld));
+        String report=(String) this.playerClient.recvObject();
+
+        this.out.println("Turn Ended");
+        this.out.println(report);
+        this.out.println(this.myView.displayWorld(this.theWorld));
+    }
+
+    private void executeOrder(BasicOrder receiveMessage){
+        if (receiveMessage.getActionName() == 'M') {
+             this.theWorld.moveTroop(receiveMessage);
+        } else if (receiveMessage.getActionName() == 'A') {
+             this.theWorld.attackATerritory(receiveMessage);
+        }
+
+
+
     }
 
 
