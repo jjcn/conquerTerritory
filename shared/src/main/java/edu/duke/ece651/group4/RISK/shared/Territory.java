@@ -75,7 +75,7 @@ public class Territory implements Serializable {
     }
 
     public void initializeTerritory(int num, Player owner){
-        this.ownerTroop=new Troop(num,owner,this.rnd);
+        this.ownerTroop=new Troop(num,owner);
     }
 
     public int checkPopulation(){
