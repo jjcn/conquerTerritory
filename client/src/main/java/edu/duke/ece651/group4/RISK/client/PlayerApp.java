@@ -52,15 +52,19 @@ public class PlayerApp {
         while(orders==null) {
             try {
                 orders = this.myPlayer.doPlacement(myGroup, this.totalPopulation);
+
                 for(Order p:orders) {
                     PlaceOrder newOrder=(PlaceOrder) p;
+
                     this.theWorld.findTerritory(newOrder.getDesName());
                 }
             }catch(Exception e){
                 this.out.println("Wrong placement Assignment");
             }
         }
+
         for(Order p:orders){
+
             this.playerClient.sendObject((PlaceOrder)p);
 //            sendInfo((PlaceOrder)p,this.playerClient);
         }
@@ -72,6 +76,10 @@ public class PlayerApp {
         if(!this.theWorld.checkLost(this.myPlayer.getName())){
             this.out.println("To " + this.myPlayer.getName() + ", world did not update the units ");
         }
+    }
+
+    public World getTheWorld(){
+        return this.theWorld;
     }
 
     public void runGame() throws IOException, ClassNotFoundException {
@@ -118,6 +126,7 @@ public class PlayerApp {
                                            receiveMessage.getActionName());
                     }else{
                         turnEnd=true;
+
                     }
 
                     executeOrder(receiveMessage);
@@ -143,7 +152,9 @@ public class PlayerApp {
         World newWorld = null;
 //        this.theWorld=(World) receiveInfo(newWorld,this.playerClient);
         this.theWorld = (World) this.playerClient.recvObject();
+
         String report=(String) this.playerClient.recvObject();
+
 
         this.out.println("Turn Ended");
         this.out.println(report);

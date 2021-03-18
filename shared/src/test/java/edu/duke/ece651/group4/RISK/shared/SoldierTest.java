@@ -17,5 +17,12 @@ public class SoldierTest {
 
     }
 
+    @Test
+    void test_soldier(){
+        Soldier mySoldier= new Soldier();
+        Soldier clone =mySoldier.clone();
+        assertEquals(mySoldier==clone,false);
+    }
+
 
 }
