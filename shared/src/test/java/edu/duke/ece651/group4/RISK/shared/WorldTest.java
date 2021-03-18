@@ -388,12 +388,31 @@ public class WorldTest {
         assertEquals("red", world2.getWinner());
     }
 
-    /*
     @Test
-    public void testEqualsRandom() { // can Random objects be equal?
-        Random r1 = new Random(0);
-        Random r2 = new Random(0);
-        assertEquals(r1, r2);
+    public void testEquals() {
+        World world1 = createWorld(troopsConnected);
+        World world2 = createWorld(troopsSamePlayer);
+        World world3 = createWorld(troopsSamePlayer);
+        World world4 = createWorldSimple();
+        assertEquals(world1, world2);
+        assertEquals(world1, world3);
+        assertEquals(world2, world3);
+        assertNotEquals(world1, world4);
+        assertNotEquals(world1, null);
+        assertNotEquals(world1, new Graph<Territory>());
     }
-    */
+
+    @Test
+    public void testToString() {
+        World world1 = createWorld(troopsConnected);
+        World world2 = createWorld(troopsSamePlayer);
+        assertNotEquals(world1.toString(), world2.toString());
+    } 
+
+    @Test
+    public void testHashcode() {
+        World world1 = createWorld(troopsConnected);
+        World world2 = createWorld(troopsSamePlayer);
+        assertNotEquals(world1.hashCode(), world2.hashCode());
+    }
 }

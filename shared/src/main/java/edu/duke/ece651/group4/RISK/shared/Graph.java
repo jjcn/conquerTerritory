@@ -3,7 +3,6 @@ package edu.duke.ece651.group4.RISK.shared;
 import java.util.List;
 import java.util.Queue;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
@@ -323,5 +322,15 @@ public class Graph<T> implements Serializable {
         else {
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+        return vertices.toString() + adjMatrix.toString();
+    }
+
+    @Override
+    public int hashCode() {
+        return toString().hashCode();
     }
 }
