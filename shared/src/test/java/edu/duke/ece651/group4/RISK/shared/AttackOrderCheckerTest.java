@@ -12,7 +12,7 @@ public class AttackOrderCheckerTest {
         "Cannot attack %s, which belongs to you.";
     protected final String NOT_ADJACENT_MSG = 
         "You tried to attack from %s to %s, which are not adjacent territories. %n" +
-        "An attack should be performed on adjacent territories.";
+        "You can only attack territories directly adjacent to your territories.";
 
     PrintStream out = null;
     Reader inputReader = null;
