@@ -206,15 +206,19 @@ public class World implements Serializable {
         Troop troop = order.getActTroop();
 
         if (start.checkPopulation() < troop.checkTroopSize()) {
+
             throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
+//            return NOT_ENOUGH_TROOP_MSG;
         }
         String errorMsg = basicOrderChecker.checkOrder(order, this);
         if (errorMsg != null) {
             throw new IllegalArgumentException(errorMsg);
+//            return errorMsg;
         }
         
         start.sendOutTroop(troop);
         end.sendInTroop(troop);
+//        return null;
     }
 
     /**
@@ -241,14 +245,17 @@ public class World implements Serializable {
         
         if (start.checkPopulation() < troop.checkTroopSize()) {
             throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
+//            return NOT_ENOUGH_TROOP_MSG;
         }
         String errorMsg = basicOrderChecker.checkOrder(order, this);
         if (errorMsg != null) {
             throw new IllegalArgumentException(errorMsg);
+//            return errorMsg;
         }
         
         start.sendOutTroop(troop);
-        end.sendInTroop(troop);
+        end.sendInEnemyTroop(troop);
+//        return null;
     }
 
     /**
@@ -266,25 +273,25 @@ public class World implements Serializable {
     /**
      * Iterate over all territories around the world, and do battles on them.
      */
-    public void doAllBattles() {
-        for (Territory terr : territories.getVertices()) {
-            terr.doBattles(); 
-        }
-    }
+//    public void doAllBattles() {
+//        for (Territory terr : territories.getVertices()) {
+//            terr.doBattles();
+//        }
+//    }
 
     /**
      * Iterate over all territories around the world, and do battles on them.
      * @return A summary of battle info on all territories.
      */
-    /* // A newer version
+
     public String doAllBattles() {
         StringBuilder ans = new StringBuilder();
         for (Territory terr : territories.getVertices()) {
-            ans.append(terr.doBattles()); 
+            ans.append(terr.doBattles());
         }
         return ans.toString();
     }
-    */
+
 
     /**
      * Check if two territories are adjacent to each other
