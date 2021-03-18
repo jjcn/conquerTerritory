@@ -22,7 +22,7 @@ public class World implements Serializable {
     final String NOT_ENOUGH_TROOP_MSG = "The troop size you want is larger than that on this territory.";
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
-    final String NOT_POSITIVE_MSG = "Number of groups should be positive.";
+    final String NOT_POSITIVE_MSG = "Number should be positive.";
     
     /**
      * All territories in the world. Implemented with a graph structure.
@@ -378,6 +378,9 @@ public class World implements Serializable {
      * @param num is the number of units to add to every territory.
      */
     public void addUnitToAll(int num) {
+        if (num < 0) {
+            throw new IllegalArgumentException(NOT_POSITIVE_MSG);
+        }
         for (Territory terr : getAllTerritories()) {
             terr.addUnit(num);
         }

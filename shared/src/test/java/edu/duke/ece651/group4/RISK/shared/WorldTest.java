@@ -2,6 +2,7 @@ package edu.duke.ece651.group4.RISK.shared;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.apache.commons.math3.exception.NotPositiveException;
 import org.junit.jupiter.api.Test;
 
 import java.io.PrintStream;
@@ -21,7 +22,7 @@ public class WorldTest {
     final String NOT_ENOUGH_TROOP_MSG = "The troop size you want is larger than that on this territory.";
     final String INDIVISIBLE_MSG = "Number of territories is not divisible by number of groups.";
     final String TERRITORY_NOT_FOUND_MSG = "The territory specified by the name '%s' is not found.";
-    final String NOT_POSITIVE_MSG = "Number of groups should be positive.";
+    final String NOT_POSITIVE_MSG = "Number should be positive.";
     // move checker
     private final String NOT_SAME_OWNER_MSG = "Cannot move troop to a territory with different owner.";
     private final String NOT_MOVE_ORDER_MSG = "This is not a move order.";
@@ -333,6 +334,21 @@ public class WorldTest {
         Territory t1 = new Territory("1");
         Territory t2 = new Territory("2");
         assertTrue(world.checkIfAdjacent(t1, t2));
+    }
+
+    @Test
+    public void testAddUnitToAll() {
+        World world = createWorldSimple();
+        world.addUnitToAll(1);
+        assertEquals(1, world.findTerritory("1").checkPopulation());
+        assertEquals(1, world.findTerritory("2").checkPopulation());
+
+        World world2 = createWorld(troopsConnected);
+        world2.addUnitToAll(3);
+        assertEquals(13, world2.findTerritory("Narnia").checkPopulation());
+        assertEquals(6, world2.findTerritory("Roshar").checkPopulation());
+
+        assertThrows(IllegalArgumentException.class, () -> world2.addUnitToAll(-1), NOT_POSITIVE_MSG);
     }
 
     @Test
