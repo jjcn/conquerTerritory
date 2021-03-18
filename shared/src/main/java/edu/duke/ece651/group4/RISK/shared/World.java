@@ -195,8 +195,12 @@ public class World implements Serializable {
         terr.initializeTerritory(population, terr.getOwner());
     }
 
+    // TODO: moveTroop and attackTerritory shares similar arg list and behavior.
+    // May integrrate into a single function:
+    // public void executeOrder()
+
     /**
-     * Move a troop to a different a territory. Owner of the troop is not checked.
+     * Moves a troop to a different a territory. Owner of the troop is not checked.
      * Also checks if the troop size is valid to send from the starting territory.
      * @param order
      */
@@ -208,17 +212,14 @@ public class World implements Serializable {
         if (start.checkPopulation() < troop.checkTroopSize()) {
 
             throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
-//            return NOT_ENOUGH_TROOP_MSG;
         }
         String errorMsg = basicOrderChecker.checkOrder(order, this);
         if (errorMsg != null) {
             throw new IllegalArgumentException(errorMsg);
-//            return errorMsg;
         }
         
         start.sendOutTroop(troop);
         end.sendInTroop(troop);
-//        return null;
     }
 
     /**
@@ -234,7 +235,8 @@ public class World implements Serializable {
     }
 
     /**
-     * Send a troop to a territory with different owner, in order to engage in battle.
+     * Sends a troop to a territory with different owner, 
+     * in order to engage in battle on that territory.
      * Also checks if the troop size is valid to send from the starting territory.
      * @param order is the attack order
      */
@@ -245,17 +247,14 @@ public class World implements Serializable {
         
         if (start.checkPopulation() < troop.checkTroopSize()) {
             throw new IllegalArgumentException(NOT_ENOUGH_TROOP_MSG);
-//            return NOT_ENOUGH_TROOP_MSG;
         }
         String errorMsg = basicOrderChecker.checkOrder(order, this);
         if (errorMsg != null) {
             throw new IllegalArgumentException(errorMsg);
-//            return errorMsg;
         }
         
         start.sendOutTroop(troop);
         end.sendInEnemyTroop(troop);
-//        return null;
     }
 
     /**
@@ -272,18 +271,8 @@ public class World implements Serializable {
 
     /**
      * Iterate over all territories around the world, and do battles on them.
-     */
-//    public void doAllBattles() {
-//        for (Territory terr : territories.getVertices()) {
-//            terr.doBattles();
-//        }
-//    }
-
-    /**
-     * Iterate over all territories around the world, and do battles on them.
      * @return A summary of battle info on all territories.
      */
-
     public String doAllBattles() {
         StringBuilder ans = new StringBuilder();
         for (Territory terr : territories.getVertices()) {
@@ -291,7 +280,6 @@ public class World implements Serializable {
         }
         return ans.toString();
     }
-
 
     /**
      * Check if two territories are adjacent to each other
@@ -338,15 +326,15 @@ public class World implements Serializable {
      * NOTE: group number starts from 0.
      */
     public Map<Integer, List<Territory>> divideTerritories(int nGroup) {
-        // check if it is an integer > 0
+        // check if nGroup is an integer > 0
         if (nGroup <= 0) {
             throw new IllegalArgumentException(NOT_POSITIVE_MSG);
         }
-        // check if size / n is an integer
+        // check if size / nGroup is an integer
         else if (territories.size() % nGroup != 0) {
             throw new IllegalArgumentException(INDIVISIBLE_MSG);
         }
-        // create a array of indices
+        // init an index array
         int nTerritories = territories.size();
         int randomInds[] = new int[nTerritories];
         for (int i = 0; i < nTerritories; i++) {
@@ -448,7 +436,7 @@ public class World implements Serializable {
     }
 
     @Override
-    public String toString() { // TODO: change placeholder
+    public String toString() {
         return territories.toString() + 
                basicOrderChecker.toString() +
                rnd.toString();

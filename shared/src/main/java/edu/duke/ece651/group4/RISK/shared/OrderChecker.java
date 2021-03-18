@@ -3,9 +3,9 @@ package edu.duke.ece651.group4.RISK.shared;
 import java.io.Serializable;
 
 /**
- * Checks if a order is valid.
+ * This class checks if a basic order (Move & Attack) is valid.
  */
-public class OrderChecker implements Serializable { // TODO: bad code design
+public class OrderChecker implements Serializable { // TODO: bad design of OrderCheckers
     protected AttackOrderChecker aoc;
     protected MoveOrderChecker moc;
 
