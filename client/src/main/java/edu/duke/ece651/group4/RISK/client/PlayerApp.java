@@ -3,7 +3,6 @@
  */
 package edu.duke.ece651.group4.RISK.client;
 
-
 import edu.duke.ece651.group4.RISK.shared.*;
 
 import java.io.*;
@@ -23,21 +22,19 @@ public class PlayerApp {
     private PrintStream out;
 
     public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader,World theWorld,int num,Random rnd,boolean mode) {
-        this.playerClient=myClient;
-        this.myPlayer=new TextPlayer(out,inputReader, name,rnd,mode);
-        this.theWorld=theWorld;
-        this.totalPopulation=num;
-        this.rnd=rnd;
-        this.myView=new WorldTextView(theWorld);
-        this.out=out;
+        this.playerClient = myClient;
+        this.myPlayer = new TextPlayer(out,inputReader, name,rnd,mode);
+        this.theWorld = theWorld;
+        this.totalPopulation = num;
+        this.rnd = rnd;
+        this.myView = new WorldTextView(theWorld);
+        this.out = out;
     }
 
     public PlayerApp(Client myClient,String name,PrintStream out, Reader inputReader,World theWorld,int num) {
         this(myClient,name,out,inputReader,theWorld,num,new Random(),false);
 
     }
-
-
 
     public TextPlayer getMyPlayer() {
         return myPlayer;
@@ -48,11 +45,11 @@ public class PlayerApp {
      */
     public void doPlacementPhase() throws IOException, ClassNotFoundException {
         this.out.println(this.myView.displayWorld(this.theWorld));
-        List<Territory> myGroup =null;
-        myGroup=(List<Territory>) receiveInfo(myGroup,this.playerClient);
+        List<Territory> myGroup = null;
+        myGroup = (List<Territory>) receiveInfo(myGroup,this.playerClient);
         this.out.println("Finish all setup and let's start the game!");
         List<Order> orders = null;
-        while(orders==null) {
+        while (orders == null) {
             try {
                 orders = this.myPlayer.doPlacement(myGroup, this.totalPopulation);
 
@@ -61,12 +58,12 @@ public class PlayerApp {
 
                     this.theWorld.findTerritory(newOrder.getDesName());
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 this.out.println("Wrong placement Assignment");
             }
         }
 
-        for(Order p:orders){
+        for(Order p : orders){
 
             this.playerClient.sendObject((PlaceOrder)p);
 //            sendInfo((PlaceOrder)p,this.playerClient);
@@ -81,7 +78,7 @@ public class PlayerApp {
         }
     }
 
-    public World getTheWorld(){
+    public World getTheWorld() {
         return this.theWorld;
     }
 
@@ -97,22 +94,22 @@ public class PlayerApp {
             this.out.println("You lost");
         }
         if(this.theWorld.isGameEnd()) {
-            this.out.println("Winner is "+this.theWorld.getWinner());
+            this.out.println("Winner is " + this.theWorld.getWinner());
             return;
         }
 
-        boolean exit=false;
+        boolean exit = false;
         while(!exit){
-            exit= this.myPlayer.checkExit();
-            World newWorld=null;
-            this.theWorld=(World) receiveInfo(newWorld,this.playerClient);
+            exit = this.myPlayer.checkExit();
+            World newWorld = null;
+            this.theWorld = (World) receiveInfo(newWorld,this.playerClient);
             this.out.println(this.myView.displayWorld( this.theWorld ));
-            String report=(String) this.playerClient.recvObject();
+            String report = (String) this.playerClient.recvObject();
             this.out.println("Turn Ended");
             this.out.println(report);
 
             if(this.theWorld.isGameEnd()) {
-                this.out.println("Winner is "+this.theWorld.getWinner());
+                this.out.println("Winner is " + this.theWorld.getWinner());
                 return;
             }
         }
